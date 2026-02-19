@@ -105,6 +105,103 @@ Simplified format with consensus labels:
 - **TRAIN_ES**: Training data (IDs starting with 100xxx)
 - **DEV_ES**: Development/test data (IDs starting with 300xxx)
 
+## Exploratory Data Analysis Findings
+
+### Dataset Statistics
+- **Training samples**: 6,064 tweets
+- **Test samples**: 934 tweets
+- **Class distribution (Task 1)**:
+  - NO (non-sexist): 3,367 tweets (55.5%)
+  - YES (sexist): 2,697 tweets (44.5%)
+  - Balance ratio: 0.80 (relatively balanced)
+
+### Inter-Annotator Agreement
+- **Mean agreement**: 84.6%
+- **Median agreement**: 83.3%
+- **Perfect agreement (100%)**: 75% of cases
+- **Minimum agreement**: 66.7% (4 of 6 annotators)
+- **Conclusion**: Excellent consensus, labels are reliable
+
+### Text Characteristics
+- **Average tweet length**: 178 characters
+- **Average word count**: 28 words
+- **Average word length**: 5.5 characters
+- **Special patterns**:
+  - Mentions (@): 53.5% of tweets
+  - Hashtags (#): 14.2%
+  - URLs: 32.1%
+  - Emojis: 7.6%
+
+### Feature Correlation Analysis
+
+#### Most Informative Features (Mutual Information > 0.01):
+1. **task1_agreement** (MI: 0.0204) - Agreement between annotators is the STRONGEST predictor
+2. **avg_word_length** (MI: 0.0173) - Average word length
+3. **has_hashtag** (MI: 0.0103) - Presence of hashtags
+
+#### Point-Biserial Correlations with Sexism:
+- **avg_word_length**: r = -0.147, p < 0.001 - Sexist tweets use SHORTER words
+- **task1_agreement**: r = -0.126, p < 0.001 - Sexist tweets have LOWER annotator agreement
+- **tweet_length**: r = -0.038, p < 0.01 - Sexist tweets are slightly SHORTER
+
+#### Chi-Square Test for Categorical Features:
+- **has_url**: χ² = 93.39, p < 0.001 - HIGHLY significant
+- **has_hashtag**: χ² = 67.33, p < 0.001 - HIGHLY significant
+- **has_emoji**: χ² = 3.96, p = 0.047 - Significant
+- **has_mention**: χ² = 3.42, p = 0.064 - NOT significant
+
+#### Feature Redundancy:
+- **tweet_length and word_count**: correlation = 0.929 - HIGHLY correlated
+- **Recommendation**: Remove tweet_length, keep word_count
+
+### Annotator Demographic Bias Analysis
+
+#### Total Annotations Analyzed: 36,384 (6,064 tweets × 6 annotators)
+
+#### Gender: NOT SIGNIFICANT
+- **Female annotators**: 44.8% label as YES
+- **Male annotators**: 44.2% label as YES
+- **Difference**: 0.6 percentage points
+- **Chi-square**: p = 0.229 (not significant)
+- **Conclusion**: Annotator gender does NOT affect labeling
+
+#### Age: SIGNIFICANT (small effect)
+- **23-45 years**: 45.8% YES (more strict)
+- **46+ years**: 45.3% YES
+- **18-22 years**: 42.3% YES (more permissive)
+- **Chi-square**: p < 0.001, Cramér's V = 0.031
+- **Difference**: 3.5 percentage points between oldest and youngest
+
+#### Ethnicity: SIGNIFICANT (small effect)
+- **Multiracial**: 52.1% YES (most strict)
+- **Hispanic/Latino**: 46.5% YES
+- **White/Caucasian**: 43.8% YES
+- **Black/African American**: 40.4% YES (most permissive)
+- **Chi-square**: p < 0.001, Cramér's V = 0.036
+- **Difference**: 11.7 percentage points between extremes
+
+#### Education: SIGNIFICANT (small effect)
+- **Doctorate**: 48.8% YES
+- **High school**: 41.6% YES
+- **Chi-square**: p < 0.001, Cramér's V = 0.041
+- **Conclusion**: Higher education correlates with higher sexism detection rate
+
+#### Country: HIGHLY SIGNIFICANT (strongest demographic effect)
+- **Cuba**: 75.5% YES (very strict)
+- **Brazil**: 65.3% YES
+- **Latin America**: Generally >50% YES
+- **Eastern Europe**: Generally <40% YES
+- **Macedonia**: 14.5% YES (very permissive)
+- **Chi-square**: p < 0.001, Cramér's V = 0.090
+- **Difference**: 61 percentage points between extremes
+- **Conclusion**: Country is the STRONGEST demographic predictor
+
+#### Key Insights from Demographic Analysis:
+1. **Cultural context matters**: Latin American annotators are more sensitive to sexism
+2. **Gender is NOT a bias factor**: Equal labeling behavior between genders
+3. **Diversity mitigates bias**: 6 annotators from 45 countries balance perspectives
+4. **Consensus is robust**: Majority voting from diverse annotators reduces individual biases
+
 ## Key Considerations
 
 ### Inter-Annotator Agreement
