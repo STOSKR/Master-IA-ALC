@@ -154,6 +154,196 @@ Consider using:
 - Contextual embeddings (BETO, BERT multilingual)
 - Metadata features from annotators (optional)
 
+### Techniques for Model Robustness
+
+#### Data Augmentation for Text
+Text augmentation techniques to increase training data diversity:
+
+1. **Synonym Replacement**:
+   - Replace words with synonyms using Spanish WordNet or lexical databases
+   - Libraries: `nlpaug`, `textaugment`
+   - Preserve tweet context and meaning
+
+2. **Back Translation**:
+   - Translate Spanish → English → Spanish
+   - Creates paraphrases with similar meaning
+   - Use Google Translate API or MarianMT models
+
+3. **Contextual Word Embeddings**:
+   - Use BERT-based models to replace words with contextually similar alternatives
+   - More sophisticated than synonym replacement
+   - Library: `nlpaug` with transformer models
+
+4. **Random Operations**:
+   - Random insertion of synonyms
+   - Random swap of word positions
+   - Random deletion of non-critical words
+   - **Caution**: May alter sexist meaning, use carefully
+
+5. **Character-level Augmentation**:
+   - Simulate typos common in social media
+   - Add/remove accents (á → a)
+   - Character swaps for adjacent keys
+
+#### Handling Class Imbalance
+
+1. **Resampling Techniques**:
+   - **SMOTE** (Synthetic Minority Over-sampling): Generate synthetic samples for minority class
+   - **ADASYN**: Adaptive synthetic sampling
+   - **Random Under-sampling**: Reduce majority class samples
+   - **Random Over-sampling**: Duplicate minority class samples
+   - Library: `imbalanced-learn` (imblearn)
+
+2. **Class Weights**:
+   - Assign higher weights to minority class in loss function
+   - `class_weight='balanced'` in scikit-learn
+   - Custom weights: inversely proportional to class frequency
+   - Apply in model training (sklearn, PyTorch, TensorFlow)
+
+3. **Focal Loss**:
+   - Alternative to cross-entropy for imbalanced data
+   - Focuses on hard-to-classify examples
+   - Reduces weight of well-classified examples
+
+4. **Threshold Moving**:
+   - Adjust classification threshold (default 0.5)
+   - Optimize for F1-score instead of accuracy
+   - Use validation set to find optimal threshold
+
+#### Regularization Techniques
+
+1. **L1/L2 Regularization**:
+   - Prevent overfitting by penalizing large weights
+   - L1 (Lasso): Encourages sparsity
+   - L2 (Ridge): Prevents large weights
+   - ElasticNet: Combination of L1 and L2
+
+2. **Dropout**:
+   - Randomly drop neurons during training
+   - Typical rates: 0.1-0.5
+   - Apply to dense layers in neural networks
+
+3. **Early Stopping**:
+   - Monitor validation loss/metric
+   - Stop training when validation performance plateaus
+   - Prevent overfitting to training data
+   - Patience parameter: typically 3-10 epochs
+
+4. **Learning Rate Scheduling**:
+   - Reduce learning rate when validation metric stops improving
+   - ReduceLROnPlateau callback
+   - Helps fine-tune model convergence
+
+#### Ensemble Methods
+
+1. **Voting Classifiers**:
+   - Hard voting: Majority vote from multiple models
+   - Soft voting: Average predicted probabilities
+   - Combine different model types (SVM, RF, BERT)
+
+2. **Stacking**:
+   - Train meta-learner on predictions of base models
+   - Base models: Different architectures or feature sets
+   - Meta-model: Logistic Regression, XGBoost
+
+3. **Bagging**:
+   - Train multiple models on bootstrap samples
+   - Random Forest is a bagging ensemble
+   - Reduces variance
+
+4. **Boosting**:
+   - Sequential training focusing on misclassified examples
+   - XGBoost, LightGBM, AdaBoost
+   - Good for tabular features (TF-IDF)
+
+#### Transfer Learning & Fine-tuning
+
+1. **Pre-trained Language Models**:
+   - Start with BETO, RoBERTa-es, or mBERT
+   - Fine-tune on EXIST2025 data
+   - Much better than training from scratch
+
+2. **Layer Freezing**:
+   - Freeze early layers, train only top layers
+   - Faster training, less overfitting
+   - Gradually unfreeze layers if needed
+
+3. **Domain Adaptation**:
+   - Pre-train on similar Spanish social media data
+   - Fine-tune on sexism detection task
+   - Use Spanish Twitter corpora
+
+4. **Multi-task Learning**:
+   - Train all three tasks simultaneously
+   - Shared representations benefit all tasks
+   - Task-specific heads for each output
+
+#### Noise Reduction & Robustness
+
+1. **Label Smoothing**:
+   - Convert hard labels (0, 1) to soft labels (0.1, 0.9)
+   - Prevents overconfident predictions
+   - Improves generalization
+
+2. **Mixup**:
+   - Create virtual training examples
+   - Linear interpolation of embeddings and labels
+   - Works with hidden representations
+
+3. **Adversarial Training**:
+   - Add small perturbations to input embeddings
+   - Train model to be robust to these perturbations
+   - Improves generalization
+
+4. **Consensus-based Training**:
+   - Use annotator agreement as confidence scores
+   - Weight samples by inter-annotator agreement
+   - 6/6 agreement → higher weight than 4/6
+
+### Validation Strategies
+
+#### Recommended Approach: Held-out Validation
+- **Training set**: Use TRAIN_ES split (IDs 100xxx) for model training
+- **Validation set**: Use DEV_ES split (IDs 300xxx) for validation and hyperparameter tuning
+- This follows the natural split already provided in the dataset
+- Prevents data leakage and provides realistic performance estimates
+
+#### Alternative: K-Fold Cross-Validation
+- **Standard K-Fold**: 5-fold or 10-fold cross-validation on TRAIN_ES
+- **Stratified K-Fold**: Recommended to maintain class distribution in each fold
+  - Stratify by Task 1 labels (YES/NO)
+  - Important due to class imbalance
+- Use for model selection and hyperparameter optimization
+- Final evaluation should still use the held-out DEV_ES set
+
+#### Considerations for Multi-label Tasks
+- **Task 3 Stratification**: More complex due to multi-label nature
+  - Use `IterativeStratification` from scikit-multilearn
+  - Ensures balanced distribution of all label combinations
+- **Hierarchical Validation**: Ensure validation accounts for task dependencies
+  - Task 2 and 3 only evaluated on samples where Task 1 = YES
+
+#### Validation Workflow
+1. **Development Phase**:
+   - Use TRAIN_ES for training with cross-validation
+   - Tune hyperparameters using CV results
+   - Monitor for overfitting
+
+2. **Testing Phase**:
+   - Train final model on full TRAIN_ES
+   - Evaluate on DEV_ES (held-out set)
+   - Report final metrics from DEV_ES
+
+3. **Production Phase** (if applicable):
+   - Retrain on TRAIN_ES + DEV_ES combined
+   - Deploy for real predictions
+
+#### Metrics to Track During Validation
+- Per-fold metrics for stability assessment
+- Mean and standard deviation across folds
+- Confusion matrices for each task
+- Class-wise performance (especially for minority classes)
+
 ## Expected Outputs
 
 ### For Training Phase
@@ -180,6 +370,11 @@ Consider using:
 - **Deep Learning**: PyTorch, TensorFlow/Keras
 - **Transformers**: Hugging Face transformers (BETO, mBERT)
 - **Evaluation**: scikit-learn metrics, sklearn-multilearn
+- **Data Augmentation**: nlpaug, textaugment
+- **Class Imbalance**: imbalanced-learn (imblearn)
+- **Visualization**: matplotlib, seaborn, plotly
+- **Progress Tracking**: tqdm
+- **Experiment Tracking**: wandb, mlflow (optional)
 
 ### Spanish Language Models
 - **BETO**: Spanish BERT model
@@ -194,6 +389,79 @@ Consider using:
 4. Evaluate model performance on development set
 5. Generate predictions for test data
 6. Analyze model errors and biases
+
+## Implementation Approach
+
+### Jupyter Notebook Workflow
+This project is designed to be implemented in Jupyter Notebooks for better experimentation and visualization:
+
+#### Recommended Notebook Structure
+
+1. **01_data_exploration.ipynb**:
+   - Load and explore dataset structure
+   - Analyze label distributions
+   - Visualize annotator agreement
+   - Identify class imbalance
+   - Text statistics (length, vocabulary, common words)
+   - Dataset split verification
+
+2. **02_preprocessing.ipynb**:
+   - Text cleaning and normalization
+   - Tokenization experiments
+   - Handle URLs, mentions, hashtags
+   - Create vocabulary
+   - Save preprocessed data
+
+3. **03_baseline_models.ipynb**:
+   - Traditional ML baselines (Logistic Regression, SVM)
+   - TF-IDF feature extraction
+   - Baseline metrics for comparison
+   - Error analysis
+
+4. **04_deep_learning_models.ipynb**:
+   - LSTM/GRU implementations
+   - Word embeddings (Word2Vec, FastText)
+   - Training and evaluation
+   - Hyperparameter tuning
+
+5. **05_transformer_models.ipynb**:
+   - Fine-tune BETO/RoBERTa-es
+   - Transfer learning experiments
+   - Compare pre-trained models
+   - Best model selection
+
+6. **06_robustness_techniques.ipynb**:
+   - Data augmentation experiments
+   - Class balancing techniques
+   - Ensemble methods
+   - Final model optimization
+
+7. **07_hierarchical_tasks.ipynb**:
+   - Implement Task 2 and Task 3
+   - Hierarchical model architecture
+   - Multi-task learning experiments
+   - Combined evaluation
+
+8. **08_final_predictions.ipynb**:
+   - Generate predictions on test set
+   - Format outputs correctly
+   - Create submission files
+   - Final evaluation and analysis
+
+#### Benefits of Notebook Implementation
+- **Interactive exploration**: Visualize data and results inline
+- **Incremental development**: Test ideas cell-by-cell
+- **Documentation**: Mix code, results, and explanations
+- **Reproducibility**: Save outputs and intermediate results
+- **Collaboration**: Easy to share and review
+
+#### Best Practices for Notebooks
+- Use markdown cells to explain each section
+- Keep cells focused and modular
+- Save intermediate results (models, preprocessed data)
+- Use version control (git) for notebook files
+- Clear outputs before committing to reduce file size
+- Add requirements.txt or environment.yml for dependencies
 
 ## Notes for AI Assistant
 - This is a Master's level AI/NLP course assignment
