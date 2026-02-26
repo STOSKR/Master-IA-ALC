@@ -1,0 +1,39 @@
+==========================================
+Starting execution of: 08_Ministral3_8B_only_ft.ipynb
+==========================================
+Error occurred. Notebook saved to: entregables/08_Ministral3_8B_only_ft_error.ipynb
+Error: An error occurred while executing the following cell:
+------------------
+import os
+import torch
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from torch.utils.data import Dataset, DataLoader
+
+from transformers import (
+    Mistral3ForConditionalGeneration,
+    FineGrainedFP8Config,
+    MistralCommonBackend,
+    get_cosine_schedule_with_warmup,
+)
+from peft import LoraConfig, get_peft_model, TaskType
+------------------
+
+
+[31m---------------------------------------------------------------------------[39m
+[31mImportError[39m                               Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[1][39m[32m, line 8[39m
+[32m      5[39m [38;5;28;01mimport[39;00m[38;5;250m [39m[34;01mmatplotlib[39;00m[34;01m.[39;00m[34;01mpyplot[39;00m[38;5;250m [39m[38;5;28;01mas[39;00m[38;5;250m [39m[34;01mplt[39;00m
+[32m      6[39m [38;5;28;01mfrom[39;00m[38;5;250m [39m[34;01mtorch[39;00m[34;01m.[39;00m[34;01mutils[39;00m[34;01m.[39;00m[34;01mdata[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m Dataset, DataLoader
+[32m----> [39m[32m8[39m [38;5;28;01mfrom[39;00m[38;5;250m [39m[34;01mtransformers[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m (
+[32m      9[39m     Mistral3ForConditionalGeneration,
+[32m     10[39m     FineGrainedFP8Config,
+[32m     11[39m     MistralCommonBackend,
+[32m     12[39m     get_cosine_schedule_with_warmup,
+[32m     13[39m )
+[32m     14[39m [38;5;28;01mfrom[39;00m[38;5;250m [39m[34;01mpeft[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m LoraConfig, get_peft_model, TaskType
+
+[31mImportError[39m: cannot import name 'MistralCommonBackend' from 'transformers' (/home/alumno.upv.es/scheng1/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/__init__.py)
+
+Finished processing: 08_Ministral3_8B_only_ft.ipynb
