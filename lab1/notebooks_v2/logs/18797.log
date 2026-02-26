@@ -1,0 +1,36 @@
+Using GPU(s): 1
+index, name, memory.total [MiB], memory.free [MiB]
+0, NVIDIA L40S, 46068 MiB, 37211 MiB
+1, NVIDIA L40S, 46068 MiB, 45466 MiB
+2, NVIDIA L40S, 46068 MiB, 45466 MiB
+3, NVIDIA L40S, 46068 MiB, 45466 MiB
+==========================================
+Starting execution of: 07_Mistral3_8B_inference_tweet.ipynb
+==========================================
+Traceback (most recent call last):
+  File "<stdin>", line 31, in <module>
+FileNotFoundError: [Errno 2] No such file or directory: '07_Mistral3_8B_inference_tweet.ipynb'
+[W226 15:52:31.617474238 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+WARNING: 07_Mistral3_8B_inference_tweet.ipynb execution failed, continuing with next notebook...
+
+==========================================
+Starting execution of: 08_Mistral3_8B_only_ft.ipynb
+==========================================
+Traceback (most recent call last):
+  File "<stdin>", line 31, in <module>
+FileNotFoundError: [Errno 2] No such file or directory: '08_Mistral3_8B_only_ft.ipynb'
+[W226 15:52:32.182429993 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+WARNING: 08_Mistral3_8B_only_ft.ipynb execution failed, continuing with next notebook...
+
+==========================================
+Starting execution of: 09_Mistral3_8B_inference_ft.ipynb
+==========================================
+Traceback (most recent call last):
+  File "<stdin>", line 31, in <module>
+FileNotFoundError: [Errno 2] No such file or directory: '09_Mistral3_8B_inference_ft.ipynb'
+[W226 15:52:34.756937787 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+WARNING: 09_Mistral3_8B_inference_ft.ipynb execution failed, continuing with next notebook...
+
+==========================================
+All notebooks processed!
+==========================================
