@@ -1,0 +1,9 @@
+Using GPU(s): 1
+index, name, memory.total [MiB], memory.free [MiB]
+0, NVIDIA L40S, 46068 MiB, 28547 MiB
+1, NVIDIA L40S, 46068 MiB, 45469 MiB
+2, NVIDIA L40S, 46068 MiB, 45469 MiB
+3, NVIDIA L40S, 46068 MiB, 45469 MiB
+==========================================
+Starting execution of: 05_KaLM_ft_tweet.ipynb
+==========================================
