@@ -1,0 +1,11 @@
+# Ignore all files in this directory
+*
+
+# Except LaTeX source files
+!*.tex
+
+# Except PDF files
+!*.pdf
+
+# And don't ignore this .gitignore file
+!.gitignore

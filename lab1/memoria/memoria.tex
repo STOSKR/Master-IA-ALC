@@ -1,0 +1,183 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+
+\geometry{
+    a4paper,
+    left=2.5cm,
+    right=2.5cm,
+    top=3cm,
+    bottom=3cm
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Laboratorio 1 - EXIST 2025}
+\lhead{Detección de Sexismo}
+\rfoot{\thepage}
+
+\definecolor{azuloscuro}{RGB}{0,51,102}
+\definecolor{azulclaro}{RGB}{51,102,153}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=azuloscuro,
+    citecolor=azuloscuro,
+    urlcolor=azulclaro
+}
+
+\title{%
+    \Large\textbf{Memoria Técnica}\\[0.3cm]
+    \huge\textbf{Clasificación de Sexismo en Redes Sociales}\\[0.2cm]
+    \large{EXIST 2025 - Task 1}
+}
+\author{Master en Inteligencia Artificial}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introducción}
+
+Este proyecto aborda la tarea de detección automática de contenido sexista en publicaciones de redes sociales, utilizando el dataset de la competición EXIST 2025. El objetivo es desarrollar y evaluar diferentes aproximaciones de clasificación binaria (sexista/no sexista) mediante modelos clásicos de machine learning y modelos de lenguaje pre-entrenados con fine-tuning.
+
+\section{Metodología}
+
+\subsection{Preprocesamiento de Datos}
+
+Se implementaron dos estrategias de preprocesamiento:
+
+\begin{itemize}
+    \item \textbf{Tweet Original}: Texto sin modificaciones, manteniendo URLs, menciones y emojis.
+    \item \textbf{Text Clean}: Limpieza avanzada eliminando URLs, menciones, hashtags, y normalizando el texto.
+\end{itemize}
+
+\subsection{Modelos Evaluados}
+
+Se experimentó con tres familias de modelos:
+
+\subsubsection{Modelos Clásicos}
+Modelos de machine learning tradicionales utilizando vectorización TF-IDF y Bag-of-Words:
+\begin{itemize}
+    \item Regresión Logística
+    \item Support Vector Machines (LinearSVC, SVC-RBF)
+    \item Árboles de Decisión y Random Forest
+    \item Gradient Boosting y AdaBoost
+    \item Naive Bayes (Multinomial, Complement, Bernoulli)
+    \item K-Nearest Neighbors
+    \item Ensambles (Voting, Bagging, Stacking)
+\end{itemize}
+
+\subsubsection{Modelos de Lenguaje Fine-tuned}
+Modelos transformer pre-entrenados ajustados con LoRA (Low-Rank Adaptation):
+\begin{itemize}
+    \item \textbf{F2LLM-4B}: Modelo de 4B parámetros especializado en español
+    \item \textbf{KaLM}: Modelo multilingüe con soporte para español
+\end{itemize}
+
+\subsubsection{Modelos Generativos}
+Modelos grandes de lenguaje evaluados en modo zero-shot e inference con fine-tuning:
+\begin{itemize}
+    \item \textbf{Ministral-3-8B-Instruct}: Modelo instruccional de 8B parámetros con cuantización FP8
+\end{itemize}
+
+\section{Resultados}
+
+\subsection{Métricas en Conjunto de Validación (DEV)}
+
+La Tabla~\ref{tab:llm_results} muestra los resultados de los modelos de lenguaje fine-tuned, mientras que la Tabla~\ref{tab:classic_results} presenta los mejores modelos clásicos.
+
+\begin{table}[h]
+\centering
+\caption{Resultados de Modelos de Lenguaje (DEV)}
+\label{tab:llm_results}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Modelo} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
+\midrule
+F2LLM-4B (tweet) & \textbf{0.8604} & \textbf{0.8294} & 0.8642 & \textbf{0.8464} \\
+KaLM (tweet) & 0.8429 & 0.8164 & 0.8346 & 0.8254 \\
+F2LLM-4B (clean) & 0.8341 & 0.7581 & \textbf{0.9210} & 0.8317 \\
+KaLM (clean) & 0.8363 & 0.8137 & 0.8198 & 0.8167 \\
+\midrule
+Ministral-3-8B (ZS) & - & - & - & - \\
+Ministral-3-8B (FT) & \multicolumn{4}{c}{\textit{En entrenamiento}} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Mejores Modelos Clásicos (DEV) - TF-IDF}
+\label{tab:classic_results}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Modelo} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
+\midrule
+Stacking & \textbf{0.7824} & 0.7867 & 0.7012 & \textbf{0.7415} \\
+Gradient Boosting & 0.7736 & \textbf{0.8373} & 0.6099 & 0.7057 \\
+LinearSVC & 0.7736 & 0.7901 & 0.6691 & 0.7246 \\
+Logistic Regression & 0.7725 & 0.7845 & 0.6741 & 0.7251 \\
+Bagging (LR) & 0.7703 & 0.7849 & 0.6667 & 0.7210 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Análisis Comparativo}
+
+\subsubsection{Rendimiento por Familia de Modelos}
+
+\begin{itemize}
+    \item \textbf{Modelos de Lenguaje}: Los modelos transformer fine-tuned superan significativamente a los modelos clásicos, con mejoras de hasta \textbf{+10.5 puntos} en F1-Score (F2LLM-4B vs Stacking).
+    
+    \item \textbf{Modelos Clásicos}: El ensamble mediante Stacking alcanza el mejor rendimiento (F1=0.7415), demostrando que la combinación de múltiples clasificadores mejora los resultados individuales.
+    
+    \item \textbf{Impacto del Preprocesamiento}: 
+    \begin{itemize}
+        \item Los textos originales (tweet) obtienen mejor \textit{accuracy} y \textit{precision}
+        \item Los textos limpios (clean) mejoran el \textit{recall} en +5.7 puntos (F2LLM-4B)
+        \item El trade-off entre precision y recall depende de la estrategia de preprocesamiento
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Mejores Configuraciones}
+
+\begin{enumerate}
+    \item \textbf{Mayor F1-Score}: F2LLM-4B con tweet original (0.8464)
+    \item \textbf{Mayor Recall}: F2LLM-4B con texto limpio (0.9210)
+    \item \textbf{Mayor Precision}: F2LLM-4B con tweet original (0.8294)
+    \item \textbf{Mejor modelo clásico}: Stacking con TF-IDF (0.7415)
+\end{enumerate}
+
+\section{Conclusiones}
+
+\begin{enumerate}
+    \item Los modelos de lenguaje pre-entrenados con fine-tuning superan ampliamente a los métodos clásicos de ML, especialmente en tareas de comprensión contextual como la detección de sexismo.
+    
+    \item El modelo F2LLM-4B con texto original alcanza el mejor equilibrio entre precision y recall (\textbf{F1=0.8464}), constituyendo la mejor solución para esta tarea.
+    
+    \item La estrategia de preprocesamiento debe seleccionarse según el objetivo: texto limpio maximiza recall (detectar más casos positivos), mientras que el texto original mejora precision (evitar falsos positivos).
+    
+    \item Los ensambles de modelos clásicos (Stacking) son competitivos y computacionalmente más eficientes que los LLMs, representando una alternativa válida para entornos con recursos limitados.
+    
+    \item El fine-tuning con LoRA permite adaptar modelos grandes (4B-8B parámetros) con recursos limitados, manteniendo alta calidad en las predicciones.
+\end{enumerate}
+
+\subsection{Trabajo Futuro}
+
+\begin{itemize}
+    \item Completar evaluación de Ministral-3-8B post fine-tuning
+    \item Explorar ensambles de modelos de lenguaje (votación entre F2LLM, KaLM y Ministral)
+    \item Análisis de errores para identificar patrones lingüísticos desafiantes
+    \item Optimización de hiperparámetros mediante búsqueda sistemática
+\end{itemize}
+
+\end{document}

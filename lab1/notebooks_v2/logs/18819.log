@@ -1,0 +1,25 @@
+Using GPU(s): 1
+index, name, memory.total [MiB], memory.free [MiB]
+0, NVIDIA L40S, 46068 MiB, 5844 MiB
+1, NVIDIA L40S, 46068 MiB, 45469 MiB
+2, NVIDIA L40S, 46068 MiB, 45469 MiB
+3, NVIDIA L40S, 46068 MiB, 45469 MiB
+==========================================
+Starting execution of: 08_Ministral3_8B_only_ft.ipynb
+==========================================
+Successfully saved to: entregables/08_Ministral3_8B_only_ft_out.ipynb
+Memory cleaned after successful execution
+Memory cleaned
+[W226 16:52:33.562822031 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+
+==========================================
+Starting execution of: 09_Ministral3_8B_inference_ft.ipynb
+==========================================
+Successfully saved to: entregables/09_Ministral3_8B_inference_ft_out_1.ipynb
+Memory cleaned after successful execution
+Memory cleaned
+[W226 16:53:36.074144008 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+
+==========================================
+All notebooks processed!
+==========================================

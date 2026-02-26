@@ -1,0 +1,120 @@
+Using GPU(s): 1
+index, name, memory.total [MiB], memory.free [MiB]
+0, NVIDIA L40S, 46068 MiB, 20997 MiB
+1, NVIDIA L40S, 46068 MiB, 45469 MiB
+2, NVIDIA L40S, 46068 MiB, 45469 MiB
+3, NVIDIA L40S, 46068 MiB, 45469 MiB
+==========================================
+Starting execution of: 07_Ministral3_8B_inference_tweet.ipynb
+==========================================
+Successfully saved to: entregables/07_Ministral3_8B_inference_tweet_out.ipynb
+Memory cleaned after successful execution
+Memory cleaned
+[W226 16:36:14.355080469 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+
+==========================================
+Starting execution of: 08_Ministral3_8B_only_ft.ipynb
+==========================================
+Error occurred. Notebook saved to: entregables/08_Ministral3_8B_only_ft_error.ipynb
+Error: An error occurred while executing the following cell:
+------------------
+optimizer = torch.optim.AdamW(
+    filter(lambda p: p.requires_grad, model.parameters()),
+    lr=LEARNING_RATE,
+    weight_decay=0.01,
+)
+
+total_steps   = (len(train_loader) // GRAD_ACCUM_STEPS) * NUM_EPOCHS
+warmup_steps  = total_steps // 10
+
+scheduler = get_cosine_schedule_with_warmup(
+    optimizer,
+    num_warmup_steps=warmup_steps,
+    num_training_steps=total_steps,
+)
+
+train_losses = []
+val_losses   = []
+best_val_loss = float("inf")
+
+for epoch in range(1, NUM_EPOCHS + 1):
+    # ── TRAIN ──
+    model.train()
+    epoch_loss    = 0.0
+    optimizer.zero_grad()
+
+    for step, batch in enumerate(train_loader, start=1):
+        batch = {k: v.to("cuda") for k, v in batch.items()}
+        outputs = model(**batch)
+        loss = outputs.loss / GRAD_ACCUM_STEPS
+        loss.backward()
+        epoch_loss += outputs.loss.item()
+
+        if step % GRAD_ACCUM_STEPS == 0:
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+            optimizer.step()
+            scheduler.step()
+            optimizer.zero_grad()
+
+    avg_train_loss = epoch_loss / len(train_loader)
+    train_losses.append(avg_train_loss)
+
+    # ── VALIDATION ──
+    model.eval()
+    val_loss = 0.0
+    with torch.no_grad():
+        for batch in val_loader:
+            batch = {k: v.to("cuda") for k, v in batch.items()}
+            val_loss += model(**batch).loss.item()
+
+    avg_val_loss = val_loss / len(val_loader)
+    val_losses.append(avg_val_loss)
+
+    print(f"Epoch {epoch}/{NUM_EPOCHS} | Train Loss: {avg_train_loss:.4f} | Val Loss: {avg_val_loss:.4f}")
+
+    # Guardar el mejor modelo
+    if avg_val_loss < best_val_loss:
+        best_val_loss = avg_val_loss
+        model.save_pretrained(SAVE_PATH)
+        tokenizer.save_pretrained(SAVE_PATH)
+        print(f"  ✓ Mejor modelo guardado (val_loss={best_val_loss:.4f})")
+
+# Curva de pérdida
+plt.figure(figsize=(8, 4))
+plt.plot(range(1, NUM_EPOCHS + 1), train_losses, label="Train Loss")
+plt.plot(range(1, NUM_EPOCHS + 1), val_losses,   label="Val Loss")
+plt.xlabel("Epoch"); plt.ylabel("Loss")
+plt.title("Curva de pérdida — Mistral-3B LoRA")
+plt.legend(); plt.grid(alpha=0.3); plt.tight_layout(); plt.show()
+------------------
+
+----- stdout -----
+Epoch 1/3 | Train Loss: 2.3145 | Val Loss: 2.0987
+------------------
+
+[31m---------------------------------------------------------------------------[39m
+[31mAttributeError[39m                            Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[8][39m[32m, line 59[39m
+[32m     57[39m         best_val_loss = avg_val_loss
+[32m     58[39m         model.save_pretrained(SAVE_PATH)
+[32m---> [39m[32m59[39m         [43mtokenizer[49m[43m.[49m[43msave_pretrained[49m(SAVE_PATH)
+[32m     60[39m         [38;5;28mprint[39m([33mf[39m[33m"[39m[33m  ✓ Mejor modelo guardado (val_loss=[39m[38;5;132;01m{[39;00mbest_val_loss[38;5;132;01m:[39;00m[33m.4f[39m[38;5;132;01m}[39;00m[33m)[39m[33m"[39m)
+[32m     62[39m [38;5;66;03m# Curva de pérdida[39;00m
+
+[31mAttributeError[39m: 'MistralTokenizer' object has no attribute 'save_pretrained'
+
+Memory cleaned
+[W226 16:40:00.925261314 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+WARNING: 08_Ministral3_8B_only_ft.ipynb execution failed, continuing with next notebook...
+
+==========================================
+Starting execution of: 09_Ministral3_8B_inference_ft.ipynb
+==========================================
+Successfully saved to: entregables/09_Ministral3_8B_inference_ft_out.ipynb
+Memory cleaned after successful execution
+Memory cleaned
+[W226 16:41:02.329500979 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+
+==========================================
+All notebooks processed!
+==========================================

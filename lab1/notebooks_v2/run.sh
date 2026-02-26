@@ -7,7 +7,7 @@
 #SBATCH -o logs/%j.log
 
 # Lista de notebooks a ejecutar (separados por espacios)
-NOTEBOOKS="07_Mistral3_8B_inference_tweet.ipynb 08_Mistral3_8B_only_ft.ipynb 09_Mistral3_8B_inference_ft.ipynb"
+NOTEBOOKS="08_Ministral3_8B_only_ft.ipynb 09_Ministral3_8B_inference_ft.ipynb"
 
 source /opt/miniconda3/etc/profile.d/conda.sh
 conda activate RFA2526pt
