@@ -3,7 +3,7 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --job-name=run
 #SBATCH --mem=32G
-#SBATCH --gres=shard:4
+#SBATCH --gres=shard:6
 #SBATCH -o logs/%j.log
 
 # Lista de notebooks a ejecutar (separados por espacios)
@@ -14,6 +14,14 @@ conda activate RFA2526pt
 
 # Configure CUDA memory management
 export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+
+# Ensure we use only the GPU assigned by SLURM
+if [ ! -z "$CUDA_VISIBLE_DEVICES" ]; then
+    echo "Using GPU(s): $CUDA_VISIBLE_DEVICES"
+fi
+
+# Print GPU memory info
+nvidia-smi --query-gpu=index,name,memory.total,memory.free --format=csv
 
 # Ejecutar cada notebook secuencialmente
 for NOTEBOOK in $NOTEBOOKS; do
