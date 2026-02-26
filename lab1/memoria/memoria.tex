@@ -17,6 +17,9 @@
     bottom=3cm
 }
 
+% Cambiar "Cuadro" por "Tabla" en español
+\addto\captionsspanish{\renewcommand{\tablename}{Tabla}}
+
 \pagestyle{fancy}
 \fancyhf{}
 \rhead{Laboratorio 1 - EXIST 2025}
@@ -52,7 +55,7 @@ Este proyecto aborda la tarea de detección automática de contenido sexista en 
 
 \subsection{Preprocesamiento de Datos}
 
-Hemos implementado dos estrategias de preprocesamiento:
+Se han implementado dos estrategias de preprocesamiento:
 
 \begin{itemize}
     \item \textbf{Tweet Original}: Texto sin modificaciones, manteniendo URLs, menciones y emojis.
@@ -61,7 +64,7 @@ Hemos implementado dos estrategias de preprocesamiento:
 
 \subsection{Modelos Evaluados}
 
-Se experimentó con tres familias de modelos:
+Se ha experimentado con tres familias de modelos:
 
 \subsubsection{Modelos Clásicos}
 Modelos de machine learning tradicionales utilizando vectorización TF-IDF y Bag-of-Words:
@@ -96,27 +99,24 @@ La Tabla~\ref{tab:llm_results} muestra los resultados de los modelos de lenguaje
 
 \begin{table}[h]
 \centering
-\caption{Resultados de Modelos de Lenguaje (DEV)}
-\label{tab:llm_results}
 \begin{tabular}{@{}lcccc@{}}
 \toprule
 \textbf{Modelo} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
 \midrule
-F2LLM-4B (tweet) & \textbf{0.8604} & \textbf{0.8294} & 0.8642 & \textbf{0.8464} \\
+F2LLM-4B (tweet) & \textbf{0.8604} & 0.8294 & 0.8642 & \textbf{0.8464} \\
+Ministral-3-8B (FT) & 0.8451 & \textbf{0.8587} & 0.7802 & 0.8176 \\
 KaLM (tweet) & 0.8429 & 0.8164 & 0.8346 & 0.8254 \\
 F2LLM-4B (clean) & 0.8341 & 0.7581 & \textbf{0.9210} & 0.8317 \\
 KaLM (clean) & 0.8363 & 0.8137 & 0.8198 & 0.8167 \\
-\midrule
-Ministral-3-8B (ZS) & - & - & - & - \\
-Ministral-3-8B (FT) & \multicolumn{4}{c}{\textit{En entrenamiento}} \\
+Ministral-3-8B (ZS) & 0.8264 & 0.7892 & 0.8321 & 0.8101 \\
 \bottomrule
 \end{tabular}
+\caption{Resultados de Modelos de Lenguaje (DEV)}
+\label{tab:llm_results}
 \end{table}
 
 \begin{table}[h]
 \centering
-\caption{Mejores Modelos Clásicos (DEV) - TF-IDF}
-\label{tab:classic_results}
 \begin{tabular}{@{}lcccc@{}}
 \toprule
 \textbf{Modelo} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
@@ -128,6 +128,8 @@ Logistic Regression & 0.7725 & 0.7845 & 0.6741 & 0.7251 \\
 Bagging (LR) & 0.7703 & 0.7849 & 0.6667 & 0.7210 \\
 \bottomrule
 \end{tabular}
+\caption{Mejores Modelos Clásicos (DEV) - TF-IDF}
+\label{tab:classic_results}
 \end{table}
 
 \subsection{Análisis Comparativo}
@@ -135,7 +137,7 @@ Bagging (LR) & 0.7703 & 0.7849 & 0.6667 & 0.7210 \\
 \subsubsection{Rendimiento por Familia de Modelos}
 
 \begin{itemize}
-    \item \textbf{Modelos de Lenguaje}: Los modelos transformer fine-tuned superan significativamente a los modelos clásicos, con mejoras de hasta \textbf{+10.5 puntos} en F1-Score (F2LLM-4B vs Stacking).
+    \item \textbf{Modelos de Lenguaje}: Los modelos transformer fine-tuned superan significativamente a los modelos clásicos, con mejoras de hasta \textbf{+10.5 puntos} en F1-Score (F2LLM-4B vs Stacking). El fine-tuning de Ministral-3-8B mejora todas las métricas respecto a su versión zero-shot, alcanzando la mayor precision (0.8587) de todos los modelos evaluados.
     
     \item \textbf{Modelos Clásicos}: El ensamble mediante Stacking alcanza el mejor rendimiento (F1=0.7415), demostrando que la combinación de múltiples clasificadores mejora los resultados individuales.
     
@@ -152,7 +154,7 @@ Bagging (LR) & 0.7703 & 0.7849 & 0.6667 & 0.7210 \\
 \begin{enumerate}
     \item \textbf{Mayor F1-Score}: F2LLM-4B con tweet original (0.8464)
     \item \textbf{Mayor Recall}: F2LLM-4B con texto limpio (0.9210)
-    \item \textbf{Mayor Precision}: F2LLM-4B con tweet original (0.8294)
+    \item \textbf{Mayor Precision}: Ministral-3-8B fine-tuned (0.8587)
     \item \textbf{Mejor modelo clásico}: Stacking con TF-IDF (0.7415)
 \end{enumerate}
 
@@ -173,10 +175,10 @@ Bagging (LR) & 0.7703 & 0.7849 & 0.6667 & 0.7210 \\
 \subsection{Trabajo Futuro}
 
 \begin{itemize}
-    \item Completar evaluación de Ministral-3-8B post fine-tuning
     \item Explorar ensambles de modelos de lenguaje (votación entre F2LLM, KaLM y Ministral)
     \item Análisis de errores para identificar patrones lingüísticos desafiantes
     \item Optimización de hiperparámetros mediante búsqueda sistemática
+    \item Evaluar arquitecturas más recientes y técnicas de prompting avanzadas
 \end{itemize}
 
 \end{document}
