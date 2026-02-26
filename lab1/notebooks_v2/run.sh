@@ -12,6 +12,9 @@ NOTEBOOKS="03_f2llm_4B_ft_tweet.ipynb 03_modelos_clasicos.ipynb 04_f2llm_4B_ft_t
 source /opt/miniconda3/etc/profile.d/conda.sh
 conda activate RFA2526pt
 
+# Configure CUDA memory management
+export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+
 # Ejecutar cada notebook secuencialmente
 for NOTEBOOK in $NOTEBOOKS; do
     echo "=========================================="
@@ -23,6 +26,8 @@ for NOTEBOOK in $NOTEBOOKS; do
     python << 'EOF'
 import os, nbformat
 from nbconvert.preprocessors import ExecutePreprocessor
+import torch
+import gc
 
 input_file = os.environ['NB_IN']
 out_dir = "entregables"
@@ -60,6 +65,12 @@ try:
     with open(output_file, 'w', encoding='utf-8') as f:
         nbformat.write(nb, f)
     print(f"Successfully saved to: {output_file}")
+    # Clean up memory after successful execution
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+        torch.cuda.synchronize()
+    gc.collect()
+    print("Memory cleaned after successful execution")
 except Exception as e:
     # Save notebook with error state
     with open(error_output_file, 'w', encoding='utf-8') as f:
@@ -68,6 +79,13 @@ except Exception as e:
     print(f"Error: {e}")
     # Continue with next notebook even if this one fails
     exit(1)
+finally:
+    # Clean up memory
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+        torch.cuda.synchronize()
+    gc.collect()
+    print("Memory cleaned")
 EOF
     
     if [ $? -ne 0 ]; then
