@@ -14,7 +14,8 @@
     left=2.5cm,
     right=2.5cm,
     top=3cm,
-    bottom=3cm
+    bottom=3cm,
+    headheight=14pt
 }
 
 % Cambiar "Cuadro" por "Tabla" en español
@@ -160,7 +161,9 @@ Bagging (LR) & 0.7703 & 0.7849 & 0.6667 & 0.7210 \\
 \subsection{Análisis Comparativo}
 
 \subsubsection{Rendimiento por Familia de Modelos}
-1.2 puntos} en F1-Score (F2LLM-4B vs Stacking). El modelo F2LLM-4B alcanza el mayor recall (0.9185) manteniendo un F1 competitivo.
+
+\begin{itemize}
+    \item \textbf{Modelos de Lenguaje}: Los modelos transformer fine-tuned superan significativamente a los modelos clásicos, con mejoras de hasta \textbf{+11.2 puntos} en F1-Score (F2LLM-4B vs Stacking). El modelo F2LLM-4B alcanza el mayor recall (0.9185) manteniendo un F1 competitivo.
     
     \item \textbf{Modelos Clásicos}: El ensamble mediante Stacking alcanza el mejor rendimiento (F1=0.7415), demostrando que la combinación de múltiples clasificadores mejora los resultados individuales en aproximadamente +1.6 puntos sobre la regresión logística simple.
     
@@ -171,10 +174,10 @@ Bagging (LR) & 0.7703 & 0.7849 & 0.6667 & 0.7210 \\
         \item La diferencia entre ambas estrategias es menor en V2 que en V1
     \end{itemize}
     
-    \item \textbf{Ensamble de Top 5 Modelos}: Se evaluó un ensamble por votación mayoritaria combinando F2LLM-4B (tweet y clean), KaLM (tweet), Ministral-3B y Regresión Logística. El resultado obtuvo \textbf{F1=0.8532}, idéntico al mejor modelo individual (F2LLM-4B tweet), sin aportar mejora debido a la dominancia de este último. textos limpios (clean) mejoran el \textit{recall} en +5.7 puntos (F2LLM-4B)
-        \item El trade-off entre precision y recall depende de la estrategia de preprocesamiento
-    \end{itemize}
-\end{itemize} (V2)}
+    \item \textbf{Ensamble de Top 5 Modelos}: Se evaluó un ensamble por votación mayoritaria combinando F2LLM-4B (tweet y clean), KaLM (tweet), Ministral-3B y Regresión Logística. El resultado obtuvo \textbf{F1=0.8532}, idéntico al mejor modelo individual (F2LLM-4B tweet), sin aportar mejora debido a la dominancia de este último.
+\end{itemize}
+
+\subsubsection{Mejores Configuraciones (V2)}
 
 \begin{enumerate}
     \item \textbf{Mayor F1-Score}: F2LLM-4B con tweet original \textbf{(0.8532)} — Mejor modelo general
@@ -184,11 +187,12 @@ Bagging (LR) & 0.7703 & 0.7849 & 0.6667 & 0.7210 \\
     \item \textbf{Ensemble Top 5}: Votación mayoritaria (0.8532) — No mejora sobre F2LLM-4B individual
 \end{enumerate}
 
-\textbf{Recomendación final:} Para la competición EXIST 2025, el modelo \textbf{F2LLM-4B con texto original} (F1=0.8532) es la mejor opción, ya que el ensemble no aporta mejora adicional y añade complejidad innecesaria.bf{Mayor Precision}: Ministral-3-8B fine-tuned (0.8587)
-    \item \textbf{Mejor modelo clásico}: Stacking con TF-IDF (0.7415)
-\end{enumerate}
+\textbf{Recomendación final:} Para la competición EXIST 2025, el modelo \textbf{F2LLM-4B con texto original} (F1=0.8532) es la mejor opción, ya que el ensemble no aporta mejora adicional y añade complejidad innecesaria.
 
-\section{Conclusiones}con \textbf{mejoras de hasta +11.2 puntos} en F1-Score, especialmente en tareas de comprensión contextual como la detección de sexismo.
+\section{Conclusiones}
+
+\begin{enumerate}
+    \item Los modelos de lenguaje pre-entrenados con fine-tuning superan ampliamente a los métodos clásicos de ML, con \textbf{mejoras de hasta +11.2 puntos} en F1-Score, especialmente en tareas de comprensión contextual como la detección de sexismo.
     
     \item El modelo \textbf{F2LLM-4B con texto original (V2)} alcanza el mejor rendimiento global (\textbf{F1=0.8532, Recall=0.9185}), mejorando +0.68 puntos sobre V1 y constituyendo la mejor solución para esta tarea.
     
@@ -198,11 +202,13 @@ Bagging (LR) & 0.7703 & 0.7849 & 0.6667 & 0.7210 \\
     
     \item El fine-tuning con LoRA permite adaptar modelos grandes (4B parámetros) con recursos limitados, pero requiere \textbf{cuidadosa supervisión}: Ministral-3-8B colapsó tras el fine-tuning (F1: 0.0847), sugiriendo problemas con la tasa de aprendizaje o datos de entrenamiento.
     
-    \item La iteración V1→V2 validó la importancia de refinar hiperparámetros y estrategias de preprocesamiento para maximizar el rendimiento de modelos transformer
-    \item Los ensambles de modelos clásicos (Stacking) son competitivos y computacionalmente más eficientes que los LLMs, representando una alternativa válida para entornos con recursos limitados.
-    
-    \item El fine-tuning con LoRA permite adaptar modelos grandes (4B-8B parámetros) con recursos limitados, manteniendo alta calidad en las predicciones.
-\end{enume\textbf{Investigar el fallo de Ministral-3-8B fine-tuning:} Analizar por qué el recall colapsó a 0.0444 y probar ajustes en learning rate, warmup steps o arquitectura LoRA.
+    \item La iteración V1→V2 validó la importancia de refinar hiperparámetros y estrategias de preprocesamiento para maximizar el rendimiento de modelos transformer.
+\end{enumerate}
+
+\subsection{Trabajo Futuro}
+
+\begin{itemize}
+    \item \textbf{Investigar el fallo de Ministral-3-8B fine-tuning:} Analizar por qué el recall colapsó a 0.0444 y probar ajustes en learning rate, warmup steps o arquitectura LoRA.
     
     \item \textbf{Análisis de errores cualitativo:} Identificar patrones lingüísticos específicos (ironía, sarcasmo, referencias culturales) donde los modelos fallan sistemáticamente.
     
@@ -213,11 +219,6 @@ Bagging (LR) & 0.7703 & 0.7849 & 0.6667 & 0.7210 \\
     \item \textbf{Evaluar modelos más recientes:} Probar arquitecturas como Llama 3, Mixtral 8x7B o modelos específicos de español como BERTIN o RoBERTa-es.
     
     \item \textbf{Augmentación de datos:} Generar ejemplos sintéticos con LLMs o técnicas de back-translation para balancear clases y mejorar generalización.
-\begin{itemize}
-    \item Explorar ensambles de modelos de lenguaje (votación entre F2LLM, KaLM y Ministral)
-    \item Análisis de errores para identificar patrones lingüísticos desafiantes
-    \item Optimización de hiperparámetros mediante búsqueda sistemática
-    \item Evaluar arquitecturas más recientes y técnicas de prompting avanzadas
 \end{itemize}
 
 \end{document}
