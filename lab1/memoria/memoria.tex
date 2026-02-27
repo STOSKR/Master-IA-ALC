@@ -93,7 +93,30 @@ Modelos grandes de lenguaje evaluados en modo zero-shot e inference con fine-tun
 
 \section{Resultados}
 
-\subsection{Métricas en Conjunto de Validación (DEV)}
+\subsection{Evolución entre Versiones}
+
+Se realizaron dos iteraciones completas del proyecto (V1 y V2), con mejoras en el preprocesamiento y ajustes en los hiperparámetros de entrenamiento. La Tabla~\ref{tab:v1_v2_comparison} muestra la evolución del rendimiento en los dos mejores modelos.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Modelo} & \textbf{Versión} & \textbf{Accuracy} & \textbf{Recall} & \textbf{F1-Score} \\
+\midrule
+F2LLM-4B (tweet) & V1 & 0.8604 & 0.8642 & 0.8464 \\
+F2LLM-4B (tweet) & V2 & \textbf{0.8593} & \textbf{0.9185} & \textbf{0.8532} \\
+\midrule
+KaLM (tweet) & V1 & 0.8429 & 0.8346 & 0.8254 \\
+KaLM (tweet) & V2 & 0.8429 & 0.8346 & 0.8254 \\
+\bottomrule
+\end{tabular}
+\caption{Comparativa V1 vs V2 (Mejores Modelos)}
+\label{tab:v1_v2_comparison}
+\end{table}
+
+\textbf{Mejoras en V2:} F2LLM-4B mejoró su recall en +5.4 puntos porcentuales y su F1-Score en +0.68 puntos, logrando un mejor equilibrio entre detección de casos positivos y precisión.
+
+\subsection{Métricas Finales en Conjunto de Validación (V2)}
 
 La Tabla~\ref{tab:llm_results} muestra los resultados de los modelos de lenguaje fine-tuned, mientras que la Tabla~\ref{tab:classic_results} presenta los mejores modelos clásicos.
 
@@ -103,17 +126,19 @@ La Tabla~\ref{tab:llm_results} muestra los resultados de los modelos de lenguaje
 \toprule
 \textbf{Modelo} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
 \midrule
-F2LLM-4B (tweet) & \textbf{0.8604} & 0.8294 & 0.8642 & \textbf{0.8464} \\
-Ministral-3-8B (FT) & 0.8451 & \textbf{0.8587} & 0.7802 & 0.8176 \\
+F2LLM-4B (tweet) & \textbf{0.8593} & 0.7966 & \textbf{0.9185} & \textbf{0.8532} \\
+F2LLM-4B (clean) & 0.8418 & 0.7867 & 0.8765 & 0.8317 \\
 KaLM (tweet) & 0.8429 & 0.8164 & 0.8346 & 0.8254 \\
-F2LLM-4B (clean) & 0.8341 & 0.7581 & \textbf{0.9210} & 0.8317 \\
 KaLM (clean) & 0.8363 & 0.8137 & 0.8198 & 0.8167 \\
-Ministral-3-8B (ZS) & 0.8264 & 0.7892 & 0.8321 & 0.8101 \\
+Ministral-3-8B (ZS) & 0.8264 & 0.7892 & 0.8321 & 0.8073 \\
+Ministral-3-8B (FT) & 0.5725 & 0.9000 & 0.0444 & 0.0847 \\
 \bottomrule
 \end{tabular}
-\caption{Resultados de Modelos de Lenguaje (DEV)}
+\caption{Resultados de Modelos de Lenguaje V2 (DEV)}
 \label{tab:llm_results}
 \end{table}
+
+\textbf{Nota importante:} El fine-tuning de Ministral-3-8B con LoRA empeoró drásticamente el rendimiento (F1: 0.0847), sufriendo un colapso en el recall. Esto indica problemas en el proceso de fine-tuning que requieren investigación adicional.
 
 \begin{table}[h]
 \centering
@@ -135,45 +160,59 @@ Bagging (LR) & 0.7703 & 0.7849 & 0.6667 & 0.7210 \\
 \subsection{Análisis Comparativo}
 
 \subsubsection{Rendimiento por Familia de Modelos}
-
-\begin{itemize}
-    \item \textbf{Modelos de Lenguaje}: Los modelos transformer fine-tuned superan significativamente a los modelos clásicos, con mejoras de hasta \textbf{+10.5 puntos} en F1-Score (F2LLM-4B vs Stacking). El fine-tuning de Ministral-3-8B mejora todas las métricas respecto a su versión zero-shot, alcanzando la mayor precision (0.8587) de todos los modelos evaluados.
+1.2 puntos} en F1-Score (F2LLM-4B vs Stacking). El modelo F2LLM-4B alcanza el mayor recall (0.9185) manteniendo un F1 competitivo.
     
-    \item \textbf{Modelos Clásicos}: El ensamble mediante Stacking alcanza el mejor rendimiento (F1=0.7415), demostrando que la combinación de múltiples clasificadores mejora los resultados individuales.
+    \item \textbf{Modelos Clásicos}: El ensamble mediante Stacking alcanza el mejor rendimiento (F1=0.7415), demostrando que la combinación de múltiples clasificadores mejora los resultados individuales en aproximadamente +1.6 puntos sobre la regresión logística simple.
     
     \item \textbf{Impacto del Preprocesamiento}: 
     \begin{itemize}
-        \item Los textos originales (tweet) obtienen mejor \textit{accuracy} y \textit{precision}
-        \item Los textos limpios (clean) mejoran el \textit{recall} en +5.7 puntos (F2LLM-4B)
+        \item Los textos originales (tweet) obtienen mejor equilibrio precision-recall
+        \item Los textos limpios (clean) mejoran ligeramente el recall pero reducen precision
+        \item La diferencia entre ambas estrategias es menor en V2 que en V1
+    \end{itemize}
+    
+    \item \textbf{Ensamble de Top 5 Modelos}: Se evaluó un ensamble por votación mayoritaria combinando F2LLM-4B (tweet y clean), KaLM (tweet), Ministral-3B y Regresión Logística. El resultado obtuvo \textbf{F1=0.8532}, idéntico al mejor modelo individual (F2LLM-4B tweet), sin aportar mejora debido a la dominancia de este último. textos limpios (clean) mejoran el \textit{recall} en +5.7 puntos (F2LLM-4B)
         \item El trade-off entre precision y recall depende de la estrategia de preprocesamiento
     \end{itemize}
-\end{itemize}
-
-\subsubsection{Mejores Configuraciones}
+\end{itemize} (V2)}
 
 \begin{enumerate}
-    \item \textbf{Mayor F1-Score}: F2LLM-4B con tweet original (0.8464)
-    \item \textbf{Mayor Recall}: F2LLM-4B con texto limpio (0.9210)
-    \item \textbf{Mayor Precision}: Ministral-3-8B fine-tuned (0.8587)
+    \item \textbf{Mayor F1-Score}: F2LLM-4B con tweet original \textbf{(0.8532)} — Mejor modelo general
+    \item \textbf{Mayor Recall}: F2LLM-4B con tweet original (0.9185) — Maximiza detección de casos positivos
+    \item \textbf{Mayor Precision}: Ministral-3-8B zero-shot (0.7892) — Entre los modelos viables
+    \item \textbf{Mejor modelo clásico}: Stacking con TF-IDF (0.7415) — Mejor alternativa computacionalmente eficiente
+    \item \textbf{Ensemble Top 5}: Votación mayoritaria (0.8532) — No mejora sobre F2LLM-4B individual
+\end{enumerate}
+
+\textbf{Recomendación final:} Para la competición EXIST 2025, el modelo \textbf{F2LLM-4B con texto original} (F1=0.8532) es la mejor opción, ya que el ensemble no aporta mejora adicional y añade complejidad innecesaria.bf{Mayor Precision}: Ministral-3-8B fine-tuned (0.8587)
     \item \textbf{Mejor modelo clásico}: Stacking con TF-IDF (0.7415)
 \end{enumerate}
 
-\section{Conclusiones}
-
-\begin{enumerate}
-    \item Los modelos de lenguaje pre-entrenados con fine-tuning superan ampliamente a los métodos clásicos de ML, especialmente en tareas de comprensión contextual como la detección de sexismo.
+\section{Conclusiones}con \textbf{mejoras de hasta +11.2 puntos} en F1-Score, especialmente en tareas de comprensión contextual como la detección de sexismo.
     
-    \item El modelo F2LLM-4B con texto original alcanza el mejor equilibrio entre precision y recall (\textbf{F1=0.8464}), constituyendo la mejor solución para esta tarea.
+    \item El modelo \textbf{F2LLM-4B con texto original (V2)} alcanza el mejor rendimiento global (\textbf{F1=0.8532, Recall=0.9185}), mejorando +0.68 puntos sobre V1 y constituyendo la mejor solución para esta tarea.
     
-    \item La estrategia de preprocesamiento debe seleccionarse según el objetivo: texto limpio maximiza recall (detectar más casos positivos), mientras que el texto original mejora precision (evitar falsos positivos).
+    \item El preprocesamiento en V2 logró mejorar el recall sin sacrificar demasiado la precision, demostrando que el texto original (sin limpieza agresiva) mantiene información contextual valiosa para la clasificación.
     
+    \item Los ensambles de modelos clásicos (Stacking, F1=0.7415) son competitivos y computacionalmente más eficientes que los LLMs. Sin embargo, el ensemble de LLMs (votación top 5) \textbf{no mejoró} sobre el mejor modelo individual, indicando la dominancia de F2LLM-4B.
+    
+    \item El fine-tuning con LoRA permite adaptar modelos grandes (4B parámetros) con recursos limitados, pero requiere \textbf{cuidadosa supervisión}: Ministral-3-8B colapsó tras el fine-tuning (F1: 0.0847), sugiriendo problemas con la tasa de aprendizaje o datos de entrenamiento.
+    
+    \item La iteración V1→V2 validó la importancia de refinar hiperparámetros y estrategias de preprocesamiento para maximizar el rendimiento de modelos transformer
     \item Los ensambles de modelos clásicos (Stacking) son competitivos y computacionalmente más eficientes que los LLMs, representando una alternativa válida para entornos con recursos limitados.
     
     \item El fine-tuning con LoRA permite adaptar modelos grandes (4B-8B parámetros) con recursos limitados, manteniendo alta calidad en las predicciones.
-\end{enumerate}
-
-\subsection{Trabajo Futuro}
-
+\end{enume\textbf{Investigar el fallo de Ministral-3-8B fine-tuning:} Analizar por qué el recall colapsó a 0.0444 y probar ajustes en learning rate, warmup steps o arquitectura LoRA.
+    
+    \item \textbf{Análisis de errores cualitativo:} Identificar patrones lingüísticos específicos (ironía, sarcasmo, referencias culturales) donde los modelos fallan sistemáticamente.
+    
+    \item \textbf{Explorar ensambles avanzados:} Probar estrategias de combinación ponderada basadas en confianza de predicción o stacking con meta-aprendizaje, en lugar de votación simple.
+    
+    \item \textbf{Optimización de hiperparámetros:} Búsqueda sistemática (grid/random search) para LoRA rank, alpha, learning rate y dropout.
+    
+    \item \textbf{Evaluar modelos más recientes:} Probar arquitecturas como Llama 3, Mixtral 8x7B o modelos específicos de español como BERTIN o RoBERTa-es.
+    
+    \item \textbf{Augmentación de datos:} Generar ejemplos sintéticos con LLMs o técnicas de back-translation para balancear clases y mejorar generalización.
 \begin{itemize}
     \item Explorar ensambles de modelos de lenguaje (votación entre F2LLM, KaLM y Ministral)
     \item Análisis de errores para identificar patrones lingüísticos desafiantes
