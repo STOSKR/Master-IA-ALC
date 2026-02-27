@@ -1,0 +1,1 @@
+Como las imagenes pesan mucho, no las subo a github, es verdad que se puede utilizar git lsf pero paso. Descargar de PoliFormat y añadir dentro de la carpeta de dataset como carpeta `memes` (todas juntas, las de train y test)
