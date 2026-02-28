@@ -50,80 +50,25 @@
 
 \section{Introducción}
 
-Este proyecto aborda la tarea de detección automática de contenido sexista en publicaciones de X, utilizando el dataset EXIST 2025. El objetivo es desarrollar y evaluar diferentes aproximaciones de clasificación binaria (sexista/no sexista) mediante modelos clásicos y modelos de lenguaje pre-entrenados con fine-tuning.
+Detección automática de contenido sexista en tweets usando el dataset EXIST 2025. Clasificación binaria (sexista/no sexista) mediante modelos clásicos y LLMs con fine-tuning.
 
 \section{Metodología}
 
-\subsection{Preprocesamiento de datos}
+\subsection{Preprocesamiento}
 
-Se han implementado dos versiones de preprocesamiento con mejoras progresivas:
+\textbf{V1}: tweet original + text\_clean básico (lowercase, elimina URLs/menciones/hashtags), 13 features.
 
-\subsubsection{Versión 1 (V1)}
-\begin{itemize}
-    \item \textbf{tweet original}: texto sin modificaciones
-    \item \textbf{text clean}: limpieza básica (lowercase, elimina URLs/menciones/hashtags)
-    \item Sin eliminación de stopwords
-    \item Sin manejo de negaciones
-    \item Mantiene acentos españoles
-    \item 13 features de ingeniería
-\end{itemize}
-
-\subsubsection{Versión 2 (V2) - Mejoras implementadas}
-\begin{itemize}
-    \item \textbf{tweet original}: texto sin modificaciones
-    \item \textbf{text clean mejorado}: 
-    \begin{itemize}
-        \item \textbf{eliminación de stopwords}: 313 stopwords del corpus NLTK español
-        \item \textbf{preservación de negaciones}: mantiene \{no, nunca, jamás, nada, nadie, tampoco, ni, sin\}
-        \item \textbf{marcado de contexto negativo}: palabras tras negaciones se marcan con NEG\_
-        \item \textbf{normalización de acentos}: á→a, é→e, ñ→n
-        \item \textbf{normalización de elongaciones}: "siiii" → "sii"
-        \item \textbf{detección de emojis mejorada}: biblioteca \texttt{emoji} (más precisa)
-    \end{itemize}
-    \item 16 features de ingeniería (+3 nuevas): n\_caps\_words, n\_elongations, n\_negations
-    \item \textbf{reducción de texto}: $\sim$52\% menos palabras en text\_clean vs V1
-\end{itemize}
-
-\textbf{Impacto clave de V2}: La preservación y marcado de negaciones es \textbf{crítica} para detección de sexismo, ya que la negación cambia completamente el significado semántico del texto.
+\textbf{V2}: Mejoras en text\_clean: eliminación de stopwords, preservación de negaciones \{no, nunca, jamás, nada, nadie, tampoco, ni, sin\} con marcado NEG\_, normalización de acentos/elongaciones, 16 features. Reducción de texto: $\sim$52\%.
 
 \subsection{Modelos evaluados}
 
-Se ha experimentado con tres familias de modelos:
+\textbf{Clásicos (TF-IDF)}: Logistic Regression, LinearSVC, Random Forest, Gradient Boosting, Naive Bayes, Stacking.
 
-\subsubsection{Modelos clásicos}
-Modelos de machine learning tradicionales utilizando vectorización TF-IDF y Bag-of-Words:
-\begin{itemize}
-    \item Regresión Logística
-    \item Support Vector Machines (LinearSVC, SVC-RBF)
-    \item Árboles de Decisión y Random Forest
-    \item Gradient Boosting y AdaBoost
-    \item Naive Bayes (Multinomial, Complement, Bernoulli)
-    \item K-Nearest Neighbors
-    \item Ensambles (Voting, Bagging, Stacking)
-\end{itemize}
-
-\subsubsection{Modelos de lenguaje Fine-tuned}
-Modelos transformer pre-entrenados ajustados con LoRA (Low-Rank Adaptation):
-\begin{itemize}
-    \item \textbf{F2LLM-4B}: Modelo de 4B parámetros especializado en español
-    \item \textbf{KaLM}: Modelo multilingüe con soporte para español
-\end{itemize}
-
-\subsubsection{Modelos generativos}
-Modelos grandes de lenguaje evaluados en modo zero-shot e inference con fine-tuning:
-\begin{itemize}
-    \item \textbf{Ministral-3-8B-Instruct}: Modelo instruccional de 8B parámetros con cuantización FP8
-\end{itemize}
+\textbf{LLMs con LoRA}: F2LLM-4B (4B params, español), KaLM (multilingüe), Ministral-3-8B-Instruct (8B params, FP8).
 
 \section{Resultados}
 
-\subsection{Evolución entre versiones}
-
-Se realizaron dos iteraciones completas del proyecto (V1 y V2), con mejoras sustanciales en el preprocesamiento (eliminación de stopwords, preservación de negaciones, normalización de acentos) y ajustes en los hiperparámetros de entrenamiento. \textbf{Nota importante}: Las mejoras del preprocesamiento solo afectan la variante text\_clean; la variante tweet utiliza texto idéntico en ambas versiones. 
-
-\subsubsection{Comparativa Completa: Modelos LLM}
-
-La Tabla~\ref{tab:v1_v2_llm_full} muestra la evolución del rendimiento en todos los modelos de lenguaje con sus variantes de preprocesamiento.
+\subsection{Comparativa V1 vs V2}
 
 \begin{table}[h]
 \centering
@@ -154,24 +99,15 @@ La Tabla~\ref{tab:v1_v2_llm_full} muestra la evolución del rendimiento en todos
 & FT & V2 & 0.5725 & 0.9000 & 0.0444 & 0.0847 \\
 \bottomrule
 \end{tabular}
-\caption{Comparativa Completa V1 vs V2}
+\caption{Comparativa completa V1 vs V2 - Modelos LLM}
 \label{tab:v1_v2_llm_full}
 \end{table}
 
-\textbf{Observaciones clave:}
-\begin{itemize}
-    \item \textbf{F2LLM-4B (tweet) V2}: Mejora significativa en recall (+5.43 pp) y F1 (+0.68 pp). Tienen hiperparámetros idénticos, texto tweet idéntico, pero threshold óptimo muy diferente y AUC casi igual. La mejora se debe a \textbf{varianza aleatoria} (inicialización LoRA, shuffle), NO preprocesamiento ni hiperparámetros.
-    \item \textbf{F2LLM-4B (clean) V2}: Alcanza el recall más alto (0.9210) sacrificando precisión. El texto clean V2 reduce ruido manteniendo contexto negativo.
-    \item \textbf{KaLM V2}: Ligero empeoramiento contra V1. Posible overfitting al preprocesamiento V1 o incompatibilidad con eliminación agresiva de stopwords.
-    \item \textbf{Ministral-3-8B FT V2}: El fine-tuning ha fallado drásticamente en comparación con la V1.
-\end{itemize}
-
-\subsubsection{Comparativa: Modelos Clásicos}
-
-La Tabla~\ref{tab:v1_v2_classic} muestra la evolución de los mejores modelos clásicos.
+\textbf{Observaciones}: F2LLM-4B (tweet) V2 mejora +5.43 pp recall y +0.68 pp F1. KaLM V2 empeora. Ministral-3-8B FT V2 falla drásticamente (F1=0.0847).
 
 \begin{table}[h]
 \centering
+\small
 \begin{tabular}{@{}lccccc@{}}
 \toprule
 \textbf{Modelo} & \textbf{Ver} & \textbf{Acc} & \textbf{Prec} & \textbf{Rec} & \textbf{F1} \\
@@ -187,16 +123,9 @@ LogReg + TF-IDF & V2 & \textbf{0.7725} & \textbf{0.7845} & \textbf{0.6741} & \te
 \label{tab:v1_v2_classic}
 \end{table}
 
-\textbf{Evolución en V2 (modelos clásicos):}
-\begin{itemize}
-    \item Stacking: -0.26 pp en F1, -0.25 pp en recall (ligero empeoramiento)
-    \item LogReg: +0.91 pp en F1, +0.50 pp en recall (mejora modesta)
-    \item La eliminación de stopwords (313 palabras) tiene impacto mixto: beneficia LogReg pero perjudica ligeramente Stacking
-\end{itemize}
+\textbf{Evolución V2}: Stacking -0.26 pp F1, LogReg +0.91 pp F1. Impacto mixto de eliminación de stopwords.
 
-\subsection{Métricas Finales en Conjunto de Validación (V2)}
-
-La Tabla~\ref{tab:llm_results} muestra los resultados finales de los modelos de lenguaje en V2, mientras que la Tabla~\ref{tab:classic_results} presenta los mejores modelos clásicos.
+\subsection{Métricas finales V2 (conjunto de validación)}
 
 \begin{table}[h]
 \centering
@@ -232,245 +161,56 @@ Bagging (LR) & 0.7703 & 0.7849 & 0.6667 & 0.7210 \\
 \label{tab:classic_results}
 \end{table}
 
-\subsection{Análisis Comparativo}
+\subsection{Análisis comparativo}
 
-\subsubsection{Impacto del Preprocesamiento: Tweet vs Clean}
+\textbf{Conclusión}: Tweet original supera a text\_clean en LLMs (F2LLM-4B: -0.0215 en V2). Los transformers se benefician del contexto completo.
 
-La Tabla~\ref{tab:preprocessing_impact} compara el rendimiento de los textos originales (tweet) versus los preprocesados (text\_clean) en ambas versiones.
+\textbf{Puntos clave}: F2LLM-4B mejora por varianza aleatoria (no cambios sistemáticos). KaLM empeora. Modelos clásicos, mejora en LogReg y empeora en stacking (impacto mixto).
 
-\begin{table}[h]
-\centering
-\small
-\begin{tabular}{@{}lccccc@{}}
-\toprule
-\textbf{Modelo} & \textbf{Versión} & \textbf{Tweet F1} & \textbf{Clean F1} & \textbf{Mejor} & \textbf{$\Delta$F1} \\
-\midrule
-\multirow{2}{*}{F2LLM-4B} 
-& V1 & 0.8464 & 0.8327 & Tweet & -0.0137 \\
-& V2 & 0.8532 & 0.8317 & Tweet & -0.0215 \\
-\midrule
-\multirow{2}{*}{KaLM} 
-& V1 & 0.8167 & 0.8220 & Clean & +0.0053 \\
-& V2 & 0.8000 & --- & Tweet & --- \\
-\bottomrule
-\end{tabular}
-\caption{Impacto del Preprocesamiento en F1-Score. $\Delta$F1 = Clean - Tweet.}
-\label{tab:preprocessing_impact}
-\end{table}
-
-\textbf{Conclusiones sobre el preprocesamiento:}
-\begin{itemize}
-    \item \textbf{F2LLM-4B}: Los textos originales (tweet) superan consistentemente a los preprocesados en ambas versiones. La diferencia se amplía en V2 (-0.0215 vs -0.0137 en V1), principalmente porque text\_clean V2 empeoró ligeramente (-0.10 pp) al eliminar más información (stopwords), mientras tweet V2 mejoró por ajustes de entrenamiento (+0.68 pp). Esto confirma que el texto original preserva información útil (URLs, menciones, emojis) para detección de sexismo.
-    
-    \item \textbf{KaLM V1}: Único caso donde text\_clean supera ligeramente a tweet (+0.0053). La limpieza agresiva puede beneficiar modelos más pequeños reduciendo ruido.
-    
-    \item \textbf{Limpieza V2 vs V1}: A pesar de las mejoras en V2 (preservación de negaciones, normalización de acentos), el text\_clean sigue siendo inferior al texto original para modelos grandes. Esto indica que los transformers pre-entrenados ya manejan bien el ruido y se benefician del contexto completo.
-    
-    \item \textbf{Recomendación general}: Para modelos LLM, usar texto original (tweet). Para modelos clásicos (TF-IDF), el preprocesamiento V2 mejora significativamente el rendimiento.
-\end{itemize}
-
-\subsubsection{Evolución V1 → V2: Análisis Detallado}
-
-La Tabla~\ref{tab:v1v2_deltas} cuantifica las mejoras/empeoramientos entre versiones.
-
-\begin{table}[h]
-\centering
-\small
-\begin{tabular}{@{}lcccc@{}}
-\toprule
-\textbf{Modelo (Tweet)} & \textbf{$\Delta$Acc} & \textbf{$\Delta$Prec} & \textbf{$\Delta$Rec} & \textbf{$\Delta$F1} \\
-\midrule
-F2LLM-4B & -0.0011 & -0.0328 & \textcolor{blue}{+0.0543} & \textcolor{blue}{+0.0068} \\
-KaLM & -0.0220 & -0.0455 & +0.0148 & \textcolor{red}{-0.0167} \\
-Ministral-3B (ZS) & -0.0121 & -0.0392 & \textcolor{blue}{+0.0420} & -0.0028 \\
-Stacking & \textcolor{red}{-0.0022} & -0.0028 & -0.0025 & \textcolor{red}{-0.0026} \\
-LogReg (TF-IDF) & +0.0088 & \textcolor{blue}{+0.0146} & +0.0050 & +0.0091 \\
-\bottomrule
-\end{tabular}
-\caption{Cambios entre V1 y V2 ($\Delta$ = V2 - V1). En azul mejoras $>$+0.01, en rojo empeoramientos $<$-0.01.}
-\label{tab:v1v2_deltas}
-\end{table}
-
-\textbf{Análisis de cambios:}
-\begin{itemize}
-    \item \textbf{F2LLM-4B (tweet)}: Mejora sustancial en recall (+5.43 pp) y F1 (+0.68 pp). \textbf{Importante}: Como el texto tweet es idéntico entre versiones e hiperparámetros iguales (verificado en notebooks), esta diferencia proviene de \textbf{varianza aleatoria del entrenamiento} (inicialización de pesos LoRA, shuffle, semillas). Threshold óptimo divergió significativamente (0.3812→0.2214), favoreciendo recall en V2. Trade-off: -3.28 pp en precisión.
-    
-    \item \textbf{KaLM}: Empeora en todas las métricas. Hipótesis: (1) El modelo fue pre-entrenado con texto menos procesado, (2) la eliminación agresiva de stopwords elimina patrones importantes, (3) KaLM requiere ajustes de hiperparámetros para V2.
-    
-    \item \textbf{Modelos clásicos}: Impacto mixto en V2. LogReg mejora ligeramente (+0.91 pp F1), pero Stacking empeora (-0.26 pp F1). La eliminación de 313 stopwords beneficia modelos simples pero puede perjudicar ensambles.
-    
-    \item \textbf{Ministral-3B ZS}: Ligero empeoramiento en F1 (-0.0028), pero mejora recall (+4.20 pp). Trade-off precision-recall ajustado por preprocesamiento.
-\end{itemize}
-
-\subsubsection{Rendimiento por Familia de Modelos}
+\subsection{Rendimiento por familia}
 
 \begin{itemize}
-    \item \textbf{Modelos de Lenguaje (V2)}: Los modelos transformer fine-tuned superan significativamente a los modelos clásicos, con mejoras de hasta \textbf{+10.93 puntos} en F1-Score (F2LLM-4B: 0.8532 vs Stacking: 0.7415). El modelo F2LLM-4B alcanza el mayor recall (0.9185) y mejor F1, demostrando superioridad en comprensión contextual para detección de sexismo.
-    
-    \item \textbf{Modelos Clásicos (V2)}: El ensamble mediante Stacking alcanza el mejor rendimiento entre modelos clásicos V2 (F1=0.7415), superando a la regresión logística simple en +1.64 puntos porcentuales (F1=0.7251). Sin embargo, Stacking V1 obtuvo F1=0.7441, ligeramente superior. Son computacionalmente más eficientes pero menos precisos que LLMs.
-    
-    \item \textbf{Impacto del Preprocesamiento en V2}: 
-    \begin{itemize}
-        \item \textbf{LLMs}: Los textos originales (tweet) superan consistentemente a los preprocesados. F2LLM-4B: tweet (0.8532) vs clean (0.8317), $\Delta$=-0.0215. Los transformers aprovechan mejor el contexto completo (URLs, emojis, menciones) que el preprocesamiento elimina.
-        \item \textbf{Modelos clásicos}: El preprocesamiento V2 tiene impacto mixto. LogReg V2: +0.91 pp F1 vs V1 (mejora modesta). Stacking empeora -0.26 pp F1. La eliminación de 313 stopwords beneficia modelos simples pero puede perjudicar ensambles.
-        \item \textbf{preservación de negaciones crítica}: V2 mantiene \{no, nunca, jamás, nada, nadie, tampoco, ni, sin\} y marca contexto con NEG\_ en text\_clean, mejorando recall en F2LLM-4B (clean): 0.9210 vs 0.8543 en V1 (+6.67 pp). \textbf{No afecta variante tweet} (texto idéntico).
-    \end{itemize}
-    
-    \item \textbf{Ensemble de Top 5 Modelos (V2)}: Se evaluó un ensamble por votación mayoritaria combinando F2LLM-4B (tweet y clean), KaLM (tweet), Ministral-3B y Regresión Logística. El resultado obtuvo \textbf{F1=0.8532, Acc=0.8593, Recall=0.9185}, \textbf{idéntico al mejor modelo individual} (F2LLM-4B tweet). Esto indica:
-    \begin{itemize}
-        \item El modelo F2LLM-4B domina las predicciones del ensemble (90\%+ de votos)
-        \item Los demás modelos no aportan suficiente diversidad o precisión
-        \item La votación mayoritaria no corrige errores del mejor modelo
-    \end{itemize}
-    
-    \textbf{Conclusión sobre ensemble}: No aporta mejora sobre F2LLM-4B individual, sugiriendo que este modelo ya alcanza el rendimiento óptimo con los datos disponibles.
+    \item \textbf{LLMs}: Superan modelos clásicos +10.93 pp F1 (F2LLM-4B: 0.8532 vs Stacking: 0.7415).
+    \item \textbf{Clásicos}: Stacking mejor V2 (F1=0.7415), computacionalmente eficientes.
+    \item \textbf{Preprocesamiento}: Tweet original superior en LLMs ($\Delta$=-0.0215). Preservación de negaciones crítica en text\_clean.
+    \item \textbf{Ensemble Top 5}: F1=0.8532, idéntico a F2LLM-4B individual. No aporta mejora.
 \end{itemize}
 
-\subsubsection{Mejores Configuraciones (V2)}
+\subsection{Mejores configuraciones V2}
 
 \begin{enumerate}
-    \item \textbf{Mayor F1-Score}: F2LLM-4B con tweet original \textbf{(0.8532)} — mejor modelo general
-    \item \textbf{Mayor Recall}: F2LLM-4B con text\_clean \textbf{(0.9210)} — maximiza detección de casos positivos (alternativa: tweet con 0.9185)
-    \item \textbf{Mayor Precision}: Ministral-3-8B FT (versión fallida excluida); entre modelos viables: Gradient Boosting \textbf{(0.8373)} 
-    \item \textbf{Mayor Accuracy}: F2LLM-4B con tweet original \textbf{(0.8593)} — equilibrio global óptimo
-    \item \textbf{Mejor modelo clásico V2}: Stacking con TF-IDF \textbf{(F1: 0.7415)} — nota: V1 alcanzó F1=0.7441, ligeramente superior
-    \item \textbf{Ensemble Top 5}: Votación mayoritaria \textbf{(F1: 0.8532)} — no mejora sobre F2LLM-4B individual
+    \item \textbf{Mejor modelo general}: F2LLM-4B (tweet) - F1=0.8532, Acc=0.8593, Recall=0.9185
+    \item \textbf{Mejor clásico}: Stacking (TF-IDF) - F1=0.7415
+    \item \textbf{Ensemble}: Idéntico a F2LLM-4B individual, sin mejora
 \end{enumerate}
-
-\textbf{Recomendación final:} Para la competición EXIST 2025, el modelo \textbf{F2LLM-4B con texto original (V2)} es la mejor opción:
-\begin{itemize}
-    \item Mejor F1-Score general: 0.8532
-    \item Excelente recall: 0.9185 (detecta 91.85\% de casos sexistas)
-    \item El ensemble no aporta mejora adicional
-    \item Balance óptimo entre rendimiento y complejidad
-\end{itemize}
 
 \section{Conclusiones}
 
 \begin{enumerate}
-    \item \textbf{Superioridad de LLMs sobre modelos clásicos}: Los modelos de lenguaje pre-entrenados con fine-tuning superan ampliamente a los métodos clásicos de ML, con \textbf{mejoras de hasta +10.93 puntos} en F1-Score (F2LLM-4B: 0.8532 vs Stacking: 0.7415). Esta ventaja se explica por su capacidad de comprensión contextual profunda, esencial para detectar sexismo implícito o irónico.
+    \item \textbf{LLMs superan modelos clásicos}: +10.93 pp F1 (F2LLM-4B: 0.8532 vs Stacking: 0.7415).
     
-    \item \textbf{Modelo óptimo: F2LLM-4B (tweet) V2}: Alcanza el mejor rendimiento global (\textbf{F1=0.8532, Recall=0.9185, Accuracy=0.8593}), mejorando +0.68 pp F1 y +5.43 pp recall sobre V1. El fine-tuning con LoRA sobre tweet original (sin preprocesamiento) maximiza la capacidad de detección. \textbf{Análisis de notebooks revela}: Hiperparámetros idénticos entre V1/V2 (LR=5e-5, epochs=5, LoRA r=16), tweet idéntico, pero thresholds óptimos muy diferentes (0.3812 vs 0.2214). AUC prácticamente igual (0.9303 vs 0.9307). \textbf{Conclusión}: La mejora es producto de \textbf{varianza aleatoria} del entrenamiento (inicialización de pesos, shuffle de batches), no de cambios sistemáticos. V2 convergió a mínimo local que favorece recall.
+    \item \textbf{Modelo óptimo: F2LLM-4B (tweet) V2}: F1=0.8532, Recall=0.9185, Acc=0.8593. Mejora V1→V2 por\textbf{varianza aleatoria} (hiperparámetros y texto idénticos, thresholds diferentes: 0.3812→0.2214).
     
-    \item \textbf{Impacto crítico del preprocesamiento V2}: Las mejoras implementadas tienen efectos diferenciados:
-    \begin{itemize}
-        \item \textbf{preservación de negaciones + marcado NEG\_}: cambio más importante del preprocesamiento. Beneficia detección en text\_clean donde negaciones son semánticamente críticas. \textbf{Nota}: La mejora de F2LLM-4B (tweet) +5.43 pp recall NO proviene de esto, ya que tweet es idéntico en V1/V2.
-        \item \textbf{eliminación de 313 stopwords españolas}: reduce vocabulario 52\% con impacto mixto en modelos clásicos (+0.91 pp LogReg, -0.26 pp Stacking). Solo afecta variante text\_clean.
-        \item \textbf{normalización de acentos}: reduce variabilidad léxica sin pérdida de información (solo text\_clean).
-    \end{itemize}
+    \item \textbf{Preprocesamiento V2}: Preservación de negaciones crítica para text\_clean. Eliminación de 313 stopwords: impacto mixto (LogReg +0.91 pp, Stacking -0.26 pp).
     
-    \item \textbf{Texto original superior para LLMs}: Contra la intuición inicial, los textos sin preprocesar (tweet) superan consistentemente a los limpios (text\_clean) en modelos transformer. F2LLM-4B: 0.8532 (tweet) vs 0.8317 (clean), $\Delta$=-2.15 pp. Los transformers pre-entrenados ya manejan ruido eficientemente y se benefician del contexto completo (URLs, emojis, menciones).
+    \item \textbf{Tweet original mejor que text\_clean en LLMs}: F2LLM-4B: 0.8532 vs 0.8317, $\Delta$=-2.15 pp. Transformers manejan ruido y aprovechan contexto completo.
     
-    \item \textbf{Ensemble sin mejora}: El ensamble por votación mayoritaria (Top 5 modelos) alcanza F1=0.8532, \textbf{idéntico} al mejor individual. Esto sugiere:
-    \begin{itemize}
-        \item F2LLM-4B domina predicciones (90\%+ votos coincidentes)
-        \item Falta diversidad en arquitecturas/estrategias
-        \item El mejor modelo ya maximiza rendimiento con datos disponibles
-    \end{itemize}
-    Recomendación: Usar F2LLM-4B individual (simplicidad, eficiencia, mismo resultado).
+    \item \textbf{Ensemble sin mejora}: Votación mayoritaria = F2LLM-4B individual (F1=0.8532). F2LLM-4B domina predicciones.
     
-    \item \textbf{Fine-tuning con LoRA: éxitos y fracasos}: 
-    \begin{itemize}
-        \item \textbf{éxito}: F2LLM-4B y KaLM ajustados eficientemente (recursos limitados) con resultados competitivos.
-        \item \textbf{fracaso}: Ministral-3-8B FT colapsó totalmente (F1: 0.0847, Recall: 0.0444). Hipótesis: LR inadecuada, datos corruptos, o incompatibilidad LoRA-FP8. Requiere \textbf{supervisión cuidadosa} del proceso.
-    \end{itemize}
+    \item \textbf{LoRA fine-tuning}: Éxito en F2LLM-4B/KaLM. Ministral-3-8B FT ha colapsado (F1=0.0847, Recall=0.0444).
     
-    \item \textbf{Evolución V1 → V2 muestra rol de varianza aleatoria}: La segunda iteración logró mejoras en F2LLM-4B (tweet) por \textbf{varianza aleatoria del entrenamiento} (no cambios sistemáticos), y mejoras modestas reales en modelos clásicos con preprocesamiento mejorado (LogReg +0.91 pp F1). Stacking empeoró (-0.26 pp F1), demostrando que el preprocesamiento agresivo no siempre beneficia ensambles. Lección: \textbf{Fijar semillas aleatorias} y ejecutar múltiples entrenamientos para distinguir mejoras reales de varianza estocástica.
-    
-    \item \textbf{Trade-off Precision-Recall}: V2 prioriza recall sobre precision:
-    \begin{itemize}
-        \item F2LLM-4B V2: Recall 0.9185 (+5.43 pp) a costa de Precision 0.7966 (-3.28 pp)
-        \item Justificado en detección de sexismo: \textbf{mejor detectar más casos (recall) aunque genere algunos falsos positivos}, que perder casos reales (recall bajo).
-    \end{itemize}
+    \item \textbf{Reproducibilidad}: Fijar semillas aleatorias y ejecutar múltiples runs para distinguir mejoras reales de varianza estocástica.
 \end{enumerate}
 
 \subsection{Trabajo Futuro}
 
 \begin{itemize}
-    \item \textbf{Implementar reproducibilidad experimental}: El análisis reveló que diferencias entre V1/V2 en F2LLM-4B (tweet) son por varianza aleatoria, no mejoras sistemáticas. Para trabajo futuro:
-    \begin{itemize}
-        \item Fijar semillas aleatorias: \texttt{torch.manual\_seed()}, \texttt{np.random.seed()}, \texttt{random.seed()}
-        \item Configurar \texttt{deterministic=True} en PyTorch cuando sea posible
-        \item Ejecutar \textbf{múltiples entrenamientos (3-5 runs)} con diferentes semillas
-        \item Reportar media ± desviación estándar en métricas clave
-        \item Aplicar tests estadísticos (t-test, Wilcoxon) para validar significancia de mejoras
-    \end{itemize}
-    Esto permitirá distinguir mejoras reales de fluctuaciones estocásticas del proceso de entrenamiento.
-    
-    \item \textbf{Investigar el fallo de Ministral-3-8B fine-tuning}: Analizar por qué el recall colapsó a 0.0444 y F1 a 0.0847. Plantear experimentos controlados:
-    \begin{itemize}
-        \item Probar diferentes learning rates: [1e-5, 5e-5, 1e-4]
-        \item Ajustar warmup steps y schedule (linear, cosine)
-        \item Verificar configuración LoRA (rank, alpha, dropout)
-        \item Detectar posible corrupción en datos de entrenamiento
-        \item Evaluar compatibilidad LoRA con cuantización FP8
-    \end{itemize}
-    
-    \item \textbf{Análisis de errores cualitativo}: Identificar patrones lingüísticos específicos donde los modelos fallan sistemáticamente:
-    \begin{itemize}
-        \item Casos de ironía y sarcasmo (muy comunes en redes sociales)
-        \item Referencias culturales o memes (contexto externo necesario)
-        \item Sexismo implícito vs explícito (diferencias en detección)
-        \item Falsos positivos recurrentes (crítica legítima vs sexismo)
-    \end{itemize}
-    
-    \item \textbf{Explorar ensambles avanzados}: Dado que votación simple no mejora, probar estrategias sofisticadas:
-    \begin{itemize}
-        \item \textbf{Stacking con meta-aprendizaje}: Entrenar meta-modelo (LogReg, XGBoost) sobre predicciones de LLMs
-        \item \textbf{Ponderación basada en confianza}: Asignar pesos dinámicos según softmax scores
-        \item \textbf{Ensambles especializados}: Combinar modelos complementarios (uno con alto recall, otro con alta precision)
-        \item \textbf{Error-correcting ensembles}: Entrenar modelos secundarios específicamente en errores del primario
-    \end{itemize}
-    
-    \item \textbf{Optimización exhaustiva de hiperparámetros}: Búsqueda sistemática más allá de ajustes manuales:
-    \begin{itemize}
-        \item Grid/Random Search para LoRA: rank [4, 8, 16, 32], alpha [8, 16, 32, 64]
-        \item Learning rate: [1e-5 a 1e-3] con diferentes schedules
-        \item Batch size y gradient accumulation steps
-        \item Dropout en capas LoRA [0.0, 0.05, 0.1]
-        \item Evaluar impacto de cada hiperparámetro con Optuna o Ray Tune
-    \end{itemize}
-    
-    \item \textbf{Evaluar modelos más recientes}: Probar arquitecturas state-of-the-art y específicas de español:
-    \begin{itemize}
-        \item \textbf{Llama 3}: 8B/70B con instrucciones en español
-        \item \textbf{Mixtral 8x7B}: Mixture-of-Experts, mejor capacidad
-        \item \textbf{RoBERTa-es / BETO}: Transformers entrenados exclusivamente en español
-        \item \textbf{MarIA / BERTIN}: Modelos GPT/BERT españoles del CLARIN
-        \item \textbf{mBERT / XLM-RoBERTa}: Multilingües con fuerte representación de español
-    \end{itemize}
-    
-    \item \textbf{Augmentación de datos}: Generar ejemplos sintéticos para balancear clases y mejorar generalización:
-    \begin{itemize}
-        \item \textbf{Back-translation}: Traducir tweets a inglés y volver a español (paráfrasis)
-        \item \textbf{Parafraseo con LLMs}: Usar GPT-4/Mixtral para generar variaciones semánticas
-        \item \textbf{Synonym replacement}: Sustituir palabras por sinónimos (WordNet español)
-        \item \textbf{Synthetic data generation}: Generar tweets sexistas/no-sexistas con prompts específicos
-        \item Validar calidad de datos sintéticos con anotadores humanos
-    \end{itemize}
-    
-    \item \textbf{Análisis de sesgo y equidad}: Evaluar comportamiento del modelo en diferentes subgrupos:
-    \begin{itemize}
-        \item Rendimiento por tipo de sexismo (explícito, implícito, benevolente, hostil)
-        \item Diferencias en detección según género del objetivo
-        \item Evaluar falsos positivos que censuran crítica legítima al patriarcado
-        \item Análisis de fairness metrics (equalized odds, demographic parity)
-    \end{itemize}
-    
-    \item \textbf{Explicabilidad e interpretabilidad}: Comprender decisiones del modelo:
-    \begin{itemize}
-        \item \textbf{LIME/SHAP}: Identificar palabras/frases más influyentes por predicción
-        \item \textbf{Attention visualization}: Mapas de atención para interpretar contexto relevante
-        \item \textbf{Probing classifiers}: Evaluar qué información captura cada capa
-        \item Generar rationales automáticos (explicar por qué es sexista)
-    \end{itemize}
-    
-    \item \textbf{Explorar preprocesamiento híbrido}: Dado que tweet original funciona mejor en LLMs pero clean en clásicos:
-    \begin{itemize}
-        \item Preprocesamiento selectivo según modelo
-        \item \textbf{Feature injection}: Concatenar features de text\_clean como tokens especiales en tweet original
-        \item Evaluar impacto de preservar solo emojis o solo menciones
-    \end{itemize}
+    \item \textbf{Análisis de errores}: Identificar patrones fallidos (ironía, sarcasmo, sexismo implícito).
+    \item \textbf{Ensambles avanzados}: Stacking con meta-aprendizaje, ponderación por confianza.
+    \item \textbf{Optimización hiperparámetros}: Grid/Random Search (LoRA rank/alpha, LR, dropout).
+    \item \textbf{Modelos recientes}: Llama 3, Mixtral 8x7B, RoBERTa-es/BETO, MarIA/BERTIN.
+    \item \textbf{Augmentación de datos}: Back-translation, parafraseo con LLMs, generación sintética.
+    \item \textbf{Explicabilidad}: LIME/SHAP, visualización de atención, rationales automáticos.
 \end{itemize}
 
 \end{document}
