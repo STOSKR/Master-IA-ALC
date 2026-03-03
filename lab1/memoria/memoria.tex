@@ -56,9 +56,9 @@ Detección automática de contenido sexista en tweets usando el dataset EXIST 20
 
 \subsection{Preprocesamiento}
 
-\textbf{V1}: tweet original + text\_clean básico (lowercase, elimina URLs/menciones/hashtags), 13 features.
+\textbf{V1}: tweet original + text\_clean básico (lowercase, elimina URLs/menciones/hashtags).
 
-\textbf{V2}: Mejoras en text\_clean: eliminación de stopwords, preservación de negaciones \{no, nunca, jamás, nada, nadie, tampoco, ni, sin\} con marcado NEG\_, normalización de acentos/elongaciones, 16 features. Reducción de texto: $\sim$52\%.
+\textbf{V2}: Mejoras en text\_clean: eliminación de stopwords, preservación de negaciones \{no, nunca, jamás, nada, nadie, tampoco, ni, sin\} con marcado NEG\_, normalización de acentos/elongaciones.
 
 \subsection{Modelos evaluados}
 
@@ -74,57 +74,57 @@ Detección automática de contenido sexista en tweets usando el dataset EXIST 20
 \subsection{Comparativa V1 vs V2}
 
 \begin{table}[h]
-\centering
-\small
-\begin{tabular}{@{}lcccccc@{}}
-\toprule
-\textbf{Modelo} & \textbf{Texto} & \textbf{Ver} & \textbf{Acc} & \textbf{F1} \\
-\midrule
-\multirow{4}{*}{F2LLM-4B} 
-& tweet & V1 & \textbf{0.8604} & \textbf{0.8593} \\
-& tweet & V2 & 0.8593 & 0.8591 \\
-\cmidrule(lr){2-7}
-& clean & V1 & 0.8473 & 0.8461 \\
-& clean & V2 & 0.8341 & 0.8340 \\
-\midrule
+    \centering
+    \small
+    \begin{tabular}{@{}lcccccc@{}}
+        \toprule
+        \textbf{Modelo} & \textbf{Texto} & \textbf{Ver} & \textbf{Acc}    & \textbf{F1}     \\
+        \midrule
+        \multirow{4}{*}{F2LLM-4B}
+                        & tweet          & V1           & \textbf{0.8604} & \textbf{0.8593} \\
+                        & tweet          & V2           & 0.8593          & 0.8591          \\
+        \cmidrule(lr){2-7}
+                        & clean          & V1           & 0.8473          & 0.8461          \\
+                        & clean          & V2           & 0.8341          & 0.8340          \\
+        \midrule
 
-\multirow{4}{*}{KaLM} 
-& tweet & V1 & 0.8363  & 0.8344 \\
-& tweet & V2 & 0.8429  & \textbf{0.8413} \\
-\cmidrule(lr){2-7}
-& clean & V1 & 0.8363 & \textbf{0.8352} \\
-& clean & V2 & 0.8143 & 0.8133\\
-\midrule
-\multirow{2}{*}{Ministral-3-8B} 
-& ZS & V1 & 0.8264 & \textbf{0.8251} \\
-& ZS & V2 & 0.8143 & 0.8140 \\
-\cmidrule(lr){2-7}
-& FT & V1 & \textbf{0.8451} & \textbf{0.8415} \\
-& FT & V2 & 0.5725 & 0.4029 \\
-\bottomrule
-\end{tabular}
-\caption{Comparativa completa V1 vs V2 - Modelos no clásicos}
-\label{tab:v1_v2_llm_full}
+        \multirow{4}{*}{KaLM}
+                        & tweet          & V1           & 0.8363          & 0.8344          \\
+                        & tweet          & V2           & 0.8429          & \textbf{0.8413} \\
+        \cmidrule(lr){2-7}
+                        & clean          & V1           & 0.8363          & \textbf{0.8352} \\
+                        & clean          & V2           & 0.8143          & 0.8133          \\
+        \midrule
+        \multirow{2}{*}{Ministral-3-8B}
+                        & ZS             & V1           & 0.8264          & \textbf{0.8251} \\
+                        & ZS             & V2           & 0.8143          & 0.8140          \\
+        \cmidrule(lr){2-7}
+                        & FT             & V1           & \textbf{0.8451} & \textbf{0.8415} \\
+                        & FT             & V2           & 0.5725          & 0.4029          \\
+        \bottomrule
+    \end{tabular}
+    \caption{Comparativa completa V1 vs V2 - Modelos no clásicos}
+    \label{tab:v1_v2_llm_full}
 \end{table}
 
 \textbf{Observaciones}: F2LLM-4B (tweet) V2 mejora +0.001 puntos de F1-Macro. KaLM V2 empeora. Ministral-3-8B FT V2 falla drásticamente (F1=0.4029).
 
 \begin{table}[h]
-\centering
-\small
-\begin{tabular}{@{}lccccc@{}}
-\toprule
-\textbf{Modelo} & \textbf{Ver} & \textbf{Acc} & \textbf{F1} \\
-\midrule
-Stacking & V1 & \textbf{0.7846} & \textbf{0.7895} & \textbf{0.7037} & \textbf{0.7441} \\
-Stacking & V2 & 0.7824 & 0.7867 & 0.7012 & 0.7415 \\
-\midrule
-LogReg + TF-IDF & V1 & 0.7637 & 0.7699 & 0.6691 & 0.7160 \\
-LogReg + TF-IDF & V2 & \textbf{0.7725} & \textbf{0.7845} & \textbf{0.6741} & \textbf{0.7251} \\
-\bottomrule
-\end{tabular}
-\caption{Comparativa V1 vs V2 - Modelos clásicos}
-\label{tab:v1_v2_classic}
+    \centering
+    \small
+    \begin{tabular}{@{}lccccc@{}}
+        \toprule
+        \textbf{Modelo} & \textbf{Ver} & \textbf{Acc}    & \textbf{F1}                                         \\
+        \midrule
+        Stacking        & V1           & \textbf{0.7846} & \textbf{0.7441}                                     \\
+        Stacking        & V2           & 0.7824          & 0.7867          & 0.7012          & 0.7415          \\
+        \midrule
+        LogReg + TF-IDF & V1           & 0.7637          & 0.7699          & 0.6691          & 0.7160          \\
+        LogReg + TF-IDF & V2           & \textbf{0.7725} & \textbf{0.7845} & \textbf{0.6741} & \textbf{0.7251} \\
+        \bottomrule
+    \end{tabular}
+    \caption{Comparativa V1 vs V2 - Modelos clásicos}
+    \label{tab:v1_v2_classic}
 \end{table}
 
 \textbf{Evolución V2}: Stacking -0.26 pp F1, LogReg +0.91 pp F1. Impacto mixto de eliminación de stopwords.
@@ -132,37 +132,37 @@ LogReg + TF-IDF & V2 & \textbf{0.7725} & \textbf{0.7845} & \textbf{0.6741} & \te
 \subsection{Métricas finales V2 (conjunto de validación)}
 
 \begin{table}[h]
-\centering
-\begin{tabular}{@{}lcccc@{}}
-\toprule
-\textbf{Modelo} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
-\midrule
-F2LLM-4B (tweet) & \textbf{0.8593} & 0.7966 & \textbf{0.9185} & \textbf{0.8532} \\
-F2LLM-4B (clean) & 0.8341 & 0.7581 & 0.9210 & 0.8317 \\
-KaLM (tweet) & 0.8143 & 0.7682 & 0.8346 & 0.8000 \\
-Ministral-3-8B (ZS) & 0.8143 & 0.7500 & 0.8741 & 0.8073 \\
-Ministral-3-8B (FT) & 0.5725 & 0.9000 & 0.0444 & 0.0847 \\
-\bottomrule
-\end{tabular}
-\caption{Resultados de Modelos de Lenguaje V2 (DEV)}
-\label{tab:llm_results}
+    \centering
+    \begin{tabular}{@{}lcccc@{}}
+        \toprule
+        \textbf{Modelo}     & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
+        \midrule
+        F2LLM-4B (tweet)    & \textbf{0.8593}   & 0.7966             & \textbf{0.9185} & \textbf{0.8532}   \\
+        F2LLM-4B (clean)    & 0.8341            & 0.7581             & 0.9210          & 0.8317            \\
+        KaLM (tweet)        & 0.8143            & 0.7682             & 0.8346          & 0.8000            \\
+        Ministral-3-8B (ZS) & 0.8143            & 0.7500             & 0.8741          & 0.8073            \\
+        Ministral-3-8B (FT) & 0.5725            & 0.9000             & 0.0444          & 0.0847            \\
+        \bottomrule
+    \end{tabular}
+    \caption{Resultados de Modelos de Lenguaje V2 (DEV)}
+    \label{tab:llm_results}
 \end{table}
 
 \begin{table}[h]
-\centering
-\begin{tabular}{@{}lcccc@{}}
-\toprule
-\textbf{Modelo} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
-\midrule
-Stacking & \textbf{0.7824} & 0.7867 & 0.7012 & \textbf{0.7415} \\
-Logistic Regression & 0.7725 & \textbf{0.7845} & 0.6741 & 0.7251 \\
-Gradient Boosting & 0.7736 & 0.8373 & 0.6099 & 0.7057 \\
-LinearSVC & 0.7736 & 0.7901 & 0.6691 & 0.7246 \\
-Bagging (LR) & 0.7703 & 0.7849 & 0.6667 & 0.7210 \\
-\bottomrule
-\end{tabular}
-\caption{Mejores Modelos Clásicos V2 (DEV) - TF-IDF}
-\label{tab:classic_results}
+    \centering
+    \begin{tabular}{@{}lcccc@{}}
+        \toprule
+        \textbf{Modelo}     & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
+        \midrule
+        Stacking            & \textbf{0.7824}   & 0.7867             & 0.7012          & \textbf{0.7415}   \\
+        Logistic Regression & 0.7725            & \textbf{0.7845}    & 0.6741          & 0.7251            \\
+        Gradient Boosting   & 0.7736            & 0.8373             & 0.6099          & 0.7057            \\
+        LinearSVC           & 0.7736            & 0.7901             & 0.6691          & 0.7246            \\
+        Bagging (LR)        & 0.7703            & 0.7849             & 0.6667          & 0.7210            \\
+        \bottomrule
+    \end{tabular}
+    \caption{Mejores Modelos Clásicos V2 (DEV) - TF-IDF}
+    \label{tab:classic_results}
 \end{table}
 
 \subsection{Análisis comparativo}
@@ -192,17 +192,17 @@ Bagging (LR) & 0.7703 & 0.7849 & 0.6667 & 0.7210 \\
 
 \begin{enumerate}
     \item \textbf{LLMs superan modelos clásicos}: +10.93 pp F1 (F2LLM-4B: 0.8532 vs Stacking: 0.7415).
-    
+
     \item \textbf{Modelo óptimo: F2LLM-4B (tweet) V2}: F1=0.8532, Recall=0.9185, Acc=0.8593. Mejora V1→V2 por\textbf{varianza aleatoria} (hiperparámetros y texto idénticos, thresholds diferentes: 0.3812→0.2214).
-    
+
     \item \textbf{Preprocesamiento V2}: Preservación de negaciones crítica para text\_clean. Eliminación de 313 stopwords: impacto mixto (LogReg +0.91 pp, Stacking -0.26 pp).
-    
+
     \item \textbf{Tweet original mejor que text\_clean en LLMs}: F2LLM-4B: 0.8532 vs 0.8317, $\Delta$=-2.15 pp. Transformers manejan ruido y aprovechan contexto completo.
-    
+
     \item \textbf{Ensemble sin mejora}: Votación mayoritaria = F2LLM-4B individual (F1=0.8532). F2LLM-4B domina predicciones.
-    
+
     \item \textbf{LoRA fine-tuning}: Éxito en F2LLM-4B/KaLM. Ministral-3-8B FT ha colapsado (F1=0.0847, Recall=0.0444).
-    
+
     \item \textbf{Reproducibilidad}: Fijar semillas aleatorias y ejecutar múltiples runs para distinguir mejoras reales de varianza estocástica.
 \end{enumerate}
 
