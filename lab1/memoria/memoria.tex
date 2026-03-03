@@ -64,7 +64,10 @@ Detección automática de contenido sexista en tweets usando el dataset EXIST 20
 
 \textbf{Clásicos (TF-IDF)}: Logistic Regression, LinearSVC, Random Forest, Gradient Boosting, Naive Bayes, Stacking.
 
-\textbf{LLMs con LoRA}: F2LLM-4B (4B params, español), KaLM (multilingüe), Ministral-3-8B-Instruct (8B params, FP8).
+\textbf{Modelos de embeddings}: F2LLM-4B (4B params, español) y KaLM (multilingüe).
+
+
+\textbf{LLMs con LoRA}: Ministral-3-8B-Instruct (8B params).
 
 \section{Resultados}
 
@@ -75,42 +78,43 @@ Detección automática de contenido sexista en tweets usando el dataset EXIST 20
 \small
 \begin{tabular}{@{}lcccccc@{}}
 \toprule
-\textbf{Modelo} & \textbf{Texto} & \textbf{Ver} & \textbf{Acc} & \textbf{Prec} & \textbf{Rec} & \textbf{F1} \\
+\textbf{Modelo} & \textbf{Texto} & \textbf{Ver} & \textbf{Acc} & \textbf{F1} \\
 \midrule
 \multirow{4}{*}{F2LLM-4B} 
-& tweet & V1 & 0.8604 & 0.8294 & 0.8642 & 0.8464 \\
-& tweet & V2 & \textbf{0.8593} & 0.7966 & \textbf{0.9185} & \textbf{0.8532} \\
+& tweet & V1 & \textbf{0.8604} & \textbf{0.8593} \\
+& tweet & V2 & 0.8593 & 0.8591 \\
 \cmidrule(lr){2-7}
-& clean & V1 & 0.8473 & 0.8122 & 0.8543 & 0.8327 \\
-& clean & V2 & 0.8341 & 0.7581 & \textbf{0.9210} & 0.8317 \\
+& clean & V1 & 0.8473 & 0.8461 \\
+& clean & V2 & 0.8341 & 0.8340 \\
 \midrule
+
 \multirow{4}{*}{KaLM} 
-& tweet & V1 & 0.8363 & 0.8137 & 0.8198 & \textbf{0.8167} \\
-& tweet & V2 & 0.8143 & 0.7682 & 0.8346 & 0.8000 \\
+& tweet & V1 & 0.8363  & 0.8344 \\
+& tweet & V2 & 0.8429  & \textbf{0.8413} \\
 \cmidrule(lr){2-7}
-& clean & V1 & 0.8363 & 0.7963 & \textbf{0.8494} & \textbf{0.8220} \\
-& clean & V2 & --- & --- & --- & --- \\
+& clean & V1 & 0.8363 & \textbf{0.8352} \\
+& clean & V2 & 0.8143 & 0.8133\\
 \midrule
 \multirow{2}{*}{Ministral-3-8B} 
-& ZS & V1 & 0.8264 & 0.7892 & 0.8321 & \textbf{0.8101} \\
-& ZS & V2 & 0.8143 & 0.7500 & \textbf{0.8741} & 0.8073 \\
+& ZS & V1 & 0.8264 & \textbf{0.8251} \\
+& ZS & V2 & 0.8143 & 0.8140 \\
 \cmidrule(lr){2-7}
-& FT & V1 & \textbf{0.8451} & \textbf{0.8587} & 0.7802 & \textbf{0.8176} \\
-& FT & V2 & 0.5725 & 0.9000 & 0.0444 & 0.0847 \\
+& FT & V1 & \textbf{0.8451} & \textbf{0.8415} \\
+& FT & V2 & 0.5725 & 0.4029 \\
 \bottomrule
 \end{tabular}
-\caption{Comparativa completa V1 vs V2 - Modelos LLM}
+\caption{Comparativa completa V1 vs V2 - Modelos no clásicos}
 \label{tab:v1_v2_llm_full}
 \end{table}
 
-\textbf{Observaciones}: F2LLM-4B (tweet) V2 mejora +5.43 pp recall y +0.68 pp F1. KaLM V2 empeora. Ministral-3-8B FT V2 falla drásticamente (F1=0.0847).
+\textbf{Observaciones}: F2LLM-4B (tweet) V2 mejora +0.001 puntos de F1-Macro. KaLM V2 empeora. Ministral-3-8B FT V2 falla drásticamente (F1=0.4029).
 
 \begin{table}[h]
 \centering
 \small
 \begin{tabular}{@{}lccccc@{}}
 \toprule
-\textbf{Modelo} & \textbf{Ver} & \textbf{Acc} & \textbf{Prec} & \textbf{Rec} & \textbf{F1} \\
+\textbf{Modelo} & \textbf{Ver} & \textbf{Acc} & \textbf{F1} \\
 \midrule
 Stacking & V1 & \textbf{0.7846} & \textbf{0.7895} & \textbf{0.7037} & \textbf{0.7441} \\
 Stacking & V2 & 0.7824 & 0.7867 & 0.7012 & 0.7415 \\
