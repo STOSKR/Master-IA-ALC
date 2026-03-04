@@ -50,7 +50,7 @@
 
 \section{Introducción}
 
-Detección automática de contenido sexista en tweets usando el dataset EXIST 2025. Clasificación binaria (sexista/no sexista) mediante modelos clásicos y LLMs con fine-tuning.
+Detección automática de contenido sexista en tweets usando el dataset EXIST 2025. Clasificación binaria (sexista/no sexista) mediante modelos clásicos y modelos de lenguaje con fine-tuning.
 
 \section{Metodología}
 
@@ -65,7 +65,7 @@ Detección automática de contenido sexista en tweets usando el dataset EXIST 20
 \subsection{Modelos evaluados}
 \begin{itemize}
     \item Clásicos (TF-IDF): Logistic Regression, LinearSVC, Random Forest, Gradient Boosting, Naive Bayes, Stacking.
-    \item Modelos de embeddings: F2LLM-4B y KaLM.
+    \item Modelos de embeddings con LoRA: F2LLM-4B y KaLM.
     \item LLMs con LoRA: Ministral-3-8B-Instruct.
 \end{itemize}
 
@@ -107,7 +107,7 @@ Detección automática de contenido sexista en tweets usando el dataset EXIST 20
     \label{tab:v1_v2_llm_full}
 \end{table}
 
-Evolución V2: F2LLM-4B (tweet) no tiene una mejora en F1-Macro y cuando se utiliza el texto más procesado, resulta que empeora -0.01 puntos. Por otra parte, KaLM empeora y Ministral-3-8B FT empeora drásticamente (F1-Macro=0.4029).
+Evolución V2: F2LLM-4B FT (tweet) no tiene una mejora en F1-Macro y cuando se utiliza el texto más procesado, resulta que empeora -0.01 puntos. Por otra parte, KaLM FT empeora y Ministral-3-8B FT empeora drásticamente (F1-Macro=0.4029).
 
 \begin{table}[h]
     \centering
@@ -132,21 +132,10 @@ Evolución V2: Stacking -0.05 puntos F1-Macro, LogReg +0.05 puntos F1-Macro.
 \section{Conclusiones}
 
 \begin{itemize}
-    \item \textbf{Modelos no clásicos}: Superan modelos clásicos 0.08 puntos aproximadamente en F1-Macro (F2LLM-4B: 0.8593 vs Stacking V2: 0.7801).
+    \item \textbf{Modelos no clásicos}: Superan modelos clásicos +0.08 puntos aproximadamente en F1-Macro (F2LLM-4B: 0.8593 vs Stacking V2: 0.7801).
     \item \textbf{Clásicos}: Stacking empeora en F1-Macro V2 (-0.01). LogReg mejora en V2 (+0.05 puntos).
     \item \textbf{Preprocesamiento}: Tweet original es mejor que el texto limpio en general.
-    \item \textbf{Ensemble Top 5}: Idéntico a F2LLM-4B individual. No aporta mejora.
-\end{itemize}
-
-\clearpage
-
-\section{Trabajo Futuro}
-
-\begin{itemize}
-    \item Identificar patrones fallidos (ironía, sarcasmo, sexismo implícito).
-    \item Optimización hiperparámetros: Grid/Random Search (LoRA rank/alpha, LR, dropout).
-    \item Probar con otros modelos como Llama 3, Mixtral 8x7B, RoBERTa-es/BETO.
-    \item Data augmentation: Back-translation, parafraseo con LLMs, generación sintética.
+    \item \textbf{Ensemble top 5}: Idéntico a F2LLM-4B individual. No aporta mejora.
 \end{itemize}
 
 \end{document}
