@@ -4,7 +4,7 @@
 #SBATCH --job-name=vision
 #SBATCH --mem=32G
 #SBATCH --gres=shard:4
-#SBATCH --array=0-3
+#SBATCH --array=0-1
 #SBATCH -o logs/vision_%A_%a.log
 
 NOTEBOOKS=(
