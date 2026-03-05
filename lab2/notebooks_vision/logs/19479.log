@@ -1,0 +1,210 @@
+Using GPU(s): 3
+index, name, memory.total [MiB], memory.free [MiB]
+0, NVIDIA L40S, 46068 MiB, 35459 MiB
+1, NVIDIA L40S, 46068 MiB, 21747 MiB
+2, NVIDIA L40S, 46068 MiB, 17799 MiB
+3, NVIDIA L40S, 46068 MiB, 45469 MiB
+==========================================
+Starting execution of: 11_internvl3_5.ipynb
+==========================================
+Error occurred. Notebook saved to: entregables/11_internvl3_5_error.ipynb
+Error: An error occurred while executing the following cell:
+------------------
+import torch
+import gc
+from unittest.mock import patch
+from packaging import version
+import transformers
+from transformers import AutoModel, AutoTokenizer, BitsAndBytesConfig
+
+# Limpiar memoria GPU antes de cargar
+if torch.cuda.is_available():
+    torch.cuda.empty_cache()
+    gc.collect()
+
+# Función para cargar el modelo de forma robusta
+def load_model_safe():
+    """Carga el modelo con manejo de errores para diferentes versiones de transformers."""
+    
+    # Parche del linspace para el error del dispositivo meta
+    original_linspace = torch.linspace
+    
+    def patched_linspace(*args, **kwargs):
+        if 'device' in kwargs and str(kwargs['device']) == 'meta':
+            kwargs['device'] = 'cpu'
+        return original_linspace(*args, **kwargs)
+    
+    print(f"Cargando modelo con transformers {transformers.__version__}...")
+    
+    # Solución: Cargar SIN device_map para evitar el error all_tied_weights_keys
+    # y mover manualmente a GPU después
+    with patch('torch.linspace', patched_linspace):
+        try:
+            model = AutoModel.from_pretrained(
+                MODEL_NAME,
+                torch_dtype=DTYPE,
+                trust_remote_code=True,
+                low_cpu_mem_usage=True,
+            )
+            # Mover a GPU manualmente
+            model = model.to(DEVICE)
+            print(f"✓ Modelo cargado en {DEVICE}")
+        except torch.cuda.OutOfMemoryError:
+            print("OOM en GPU, intentando con cuantización 4-bit...")
+            torch.cuda.empty_cache()
+            gc.collect()
+            
+            # Con cuantización, necesitamos workaround para all_tied_weights_keys
+            quantization_config = BitsAndBytesConfig(
+                load_in_4bit=True,
+                bnb_4bit_compute_dtype=DTYPE,
+                bnb_4bit_use_double_quant=True,
+                bnb_4bit_quant_type="nf4"
+            )
+            
+            # Patch temporal para el atributo faltante
+            from transformers.modeling_utils import PreTrainedModel
+            original_init = PreTrainedModel.__init__
+            
+            def patched_init(self, config, *args, **kwargs):
+                original_init(self, config, *args, **kwargs)
+                if not hasattr(self, 'all_tied_weights_keys'):
+                    self.all_tied_weights_keys = {}
+            
+            PreTrainedModel.__init__ = patched_init
+            
+            try:
+                model = AutoModel.from_pretrained(
+                    MODEL_NAME,
+                    torch_dtype=DTYPE,
+                    quantization_config=quantization_config,
+                    trust_remote_code=True,
+                    low_cpu_mem_usage=True,
+                    device_map="auto",
+                )
+            finally:
+                PreTrainedModel.__init__ = original_init
+    
+    return model.eval()
+
+# Cargar modelo
+model = load_model_safe()
+
+# Cargar tokenizer
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=True)
+
+if tokenizer.pad_token is None:
+    tokenizer.pad_token = tokenizer.eos_token
+    tokenizer.pad_token_id = tokenizer.eos_token_id
+
+# Verificar carga exitosa
+print(f"\n✓ Modelo InternVL cargado correctamente")
+print(f"  Dtype: {DTYPE}")
+print(f"  Device: {next(model.parameters()).device}")
+if torch.cuda.is_available():
+    print(f"  Memoria GPU usada: {torch.cuda.memory_allocated() / 1e9:.2f} GB")
+------------------
+
+----- stdout -----
+Cargando modelo con transformers 5.3.0...
+----- stderr -----
+`torch_dtype` is deprecated! Use `dtype` instead!
+----- stderr -----
+Unrecognized keys in `rope_parameters` for 'rope_type'='dynamic': {'rope_theta'}
+----- stderr -----
+/home/alumno.upv.es/scheng1/.conda/envs/RFA2526pt/lib/python3.12/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+----- stdout -----
+FlashAttention2 is not installed.
+----- stderr -----
+InternLM2ForCausalLM has generative capabilities, as `prepare_inputs_for_generation` is explicitly defined. However, it doesn't directly inherit from `GenerationMixin`. From 👉v4.50👈 onwards, `PreTrainedModel` will NOT inherit from `GenerationMixin`, and this model will lose the ability to call `generate` and other related functions.
+  - If you're using `trust_remote_code=True`, you can get rid of this warning by loading the model with an auto class. See https://huggingface.co/docs/transformers/en/model_doc/auto#auto-classes
+  - If you are the owner of the model architecture code, please modify your model class such that it inherits from `GenerationMixin` (after `PreTrainedModel`, otherwise you'll get an exception).
+  - If you are not the owner of the model architecture class, please contact the model code owner to update it.
+----- stdout -----
+Warning: Flash attention is not available, using eager attention instead.
+------------------
+
+[31m---------------------------------------------------------------------------[39m
+[31mAttributeError[39m                            Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[5][39m[32m, line 79[39m
+[32m     76[39m     [38;5;28;01mreturn[39;00m model.eval()
+[32m     78[39m [38;5;66;03m# Cargar modelo[39;00m
+[32m---> [39m[32m79[39m model = [43mload_model_safe[49m[43m([49m[43m)[49m
+[32m     81[39m [38;5;66;03m# Cargar tokenizer[39;00m
+[32m     82[39m tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=[38;5;28;01mTrue[39;00m)
+
+[36mCell[39m[36m [39m[32mIn[5][39m[32m, line 31[39m, in [36mload_model_safe[39m[34m()[39m
+[32m     29[39m [38;5;28;01mwith[39;00m patch([33m'[39m[33mtorch.linspace[39m[33m'[39m, patched_linspace):
+[32m     30[39m     [38;5;28;01mtry[39;00m:
+[32m---> [39m[32m31[39m         model = [43mAutoModel[49m[43m.[49m[43mfrom_pretrained[49m[43m([49m
+[32m     32[39m [43m            [49m[43mMODEL_NAME[49m[43m,[49m
+[32m     33[39m [43m            [49m[43mtorch_dtype[49m[43m=[49m[43mDTYPE[49m[43m,[49m
+[32m     34[39m [43m            [49m[43mtrust_remote_code[49m[43m=[49m[38;5;28;43;01mTrue[39;49;00m[43m,[49m
+[32m     35[39m [43m            [49m[43mlow_cpu_mem_usage[49m[43m=[49m[38;5;28;43;01mTrue[39;49;00m[43m,[49m
+[32m     36[39m [43m        [49m[43m)[49m
+[32m     37[39m         [38;5;66;03m# Mover a GPU manualmente[39;00m
+[32m     38[39m         model = model.to(DEVICE)
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/models/auto/auto_factory.py:367[39m, in [36m_BaseAutoModelClass.from_pretrained[39m[34m(cls, pretrained_model_name_or_path, *model_args, **kwargs)[39m
+[32m    365[39m         model_class.register_for_auto_class(auto_class=[38;5;28mcls[39m)
+[32m    366[39m     model_class = add_generation_mixin_to_remote_model(model_class)
+[32m--> [39m[32m367[39m     [38;5;28;01mreturn[39;00m [43mmodel_class[49m[43m.[49m[43mfrom_pretrained[49m[43m([49m
+[32m    368[39m [43m        [49m[43mpretrained_model_name_or_path[49m[43m,[49m[43m [49m[43m*[49m[43mmodel_args[49m[43m,[49m[43m [49m[43mconfig[49m[43m=[49m[43mconfig[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mhub_kwargs[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mkwargs[49m
+[32m    369[39m [43m    [49m[43m)[49m
+[32m    370[39m [38;5;28;01melif[39;00m [38;5;28mtype[39m(config) [38;5;129;01min[39;00m [38;5;28mcls[39m._model_mapping:
+[32m    371[39m     model_class = _get_model_class(config, [38;5;28mcls[39m._model_mapping)
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/modeling_utils.py:4138[39m, in [36mPreTrainedModel.from_pretrained[39m[34m(cls, pretrained_model_name_or_path, config, cache_dir, ignore_mismatched_sizes, force_download, local_files_only, token, revision, use_safetensors, weights_only, *model_args, **kwargs)[39m
+[32m   4121[39m load_config = LoadStateDictConfig(
+[32m   4122[39m     pretrained_model_name_or_path=pretrained_model_name_or_path,
+[32m   4123[39m     ignore_mismatched_sizes=ignore_mismatched_sizes,
+[32m   (...)[39m[32m   4135[39m     download_kwargs=download_kwargs,
+[32m   4136[39m )
+[32m   4137[39m loading_info, disk_offload_index = [38;5;28mcls[39m._load_pretrained_model(model, state_dict, checkpoint_files, load_config)
+[32m-> [39m[32m4138[39m loading_info = [38;5;28;43mcls[39;49m[43m.[49m[43m_finalize_model_loading[49m[43m([49m[43mmodel[49m[43m,[49m[43m [49m[43mload_config[49m[43m,[49m[43m [49m[43mloading_info[49m[43m)[49m
+[32m   4139[39m model.eval()  [38;5;66;03m# Set model in evaluation mode to deactivate Dropout modules by default[39;00m
+[32m   4140[39m model.set_use_kernels(use_kernels, kernel_config)
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/modeling_utils.py:4279[39m, in [36mPreTrainedModel._finalize_model_loading[39m[34m(model, load_config, loading_info)[39m
+[32m   4274[39m [38;5;250m[39m[33;03m"""Perform all post processing operations after having loaded some checkpoints into a model, such as moving[39;00m
+[32m   4275[39m [33;03mmissing keys from meta device to their expected device, reinitializing missing weights according to proper[39;00m
+[32m   4276[39m [33;03mdistributions, tying the weights and logging the loading report."""[39;00m
+[32m   4277[39m [38;5;28;01mtry[39;00m:
+[32m   4278[39m     [38;5;66;03m# Marks tied weights as `_is_hf_initialized` to avoid initializing them (it's very important for efficiency)[39;00m
+[32m-> [39m[32m4279[39m     [43mmodel[49m[43m.[49m[43mmark_tied_weights_as_initialized[49m[43m([49m[43mloading_info[49m[43m)[49m
+[32m   4281[39m     [38;5;66;03m# Move missing (and potentially mismatched) keys and non-persistent buffers back to their expected device from[39;00m
+[32m   4282[39m     [38;5;66;03m# meta device (because they were not moved when loading the weights as they were not in the loaded state dict)[39;00m
+[32m   4283[39m     model._move_missing_keys_from_meta_to_device(
+[32m   4284[39m         loading_info.missing_and_mismatched(),
+[32m   4285[39m         load_config.device_map,
+[32m   4286[39m         load_config.device_mesh,
+[32m   4287[39m         load_config.hf_quantizer,
+[32m   4288[39m     )
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/modeling_utils.py:4598[39m, in [36mPreTrainedModel.mark_tied_weights_as_initialized[39m[34m(self, loading_info)[39m
+[32m   4593[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34mmark_tied_weights_as_initialized[39m([38;5;28mself[39m, loading_info):
+[32m   4594[39m [38;5;250m    [39m[33;03m"""Adds the `_is_hf_initialized` flag on parameters that will be tied, in order to avoid initializing them[39;00m
+[32m   4595[39m [33;03m    later as they will be tied (overwritten) anyway.[39;00m
+[32m   4596[39m [33;03m    This is very important as most embeddings are tied, and they are huge params (vocabularies are often 256k), so[39;00m
+[32m   4597[39m [33;03m    running inits on them is very costly."""[39;00m
+[32m-> [39m[32m4598[39m     [38;5;28;01mfor[39;00m tied_param [38;5;129;01min[39;00m [38;5;28;43mself[39;49m[43m.[49m[43mall_tied_weights_keys[49m.keys():
+[32m   4599[39m         param = [38;5;28mself[39m.get_parameter(tied_param)
+[32m   4600[39m         param._is_hf_initialized = [38;5;28;01mTrue[39;00m
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/torch/nn/modules/module.py:1964[39m, in [36mModule.__getattr__[39m[34m(self, name)[39m
+[32m   1962[39m     [38;5;28;01mif[39;00m name [38;5;129;01min[39;00m modules:
+[32m   1963[39m         [38;5;28;01mreturn[39;00m modules[name]
+[32m-> [39m[32m1964[39m [38;5;28;01mraise[39;00m [38;5;167;01mAttributeError[39;00m(
+[32m   1965[39m     [33mf[39m[33m"[39m[33m'[39m[38;5;132;01m{[39;00m[38;5;28mtype[39m([38;5;28mself[39m).[34m__name__[39m[38;5;132;01m}[39;00m[33m'[39m[33m object has no attribute [39m[33m'[39m[38;5;132;01m{[39;00mname[38;5;132;01m}[39;00m[33m'[39m[33m"[39m
+[32m   1966[39m )
+
+[31mAttributeError[39m: 'InternVLChatModel' object has no attribute 'all_tied_weights_keys'
+
+Memory cleaned
+[W305 23:09:47.070128802 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+WARNING: 11_internvl3_5.ipynb execution failed, continuing with next notebook...
+
+==========================================
+All notebooks processed!
+==========================================

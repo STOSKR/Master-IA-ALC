@@ -3,11 +3,11 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --job-name=run
 #SBATCH --mem=32G
-#SBATCH --gres=shard:6
+#SBATCH --gres=shard:8
 #SBATCH -o logs/%j.log
 
 # Lista de notebooks a ejecutar (separados por espacios)
-NOTEBOOKS="11_qwen25vl_binary_classification.ipynb"
+NOTEBOOKS="12_internvl3_5.ipynb 11_Qwen3.ipynb"
 
 source /opt/miniconda3/etc/profile.d/conda.sh
 conda activate RFA2526pt

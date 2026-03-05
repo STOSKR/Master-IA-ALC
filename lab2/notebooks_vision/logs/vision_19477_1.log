@@ -1,0 +1,10 @@
+Task ID: 1
+Starting: 12_Qwen3.ipynb
+index, name, memory.total [MiB], memory.free [MiB]
+0, NVIDIA L40S, 46068 MiB, 35459 MiB
+1, NVIDIA L40S, 46068 MiB, 21747 MiB
+2, NVIDIA L40S, 46068 MiB, 17481 MiB
+3, NVIDIA L40S, 46068 MiB, 45469 MiB
+Successfully saved to: entregables/12_Qwen3_out.ipynb
+[W305 23:09:14.004423014 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+Finished: 12_Qwen3.ipynb
