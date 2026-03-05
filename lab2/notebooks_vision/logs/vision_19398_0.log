@@ -1,0 +1,123 @@
+Task ID: 0
+Starting: 10_internvl25_binary_classification.ipynb
+index, name, memory.total [MiB], memory.free [MiB]
+0, NVIDIA L40S, 46068 MiB, 7803 MiB
+1, NVIDIA L40S, 46068 MiB, 21807 MiB
+2, NVIDIA L40S, 46068 MiB, 34755 MiB
+3, NVIDIA L40S, 46068 MiB, 41633 MiB
+Error. Saved to: entregables/10_internvl25_binary_classification_error_3.ipynb
+Error: An error occurred while executing the following cell:
+------------------
+quantization_config = BitsAndBytesConfig(
+    load_in_4bit=True,
+    bnb_4bit_compute_dtype=DTYPE,
+    bnb_4bit_use_double_quant=True,
+    bnb_4bit_quant_type="nf4"
+)
+
+model = AutoModel.from_pretrained(
+    MODEL_NAME,
+    dtype=DTYPE,
+    quantization_config=quantization_config,
+    trust_remote_code=True,
+    low_cpu_mem_usage=True,
+).eval()
+
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=True)
+
+print(f"Modelo cargado en {DEVICE} con cuantización 4-bit")
+------------------
+
+----- stderr -----
+Unrecognized keys in `rope_parameters` for 'rope_type'='dynamic': {'rope_theta'}
+----- stderr -----
+A new version of the following files was downloaded from https://huggingface.co/OpenGVLab/InternVL2_5-26B:
+- conversation.py
+. Make sure to double-check they do not contain any added malicious code. To avoid downloading new versions of the code file, you can pin a revision.
+----- stderr -----
+Encountered exception while importing timm: No module named 'timm'
+------------------
+
+[31m---------------------------------------------------------------------------[39m
+[31mImportError[39m                               Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[5][39m[32m, line 8[39m
+[32m      1[39m quantization_config = BitsAndBytesConfig(
+[32m      2[39m     load_in_4bit=[38;5;28;01mTrue[39;00m,
+[32m      3[39m     bnb_4bit_compute_dtype=DTYPE,
+[32m      4[39m     bnb_4bit_use_double_quant=[38;5;28;01mTrue[39;00m,
+[32m      5[39m     bnb_4bit_quant_type=[33m"[39m[33mnf4[39m[33m"[39m
+[32m      6[39m )
+[32m----> [39m[32m8[39m model = [43mAutoModel[49m[43m.[49m[43mfrom_pretrained[49m[43m([49m
+[32m      9[39m [43m    [49m[43mMODEL_NAME[49m[43m,[49m
+[32m     10[39m [43m    [49m[43mdtype[49m[43m=[49m[43mDTYPE[49m[43m,[49m
+[32m     11[39m [43m    [49m[43mquantization_config[49m[43m=[49m[43mquantization_config[49m[43m,[49m
+[32m     12[39m [43m    [49m[43mtrust_remote_code[49m[43m=[49m[38;5;28;43;01mTrue[39;49;00m[43m,[49m
+[32m     13[39m [43m    [49m[43mlow_cpu_mem_usage[49m[43m=[49m[38;5;28;43;01mTrue[39;49;00m[43m,[49m
+[32m     14[39m [43m)[49m.eval()
+[32m     16[39m tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=[38;5;28;01mTrue[39;00m)
+[32m     18[39m [38;5;28mprint[39m([33mf[39m[33m"[39m[33mModelo cargado en [39m[38;5;132;01m{[39;00mDEVICE[38;5;132;01m}[39;00m[33m con cuantización 4-bit[39m[33m"[39m)
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/models/auto/auto_factory.py:356[39m, in [36m_BaseAutoModelClass.from_pretrained[39m[34m(cls, pretrained_model_name_or_path, *model_args, **kwargs)[39m
+[32m    353[39m kwargs[[33m"[39m[33madapter_kwargs[39m[33m"[39m] = adapter_kwargs
+[32m    355[39m [38;5;28;01mif[39;00m has_remote_code [38;5;129;01mand[39;00m trust_remote_code:
+[32m--> [39m[32m356[39m     model_class = [43mget_class_from_dynamic_module[49m[43m([49m
+[32m    357[39m [43m        [49m[43mclass_ref[49m[43m,[49m[43m [49m[43mpretrained_model_name_or_path[49m[43m,[49m[43m [49m[43mcode_revision[49m[43m=[49m[43mcode_revision[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mhub_kwargs[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mkwargs[49m
+[32m    358[39m [43m    [49m[43m)[49m
+[32m    359[39m     _ = hub_kwargs.pop([33m"[39m[33mcode_revision[39m[33m"[39m, [38;5;28;01mNone[39;00m)
+[32m    360[39m     [38;5;66;03m# This block handles the case where the user is loading a model with `trust_remote_code=True`[39;00m
+[32m    361[39m     [38;5;66;03m# but a library model exists with the same name. We don't want to override the autoclass[39;00m
+[32m    362[39m     [38;5;66;03m# mappings in this case, or all future loads of that model will be the remote code model.[39;00m
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/dynamic_module_utils.py:572[39m, in [36mget_class_from_dynamic_module[39m[34m(class_reference, pretrained_model_name_or_path, cache_dir, force_download, proxies, token, revision, local_files_only, repo_type, code_revision, **kwargs)[39m
+[32m    570[39m     code_revision = revision
+[32m    571[39m [38;5;66;03m# And lastly we get the class inside our newly created module[39;00m
+[32m--> [39m[32m572[39m final_module = [43mget_cached_module_file[49m[43m([49m
+[32m    573[39m [43m    [49m[43mrepo_id[49m[43m,[49m
+[32m    574[39m [43m    [49m[43mmodule_file[49m[43m [49m[43m+[49m[43m [49m[33;43m"[39;49m[33;43m.py[39;49m[33;43m"[39;49m[43m,[49m
+[32m    575[39m [43m    [49m[43mcache_dir[49m[43m=[49m[43mcache_dir[49m[43m,[49m
+[32m    576[39m [43m    [49m[43mforce_download[49m[43m=[49m[43mforce_download[49m[43m,[49m
+[32m    577[39m [43m    [49m[43mproxies[49m[43m=[49m[43mproxies[49m[43m,[49m
+[32m    578[39m [43m    [49m[43mtoken[49m[43m=[49m[43mtoken[49m[43m,[49m
+[32m    579[39m [43m    [49m[43mrevision[49m[43m=[49m[43mcode_revision[49m[43m,[49m
+[32m    580[39m [43m    [49m[43mlocal_files_only[49m[43m=[49m[43mlocal_files_only[49m[43m,[49m
+[32m    581[39m [43m    [49m[43mrepo_type[49m[43m=[49m[43mrepo_type[49m[43m,[49m
+[32m    582[39m [43m[49m[43m)[49m
+[32m    583[39m [38;5;28;01mreturn[39;00m get_class_in_module(class_name, final_module, force_reload=force_download)
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/dynamic_module_utils.py:450[39m, in [36mget_cached_module_file[39m[34m(pretrained_model_name_or_path, module_file, cache_dir, force_download, proxies, token, revision, local_files_only, repo_type, _commit_hash, **deprecated_kwargs)[39m
+[32m    448[39m     [38;5;28;01mfor[39;00m module_needed [38;5;129;01min[39;00m modules_needed:
+[32m    449[39m         [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m ((submodule_path / module_file).parent / [33mf[39m[33m"[39m[38;5;132;01m{[39;00mmodule_needed[38;5;132;01m}[39;00m[33m.py[39m[33m"[39m).exists():
+[32m--> [39m[32m450[39m             [43mget_cached_module_file[49m[43m([49m
+[32m    451[39m [43m                [49m[43mpretrained_model_name_or_path[49m[43m,[49m
+[32m    452[39m [43m                [49m[33;43mf[39;49m[33;43m"[39;49m[38;5;132;43;01m{[39;49;00m[43mPath[49m[43m([49m[43mmodule_file[49m[43m)[49m[43m.[49m[43mparent[49m[38;5;250;43m [39;49m[43m/[49m[38;5;250;43m [39;49m[43mmodule_needed[49m[38;5;132;43;01m}[39;49;00m[33;43m.py[39;49m[33;43m"[39;49m[43m,[49m
+[32m    453[39m [43m                [49m[43mcache_dir[49m[43m=[49m[43mcache_dir[49m[43m,[49m
+[32m    454[39m [43m                [49m[43mforce_download[49m[43m=[49m[43mforce_download[49m[43m,[49m
+[32m    455[39m [43m                [49m[43mproxies[49m[43m=[49m[43mproxies[49m[43m,[49m
+[32m    456[39m [43m                [49m[43mtoken[49m[43m=[49m[43mtoken[49m[43m,[49m
+[32m    457[39m [43m                [49m[43mrevision[49m[43m=[49m[43mrevision[49m[43m,[49m
+[32m    458[39m [43m                [49m[43mlocal_files_only[49m[43m=[49m[43mlocal_files_only[49m[43m,[49m
+[32m    459[39m [43m                [49m[43m_commit_hash[49m[43m=[49m[43mcommit_hash[49m[43m,[49m
+[32m    460[39m [43m            [49m[43m)[49m
+[32m    461[39m             new_files.append([33mf[39m[33m"[39m[38;5;132;01m{[39;00mmodule_needed[38;5;132;01m}[39;00m[33m.py[39m[33m"[39m)
+[32m    463[39m [38;5;28;01mif[39;00m [38;5;28mlen[39m(new_files) > [32m0[39m [38;5;129;01mand[39;00m revision [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/dynamic_module_utils.py:410[39m, in [36mget_cached_module_file[39m[34m(pretrained_model_name_or_path, module_file, cache_dir, force_download, proxies, token, revision, local_files_only, repo_type, _commit_hash, **deprecated_kwargs)[39m
+[32m    407[39m     [38;5;28;01mraise[39;00m
+[32m    409[39m [38;5;66;03m# Check we have all the requirements in our environment[39;00m
+[32m--> [39m[32m410[39m modules_needed = [43mcheck_imports[49m[43m([49m[43mresolved_module_file[49m[43m)[49m
+[32m    412[39m [38;5;66;03m# Now we move the module inside our cached dynamic modules.[39;00m
+[32m    413[39m full_submodule = TRANSFORMERS_DYNAMIC_MODULE_NAME + os.path.sep + submodule
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/dynamic_module_utils.py:258[39m, in [36mcheck_imports[39m[34m(filename)[39m
+[32m    255[39m             [38;5;28;01mraise[39;00m
+[32m    257[39m [38;5;28;01mif[39;00m [38;5;28mlen[39m(missing_packages) > [32m0[39m:
+[32m--> [39m[32m258[39m     [38;5;28;01mraise[39;00m [38;5;167;01mImportError[39;00m(
+[32m    259[39m         [33m"[39m[33mThis modeling file requires the following packages that were not found in your environment: [39m[33m"[39m
+[32m    260[39m         [33mf[39m[33m"[39m[38;5;132;01m{[39;00m[33m'[39m[33m, [39m[33m'[39m.join(missing_packages)[38;5;132;01m}[39;00m[33m. Run `pip install [39m[38;5;132;01m{[39;00m[33m'[39m[33m [39m[33m'[39m.join(missing_packages)[38;5;132;01m}[39;00m[33m`[39m[33m"[39m
+[32m    261[39m     )
+[32m    263[39m [38;5;28;01mreturn[39;00m get_relative_imports(filename)
+
+[31mImportError[39m: This modeling file requires the following packages that were not found in your environment: timm. Run `pip install timm`
+
+[W305 19:10:53.922145834 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+Finished: 10_internvl25_binary_classification.ipynb
