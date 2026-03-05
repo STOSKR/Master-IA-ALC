@@ -10,7 +10,6 @@
 NOTEBOOKS=(
     "10_internvl25_binary_classification.ipynb"
     "11_qwen25vl_binary_classification.ipynb"
-    "12_llama32vision_binary_classification.ipynb"
     "13_pixtral12b_binary_classification.ipynb"
 )
 

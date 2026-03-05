@@ -1,0 +1,97 @@
+Task ID: 1
+Starting: 11_qwen25vl_binary_classification.ipynb
+index, name, memory.total [MiB], memory.free [MiB]
+0, NVIDIA L40S, 46068 MiB, 7803 MiB
+1, NVIDIA L40S, 46068 MiB, 21807 MiB
+2, NVIDIA L40S, 46068 MiB, 34755 MiB
+3, NVIDIA L40S, 46068 MiB, 41643 MiB
+Error. Saved to: entregables/11_qwen25vl_binary_classification_error_1.ipynb
+Error: An error occurred while executing the following cell:
+------------------
+model = Qwen2VLForConditionalGeneration.from_pretrained(
+    MODEL_NAME,
+    torch_dtype=DTYPE,
+    device_map="auto"
+).eval()
+
+processor = AutoProcessor.from_pretrained(MODEL_NAME)
+
+print(f"Modelo Qwen2.5-VL cargado en {DEVICE}")
+------------------
+
+----- stderr -----
+You are using a model of type `qwen2_5_vl` to instantiate a model of type `qwen2_vl`. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+----- stderr -----
+[1mQwen2VLForConditionalGeneration LOAD REPORT[0m from: Qwen/Qwen2.5-VL-7B-Instruct
+Key                                               | Status     |                                                                                               
+--------------------------------------------------+------------+-----------------------------------------------------------------------------------------------
+model.visual.blocks.{0...31}.mlp.gate_proj.weight | UNEXPECTED |                                                                                               
+model.visual.blocks.{0...31}.mlp.down_proj.bias   | UNEXPECTED |                                                                                               
+model.visual.blocks.{0...31}.mlp.gate_proj.bias   | UNEXPECTED |                                                                                               
+model.visual.blocks.{0...31}.mlp.up_proj.bias     | UNEXPECTED |                                                                                               
+model.visual.blocks.{0...31}.mlp.down_proj.weight | UNEXPECTED |                                                                                               
+model.visual.blocks.{0...31}.mlp.up_proj.weight   | UNEXPECTED |                                                                                               
+model.visual.blocks.{0...31}.norm2.bias           | MISSING    |                                                                                               
+model.visual.blocks.{0...31}.mlp.fc2.bias         | MISSING    |                                                                                               
+model.visual.blocks.{0...31}.mlp.fc1.bias         | MISSING    |                                                                                               
+model.visual.blocks.{0...31}.norm1.bias           | MISSING    |                                                                                               
+model.visual.blocks.{0...31}.mlp.fc2.weight       | MISSING    |                                                                                               
+model.visual.blocks.{0...31}.mlp.fc1.weight       | MISSING    |                                                                                               
+model.visual.merger.ln_q.bias                     | MISSING    |                                                                                               
+model.visual.merger.mlp.2.bias                    | MISMATCH   | Reinit due to size mismatch - ckpt: torch.Size([3584]) vs model:torch.Size([1280])            
+model.visual.merger.mlp.2.weight                  | MISMATCH   | Reinit due to size mismatch - ckpt: torch.Size([3584, 5120]) vs model:torch.Size([1280, 5120])
+
+[3mNotes:
+- UNEXPECTED[3m	:can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING[3m	:those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+- MISMATCH[3m	:ckpt weights were loaded, but they did not match the original empty weight shapes.[0m
+------------------
+
+[31m---------------------------------------------------------------------------[39m
+[31mRuntimeError[39m                              Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[4][39m[32m, line 1[39m
+[32m----> [39m[32m1[39m model = [43mQwen2VLForConditionalGeneration[49m[43m.[49m[43mfrom_pretrained[49m[43m([49m
+[32m      2[39m [43m    [49m[43mMODEL_NAME[49m[43m,[49m
+[32m      3[39m [43m    [49m[43mtorch_dtype[49m[43m=[49m[43mDTYPE[49m[43m,[49m
+[32m      4[39m [43m    [49m[43mdevice_map[49m[43m=[49m[33;43m"[39;49m[33;43mauto[39;49m[33;43m"[39;49m
+[32m      5[39m [43m)[49m.eval()
+[32m      7[39m processor = AutoProcessor.from_pretrained(MODEL_NAME)
+[32m      9[39m [38;5;28mprint[39m([33mf[39m[33m"[39m[33mModelo Qwen2.5-VL cargado en [39m[38;5;132;01m{[39;00mDEVICE[38;5;132;01m}[39;00m[33m"[39m)
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/modeling_utils.py:4073[39m, in [36mPreTrainedModel.from_pretrained[39m[34m(cls, pretrained_model_name_or_path, config, cache_dir, ignore_mismatched_sizes, force_download, local_files_only, token, revision, use_safetensors, weights_only, *model_args, **kwargs)[39m
+[32m   4056[39m load_config = LoadStateDictConfig(
+[32m   4057[39m     pretrained_model_name_or_path=pretrained_model_name_or_path,
+[32m   4058[39m     ignore_mismatched_sizes=ignore_mismatched_sizes,
+[32m   (...)[39m[32m   4070[39m     download_kwargs=download_kwargs,
+[32m   4071[39m )
+[32m   4072[39m loading_info, disk_offload_index = [38;5;28mcls[39m._load_pretrained_model(model, state_dict, checkpoint_files, load_config)
+[32m-> [39m[32m4073[39m loading_info = [38;5;28;43mcls[39;49m[43m.[49m[43m_finalize_model_loading[49m[43m([49m[43mmodel[49m[43m,[49m[43m [49m[43mload_config[49m[43m,[49m[43m [49m[43mloading_info[49m[43m)[49m
+[32m   4074[39m model.eval()  [38;5;66;03m# Set model in evaluation mode to deactivate Dropout modules by default[39;00m
+[32m   4075[39m model.set_use_kernels(use_kernels, kernel_config)
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/modeling_utils.py:4237[39m, in [36mPreTrainedModel._finalize_model_loading[39m[34m(model, load_config, loading_info)[39m
+[32m   4235[39m     model._adjust_missing_and_unexpected_keys(loading_info)
+[32m   4236[39m [38;5;28;01mfinally[39;00m:
+[32m-> [39m[32m4237[39m     [43mlog_state_dict_report[49m[43m([49m
+[32m   4238[39m [43m        [49m[43mmodel[49m[43m=[49m[43mmodel[49m[43m,[49m
+[32m   4239[39m [43m        [49m[43mpretrained_model_name_or_path[49m[43m=[49m[43mload_config[49m[43m.[49m[43mpretrained_model_name_or_path[49m[43m,[49m
+[32m   4240[39m [43m        [49m[43mignore_mismatched_sizes[49m[43m=[49m[43mload_config[49m[43m.[49m[43mignore_mismatched_sizes[49m[43m,[49m
+[32m   4241[39m [43m        [49m[43mloading_info[49m[43m=[49m[43mloading_info[49m[43m,[49m
+[32m   4242[39m [43m        [49m[43mlogger[49m[43m=[49m[43mlogger[49m[43m,[49m
+[32m   4243[39m [43m    [49m[43m)[49m
+[32m   4245[39m [38;5;28;01mreturn[39;00m loading_info
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/utils/loading_report.py:278[39m, in [36mlog_state_dict_report[39m[34m(model, pretrained_model_name_or_path, ignore_mismatched_sizes, loading_info, logger)[39m
+[32m    273[39m     [38;5;28;01mraise[39;00m [38;5;167;01mRuntimeError[39;00m(
+[32m    274[39m         [33m"[39m[33mWe encountered some issues during automatic conversion of the weights. For details look at the `CONVERSION` entries of [39m[33m"[39m
+[32m    275[39m         [33m"[39m[33mthe above report![39m[33m"[39m
+[32m    276[39m     )
+[32m    277[39m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m ignore_mismatched_sizes [38;5;129;01mand[39;00m loading_info.mismatched_keys:
+[32m--> [39m[32m278[39m     [38;5;28;01mraise[39;00m [38;5;167;01mRuntimeError[39;00m(
+[32m    279[39m         [33m"[39m[33mYou set `ignore_mismatched_sizes` to `False`, thus raising an error. For details look at the above report![39m[33m"[39m
+[32m    280[39m     )
+
+[31mRuntimeError[39m: You set `ignore_mismatched_sizes` to `False`, thus raising an error. For details look at the above report!
+
+[W305 18:52:43.787985720 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+Finished: 11_qwen25vl_binary_classification.ipynb
