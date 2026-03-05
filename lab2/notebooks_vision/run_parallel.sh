@@ -10,7 +10,6 @@
 NOTEBOOKS=(
     "10_internvl25_binary_classification.ipynb"
     "11_qwen25vl_binary_classification.ipynb"
-    "13_pixtral12b_binary_classification.ipynb"
 )
 
 NOTEBOOK="${NOTEBOOKS[$SLURM_ARRAY_TASK_ID]}"

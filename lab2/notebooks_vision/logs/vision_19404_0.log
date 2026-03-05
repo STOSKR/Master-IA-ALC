@@ -5,3 +5,118 @@ index, name, memory.total [MiB], memory.free [MiB]
 1, NVIDIA L40S, 46068 MiB, 12527 MiB
 2, NVIDIA L40S, 46068 MiB, 34755 MiB
 3, NVIDIA L40S, 46068 MiB, 41653 MiB
+Error. Saved to: entregables/10_internvl25_binary_classification_error_4.ipynb
+Error: An error occurred while executing the following cell:
+------------------
+quantization_config = BitsAndBytesConfig(
+    load_in_4bit=True,
+    bnb_4bit_compute_dtype=DTYPE,
+    bnb_4bit_use_double_quant=True,
+    bnb_4bit_quant_type="nf4"
+)
+
+model = AutoModel.from_pretrained(
+    MODEL_NAME,
+    dtype=DTYPE,
+    quantization_config=quantization_config,
+    trust_remote_code=True,
+    low_cpu_mem_usage=True,
+).eval()
+
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=True)
+
+# Configurar pad_token para evitar warnings
+if tokenizer.pad_token is None:
+    tokenizer.pad_token = tokenizer.eos_token
+    tokenizer.pad_token_id = tokenizer.eos_token_id
+
+print(f"Modelo cargado en {DEVICE} con cuantización 4-bit")
+------------------
+
+----- stderr -----
+Unrecognized keys in `rope_parameters` for 'rope_type'='dynamic': {'rope_theta'}
+----- stderr -----
+A new version of the following files was downloaded from https://huggingface.co/OpenGVLab/InternVL2_5-26B:
+- modeling_intern_vit.py
+. Make sure to double-check they do not contain any added malicious code. To avoid downloading new versions of the code file, you can pin a revision.
+----- stderr -----
+/home/alumno.upv.es/scheng1/.conda/envs/RFA2526pt/lib/python3.12/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+----- stdout -----
+FlashAttention2 is not installed.
+------------------
+
+[31m---------------------------------------------------------------------------[39m
+[31mRuntimeError[39m                              Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[5][39m[32m, line 8[39m
+[32m      1[39m quantization_config = BitsAndBytesConfig(
+[32m      2[39m     load_in_4bit=[38;5;28;01mTrue[39;00m,
+[32m      3[39m     bnb_4bit_compute_dtype=DTYPE,
+[32m      4[39m     bnb_4bit_use_double_quant=[38;5;28;01mTrue[39;00m,
+[32m      5[39m     bnb_4bit_quant_type=[33m"[39m[33mnf4[39m[33m"[39m
+[32m      6[39m )
+[32m----> [39m[32m8[39m model = [43mAutoModel[49m[43m.[49m[43mfrom_pretrained[49m[43m([49m
+[32m      9[39m [43m    [49m[43mMODEL_NAME[49m[43m,[49m
+[32m     10[39m [43m    [49m[43mdtype[49m[43m=[49m[43mDTYPE[49m[43m,[49m
+[32m     11[39m [43m    [49m[43mquantization_config[49m[43m=[49m[43mquantization_config[49m[43m,[49m
+[32m     12[39m [43m    [49m[43mtrust_remote_code[49m[43m=[49m[38;5;28;43;01mTrue[39;49;00m[43m,[49m
+[32m     13[39m [43m    [49m[43mlow_cpu_mem_usage[49m[43m=[49m[38;5;28;43;01mTrue[39;49;00m[43m,[49m
+[32m     14[39m [43m)[49m.eval()
+[32m     16[39m tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=[38;5;28;01mTrue[39;00m)
+[32m     18[39m [38;5;66;03m# Configurar pad_token para evitar warnings[39;00m
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/models/auto/auto_factory.py:367[39m, in [36m_BaseAutoModelClass.from_pretrained[39m[34m(cls, pretrained_model_name_or_path, *model_args, **kwargs)[39m
+[32m    365[39m         model_class.register_for_auto_class(auto_class=[38;5;28mcls[39m)
+[32m    366[39m     model_class = add_generation_mixin_to_remote_model(model_class)
+[32m--> [39m[32m367[39m     [38;5;28;01mreturn[39;00m [43mmodel_class[49m[43m.[49m[43mfrom_pretrained[49m[43m([49m
+[32m    368[39m [43m        [49m[43mpretrained_model_name_or_path[49m[43m,[49m[43m [49m[43m*[49m[43mmodel_args[49m[43m,[49m[43m [49m[43mconfig[49m[43m=[49m[43mconfig[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mhub_kwargs[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mkwargs[49m
+[32m    369[39m [43m    [49m[43m)[49m
+[32m    370[39m [38;5;28;01melif[39;00m [38;5;28mtype[39m(config) [38;5;129;01min[39;00m [38;5;28mcls[39m._model_mapping:
+[32m    371[39m     model_class = _get_model_class(config, [38;5;28mcls[39m._model_mapping)
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/modeling_utils.py:4030[39m, in [36mPreTrainedModel.from_pretrained[39m[34m(cls, pretrained_model_name_or_path, config, cache_dir, ignore_mismatched_sizes, force_download, local_files_only, token, revision, use_safetensors, weights_only, *model_args, **kwargs)[39m
+[32m   4027[39m config = copy.deepcopy(config)  [38;5;66;03m# We do not want to modify the config inplace in from_pretrained.[39;00m
+[32m   4028[39m [38;5;28;01mwith[39;00m ContextManagers(model_init_context):
+[32m   4029[39m     [38;5;66;03m# Let's make sure we don't run the init function of buffer modules[39;00m
+[32m-> [39m[32m4030[39m     model = [38;5;28;43mcls[39;49m[43m([49m[43mconfig[49m[43m,[49m[43m [49m[43m*[49m[43mmodel_args[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mmodel_kwargs[49m[43m)[49m
+[32m   4032[39m     [38;5;28;01mif[39;00m hf_quantizer [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:  [38;5;66;03m# replace module with quantized modules (does not touch weights)[39;00m
+[32m   4033[39m         hf_quantizer.preprocess_model(
+[32m   4034[39m             model=model,
+[32m   4035[39m             dtype=dtype,
+[32m   (...)[39m[32m   4038[39m             use_kernels=use_kernels,
+[32m   4039[39m         )
+
+[36mFile [39m[32m~/.cache/huggingface/modules/transformers_modules/OpenGVLab/InternVL2_5_hyphen_26B/b537a9974b89cb621e9e6b9e7ebe2a904334fff0/modeling_internvl_chat.py:65[39m, in [36mInternVLChatModel.__init__[39m[34m(self, config, vision_model, language_model, use_flash_attn)[39m
+[32m     63[39m     [38;5;28mself[39m.vision_model = vision_model
+[32m     64[39m [38;5;28;01melse[39;00m:
+[32m---> [39m[32m65[39m     [38;5;28mself[39m.vision_model = [43mInternVisionModel[49m[43m([49m[43mconfig[49m[43m.[49m[43mvision_config[49m[43m)[49m
+[32m     66[39m [38;5;28;01mif[39;00m language_model [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+[32m     67[39m     [38;5;28mself[39m.language_model = language_model
+
+[36mFile [39m[32m~/.cache/huggingface/modules/transformers_modules/OpenGVLab/InternVL2_5_hyphen_26B/b537a9974b89cb621e9e6b9e7ebe2a904334fff0/modeling_intern_vit.py:376[39m, in [36mInternVisionModel.__init__[39m[34m(self, config)[39m
+[32m    373[39m [38;5;28mself[39m.config = config
+[32m    375[39m [38;5;28mself[39m.embeddings = InternVisionEmbeddings(config)
+[32m--> [39m[32m376[39m [38;5;28mself[39m.encoder = [43mInternVisionEncoder[49m[43m([49m[43mconfig[49m[43m)[49m
+
+[36mFile [39m[32m~/.cache/huggingface/modules/transformers_modules/OpenGVLab/InternVL2_5_hyphen_26B/b537a9974b89cb621e9e6b9e7ebe2a904334fff0/modeling_intern_vit.py:312[39m, in [36mInternVisionEncoder.__init__[39m[34m(self, config)[39m
+[32m    310[39m [38;5;28mself[39m.config = config
+[32m    311[39m [38;5;66;03m# stochastic depth decay rule[39;00m
+[32m--> [39m[32m312[39m dpr = [[43mx[49m[43m.[49m[43mitem[49m[43m([49m[43m)[49m [38;5;28;01mfor[39;00m x [38;5;129;01min[39;00m torch.linspace([32m0[39m, config.drop_path_rate, config.num_hidden_layers)]
+[32m    313[39m [38;5;28mself[39m.layers = nn.ModuleList([
+[32m    314[39m     InternVisionEncoderLayer(config, dpr[idx]) [38;5;28;01mfor[39;00m idx [38;5;129;01min[39;00m [38;5;28mrange[39m(config.num_hidden_layers)])
+[32m    315[39m [38;5;28mself[39m.gradient_checkpointing = [38;5;28;01mTrue[39;00m
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/torch/utils/_device.py:103[39m, in [36mDeviceContext.__torch_function__[39m[34m(self, func, types, args, kwargs)[39m
+[32m    101[39m [38;5;28;01mif[39;00m func [38;5;129;01min[39;00m _device_constructors() [38;5;129;01mand[39;00m kwargs.get([33m"[39m[33mdevice[39m[33m"[39m) [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+[32m    102[39m     kwargs[[33m"[39m[33mdevice[39m[33m"[39m] = [38;5;28mself[39m.device
+[32m--> [39m[32m103[39m [38;5;28;01mreturn[39;00m [43mfunc[49m[43m([49m[43m*[49m[43margs[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mkwargs[49m[43m)[49m
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/torch/_meta_registrations.py:7341[39m, in [36mmeta_local_scalar_dense[39m[34m(self)[39m
+[32m   7339[39m [38;5;129m@register_meta[39m(aten._local_scalar_dense)
+[32m   7340[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34mmeta_local_scalar_dense[39m([38;5;28mself[39m: Tensor):
+[32m-> [39m[32m7341[39m     [38;5;28;01mraise[39;00m [38;5;167;01mRuntimeError[39;00m([33m"[39m[33mTensor.item() cannot be called on meta tensors[39m[33m"[39m)
+
+[31mRuntimeError[39m: Tensor.item() cannot be called on meta tensors
+
+[W305 19:42:47.996733594 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+Finished: 10_internvl25_binary_classification.ipynb

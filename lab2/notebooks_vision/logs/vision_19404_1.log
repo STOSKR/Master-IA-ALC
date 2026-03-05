@@ -1,0 +1,10 @@
+Task ID: 1
+Starting: 11_qwen25vl_binary_classification.ipynb
+index, name, memory.total [MiB], memory.free [MiB]
+0, NVIDIA L40S, 46068 MiB, 7809 MiB
+1, NVIDIA L40S, 46068 MiB, 12527 MiB
+2, NVIDIA L40S, 46068 MiB, 34755 MiB
+3, NVIDIA L40S, 46068 MiB, 41653 MiB
+Successfully saved to: entregables/11_qwen25vl_binary_classification_out_1.ipynb
+[W305 19:49:29.784119366 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+Finished: 11_qwen25vl_binary_classification.ipynb
