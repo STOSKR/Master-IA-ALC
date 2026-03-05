@@ -8,8 +8,8 @@
 #SBATCH -o logs/vision_%A_%a.log
 
 NOTEBOOKS=(
-    "10_internvl25_binary_classification.ipynb"
-    "11_qwen25vl_binary_classification.ipynb"
+    "11_internvl3_5.ipynb"
+    "12_Qwen3.ipynb"
 )
 
 NOTEBOOK="${NOTEBOOKS[$SLURM_ARRAY_TASK_ID]}"

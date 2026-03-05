@@ -7,7 +7,7 @@
 #SBATCH -o logs/%j.log
 
 # Lista de notebooks a ejecutar (separados por espacios)
-NOTEBOOKS="10_internvl25_binary_classification.ipynb 11_qwen25vl_binary_classification.ipynb 12_llama32vision_binary_classification.ipynb 13_pixtral12b_binary_classification.ipynb"
+NOTEBOOKS="11_qwen25vl_binary_classification.ipynb"
 
 source /opt/miniconda3/etc/profile.d/conda.sh
 conda activate RFA2526pt
