@@ -1,0 +1,9 @@
+Using GPU(s): 0
+index, name, memory.total [MiB], memory.free [MiB]
+0, NVIDIA L40S, 46068 MiB, 37629 MiB
+1, NVIDIA L40S, 46068 MiB, 15575 MiB
+2, NVIDIA L40S, 46068 MiB, 23773 MiB
+3, NVIDIA L40S, 46068 MiB, 2983 MiB
+==========================================
+Starting execution of: 14_internvl3_5FT.ipynb
+==========================================

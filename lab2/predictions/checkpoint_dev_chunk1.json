@@ -1,0 +1,602 @@
+[
+  {
+    "id_EXIST": "111904",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "210576",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "111632",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "210421",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "210857",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "211285",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "210059",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "211706",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "210140",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "210378",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "110557",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "110271",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "210224",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "211807",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "210010",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "210095",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "110931",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "210182",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "210236",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "211977",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "110656",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "110105",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "111914",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "110682",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "210981",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "211043",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "111849",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "110395",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "111202",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "210919",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "211633",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "211063",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "210657",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "211202",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "111737",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "211904",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "211762",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "210343",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "210333",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "210601",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "210041",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "111699",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "110600",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "111666",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "110055",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "211211",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "110900",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "210754",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "211726",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "211108",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "110007",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "110665",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "211844",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "211650",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "210412",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "110521",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "111812",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "211554",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "110753",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "211857",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "111200",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "211365",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "111603",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "110975",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "210848",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "211715",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "111549",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "210101",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "110050",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "211476",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "210172",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "110921",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "211947",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "111795",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "210127",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "111872",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "211419",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "210712",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "111065",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "110142",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "211471",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "210305",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "110182",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "211067",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "111168",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "111044",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "110249",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "210656",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "110205",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "110167",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "211157",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "110876",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "211968",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "211631",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "210396",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "110032",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "211333",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "210471",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "YES"
+  },
+  {
+    "id_EXIST": "111656",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  },
+  {
+    "id_EXIST": "210047",
+    "classification": "YES",
+    "confidence": 0.9,
+    "true_label": "NO"
+  }
+]
