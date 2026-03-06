@@ -7,3 +7,11 @@ index, name, memory.total [MiB], memory.free [MiB]
 ==========================================
 Starting execution of: 14_internvl3_5FT.ipynb
 ==========================================
+Successfully saved to: entregables/14_internvl3_5FT_out_1.ipynb
+Memory cleaned after successful execution
+Memory cleaned
+[W306 17:21:13.714158480 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+
+==========================================
+All notebooks processed!
+==========================================

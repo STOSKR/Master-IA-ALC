@@ -13,13 +13,13 @@
   },
   {
     "id_EXIST": "111632",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "YES"
   },
   {
     "id_EXIST": "210421",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "NO"
   },
@@ -91,7 +91,7 @@
   },
   {
     "id_EXIST": "210095",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "NO"
   },
@@ -115,7 +115,7 @@
   },
   {
     "id_EXIST": "211977",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "NO"
   },
@@ -163,7 +163,7 @@
   },
   {
     "id_EXIST": "110395",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "YES"
   },
@@ -253,7 +253,7 @@
   },
   {
     "id_EXIST": "110600",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "NO"
   },
@@ -289,13 +289,13 @@
   },
   {
     "id_EXIST": "211726",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "NO"
   },
   {
     "id_EXIST": "211108",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "NO"
   },
@@ -307,7 +307,7 @@
   },
   {
     "id_EXIST": "110665",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "NO"
   },
@@ -325,7 +325,7 @@
   },
   {
     "id_EXIST": "210412",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "NO"
   },
@@ -349,7 +349,7 @@
   },
   {
     "id_EXIST": "110753",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "NO"
   },
@@ -373,7 +373,7 @@
   },
   {
     "id_EXIST": "111603",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "YES"
   },
@@ -385,7 +385,7 @@
   },
   {
     "id_EXIST": "210848",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "NO"
   },
@@ -415,7 +415,7 @@
   },
   {
     "id_EXIST": "211476",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "NO"
   },
@@ -433,7 +433,7 @@
   },
   {
     "id_EXIST": "211947",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "NO"
   },
@@ -445,7 +445,7 @@
   },
   {
     "id_EXIST": "210127",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "NO"
   },
@@ -457,13 +457,13 @@
   },
   {
     "id_EXIST": "211419",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "NO"
   },
   {
     "id_EXIST": "210712",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "YES"
   },
@@ -481,13 +481,13 @@
   },
   {
     "id_EXIST": "211471",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "NO"
   },
   {
     "id_EXIST": "210305",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "NO"
   },
@@ -511,7 +511,7 @@
   },
   {
     "id_EXIST": "111044",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "NO"
   },
@@ -529,7 +529,7 @@
   },
   {
     "id_EXIST": "110205",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "NO"
   },
@@ -577,7 +577,7 @@
   },
   {
     "id_EXIST": "211333",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "NO"
   },
@@ -589,13 +589,13 @@
   },
   {
     "id_EXIST": "111656",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "NO"
   },
   {
     "id_EXIST": "210047",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "NO"
   }
