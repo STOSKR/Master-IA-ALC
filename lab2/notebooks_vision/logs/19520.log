@@ -1,0 +1,265 @@
+Using GPU(s): 3
+index, name, memory.total [MiB], memory.free [MiB]
+0, NVIDIA L40S, 46068 MiB, 34307 MiB
+1, NVIDIA L40S, 46068 MiB, 21841 MiB
+2, NVIDIA L40S, 46068 MiB, 33293 MiB
+3, NVIDIA L40S, 46068 MiB, 45469 MiB
+==========================================
+Starting execution of: 15_pixtral12bFT.ipynb
+==========================================
+Error occurred. Notebook saved to: entregables/15_pixtral12bFT_error_1.ipynb
+Error: An error occurred while executing the following cell:
+------------------
+# Ejecutar entrenamiento
+print("Iniciando entrenamiento...")
+trainer.train()
+
+# Guardar modelo final
+print("\nGuardando modelo...")
+model.save_pretrained(SAVE_PATH)
+processor.save_pretrained(SAVE_PATH)
+print(f"✓ Modelo guardado en: {SAVE_PATH}")
+------------------
+
+----- stdout -----
+Iniciando entrenamiento...
+----- stderr -----
+/home/alumno.upv.es/scheng1/.conda/envs/RFA2526pt/lib/python3.12/site-packages/bitsandbytes/autograd/_functions.py:123: UserWarning: MatMul8bitLt: inputs will be cast from torch.float32 to float16 during quantization
+  warnings.warn(f"MatMul8bitLt: inputs will be cast from {A.dtype} to float16 during quantization")
+/home/alumno.upv.es/scheng1/.conda/envs/RFA2526pt/lib/python3.12/site-packages/bitsandbytes/autograd/_functions.py:123: UserWarning: MatMul8bitLt: inputs will be cast from torch.bfloat16 to float16 during quantization
+  warnings.warn(f"MatMul8bitLt: inputs will be cast from {A.dtype} to float16 during quantization")
+------------------
+
+[31m---------------------------------------------------------------------------[39m
+[31mValueError[39m                                Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[7][39m[32m, line 3[39m
+[32m      1[39m [38;5;66;03m# Ejecutar entrenamiento[39;00m
+[32m      2[39m [38;5;28mprint[39m([33m"[39m[33mIniciando entrenamiento...[39m[33m"[39m)
+[32m----> [39m[32m3[39m [43mtrainer[49m[43m.[49m[43mtrain[49m[43m([49m[43m)[49m
+[32m      5[39m [38;5;66;03m# Guardar modelo final[39;00m
+[32m      6[39m [38;5;28mprint[39m([33m"[39m[38;5;130;01m\n[39;00m[33mGuardando modelo...[39m[33m"[39m)
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/trainer.py:1424[39m, in [36mTrainer.train[39m[34m(self, resume_from_checkpoint, trial, ignore_keys_for_eval)[39m
+[32m   1422[39m ctx = suppress_progress_bars() [38;5;28;01mif[39;00m args.push_to_hub [38;5;28;01melse[39;00m contextlib.nullcontext()
+[32m   1423[39m [38;5;28;01mwith[39;00m ctx:
+[32m-> [39m[32m1424[39m     [38;5;28;01mreturn[39;00m [43minner_training_loop[49m[43m([49m
+[32m   1425[39m [43m        [49m[43margs[49m[43m=[49m[43margs[49m[43m,[49m
+[32m   1426[39m [43m        [49m[43mresume_from_checkpoint[49m[43m=[49m[43mresume_from_checkpoint[49m[43m,[49m
+[32m   1427[39m [43m        [49m[43mtrial[49m[43m=[49m[43mtrial[49m[43m,[49m
+[32m   1428[39m [43m        [49m[43mignore_keys_for_eval[49m[43m=[49m[43mignore_keys_for_eval[49m[43m,[49m
+[32m   1429[39m [43m    [49m[43m)[49m
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/trainer.py:1506[39m, in [36mTrainer._inner_training_loop[39m[34m(self, batch_size, args, resume_from_checkpoint, trial, ignore_keys_for_eval)[39m
+[32m   1504[39m [38;5;28;01mfor[39;00m epoch [38;5;129;01min[39;00m [38;5;28mrange[39m(epochs_trained, num_train_epochs):
+[32m   1505[39m     [38;5;28mself[39m.control = [38;5;28mself[39m.callback_handler.on_epoch_begin([38;5;28mself[39m.args, [38;5;28mself[39m.state, [38;5;28mself[39m.control)
+[32m-> [39m[32m1506[39m     [38;5;28;43mself[39;49m[43m.[49m[43m_run_epoch[49m[43m([49m
+[32m   1507[39m [43m        [49m[43mmodel[49m[43m=[49m[43mmodel[49m[43m,[49m
+[32m   1508[39m [43m        [49m[43mepoch[49m[43m=[49m[43mepoch[49m[43m,[49m
+[32m   1509[39m [43m        [49m[43mtrain_dataloader[49m[43m=[49m[43mtrain_dataloader[49m[43m,[49m
+[32m   1510[39m [43m        [49m[43msteps_in_epoch[49m[43m=[49m[43msteps_in_epoch[49m[43m,[49m
+[32m   1511[39m [43m        [49m[43mnum_update_steps_per_epoch[49m[43m=[49m[43mnum_update_steps_per_epoch[49m[43m,[49m
+[32m   1512[39m [43m        [49m[43mtrial[49m[43m=[49m[43mtrial[49m[43m,[49m
+[32m   1513[39m [43m        [49m[43mignore_keys_for_eval[49m[43m=[49m[43mignore_keys_for_eval[49m[43m,[49m
+[32m   1514[39m [43m        [49m[43mstart_time[49m[43m=[49m[43mstart_time[49m[43m,[49m
+[32m   1515[39m [43m        [49m[43mresume_from_checkpoint[49m[43m=[49m[43mresume_from_checkpoint[49m[43m,[49m
+[32m   1516[39m [43m        [49m[43mepochs_trained[49m[43m=[49m[43mepochs_trained[49m[43m,[49m
+[32m   1517[39m [43m        [49m[43msteps_trained_in_current_epoch[49m[43m=[49m[43msteps_trained_in_current_epoch[49m[43m,[49m
+[32m   1518[39m [43m    [49m[43m)[49m
+[32m   1519[39m     [38;5;28;01mif[39;00m [38;5;28mself[39m.control.should_training_stop:
+[32m   1520[39m         [38;5;28;01mbreak[39;00m
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/trainer.py:1734[39m, in [36mTrainer._run_epoch[39m[34m(self, model, epoch, train_dataloader, steps_in_epoch, num_update_steps_per_epoch, trial, ignore_keys_for_eval, start_time, resume_from_checkpoint, epochs_trained, steps_trained_in_current_epoch)[39m
+[32m   1732[39m     sync_context = functools.partial([38;5;28mself[39m.accelerator.no_sync, model=model)
+[32m   1733[39m [38;5;28;01mwith[39;00m sync_context():
+[32m-> [39m[32m1734[39m     tr_loss_step = [38;5;28;43mself[39;49m[43m.[49m[43mtraining_step[49m[43m([49m[43mmodel[49m[43m,[49m[43m [49m[43minputs[49m[43m,[49m[43m [49m[43mnum_items_in_batch[49m[43m)[49m
+[32m   1736[39m [38;5;28;01mif[39;00m (
+[32m   1737[39m     [38;5;28mself[39m.args.logging_nan_inf_filter
+[32m   1738[39m     [38;5;129;01mand[39;00m [38;5;129;01mnot[39;00m is_torch_xla_available()
+[32m   1739[39m     [38;5;129;01mand[39;00m (torch.isnan(tr_loss_step) [38;5;129;01mor[39;00m torch.isinf(tr_loss_step))
+[32m   1740[39m ):
+[32m   1741[39m     [38;5;66;03m# if loss is nan or inf simply add the average of previous logged losses[39;00m
+[32m   1742[39m     [38;5;28mself[39m._tr_loss += [38;5;28mself[39m._tr_loss / ([32m1[39m + [38;5;28mself[39m.state.global_step - [38;5;28mself[39m._globalstep_last_logged)
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/trainer.py:1906[39m, in [36mTrainer.training_step[39m[34m(self, model, inputs, num_items_in_batch)[39m
+[32m   1903[39m     [38;5;28;01mreturn[39;00m loss_mb.reduce_mean().detach().to([38;5;28mself[39m.args.device)
+[32m   1905[39m [38;5;28;01mwith[39;00m [38;5;28mself[39m.compute_loss_context_manager():
+[32m-> [39m[32m1906[39m     loss = [38;5;28;43mself[39;49m[43m.[49m[43mcompute_loss[49m[43m([49m[43mmodel[49m[43m,[49m[43m [49m[43minputs[49m[43m,[49m[43m [49m[43mnum_items_in_batch[49m[43m=[49m[43mnum_items_in_batch[49m[43m)[49m
+[32m   1908[39m [38;5;28;01mdel[39;00m inputs
+[32m   1909[39m [38;5;28;01mif[39;00m (
+[32m   1910[39m     [38;5;28mself[39m.args.torch_empty_cache_steps [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m
+[32m   1911[39m     [38;5;129;01mand[39;00m [38;5;28mself[39m.state.global_step % [38;5;28mself[39m.args.torch_empty_cache_steps == [32m0[39m
+[32m   1912[39m ):
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/trainer.py:1978[39m, in [36mTrainer.compute_loss[39m[34m(self, model, inputs, return_outputs, num_items_in_batch)[39m
+[32m   1976[39m         kwargs[[33m"[39m[33mnum_items_in_batch[39m[33m"[39m] = num_items_in_batch
+[32m   1977[39m     inputs = {**inputs, **kwargs}
+[32m-> [39m[32m1978[39m outputs = [43mmodel[49m[43m([49m[43m*[49m[43m*[49m[43minputs[49m[43m)[49m
+[32m   1980[39m [38;5;66;03m# User-defined compute_loss function[39;00m
+[32m   1981[39m [38;5;28;01mif[39;00m [38;5;28mself[39m.compute_loss_func [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/torch/nn/modules/module.py:1775[39m, in [36mModule._wrapped_call_impl[39m[34m(self, *args, **kwargs)[39m
+[32m   1773[39m     [38;5;28;01mreturn[39;00m [38;5;28mself[39m._compiled_call_impl(*args, **kwargs)  [38;5;66;03m# type: ignore[misc][39;00m
+[32m   1774[39m [38;5;28;01melse[39;00m:
+[32m-> [39m[32m1775[39m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[43m.[49m[43m_call_impl[49m[43m([49m[43m*[49m[43margs[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mkwargs[49m[43m)[49m
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/torch/nn/modules/module.py:1786[39m, in [36mModule._call_impl[39m[34m(self, *args, **kwargs)[39m
+[32m   1781[39m [38;5;66;03m# If we don't have any hooks, we want to skip the rest of the logic in[39;00m
+[32m   1782[39m [38;5;66;03m# this function, and just call forward.[39;00m
+[32m   1783[39m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m ([38;5;28mself[39m._backward_hooks [38;5;129;01mor[39;00m [38;5;28mself[39m._backward_pre_hooks [38;5;129;01mor[39;00m [38;5;28mself[39m._forward_hooks [38;5;129;01mor[39;00m [38;5;28mself[39m._forward_pre_hooks
+[32m   1784[39m         [38;5;129;01mor[39;00m _global_backward_pre_hooks [38;5;129;01mor[39;00m _global_backward_hooks
+[32m   1785[39m         [38;5;129;01mor[39;00m _global_forward_hooks [38;5;129;01mor[39;00m _global_forward_pre_hooks):
+[32m-> [39m[32m1786[39m     [38;5;28;01mreturn[39;00m [43mforward_call[49m[43m([49m[43m*[49m[43margs[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mkwargs[49m[43m)[49m
+[32m   1788[39m result = [38;5;28;01mNone[39;00m
+[32m   1789[39m called_always_called_hooks = [38;5;28mset[39m()
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/accelerate/utils/operations.py:823[39m, in [36mconvert_outputs_to_fp32.<locals>.forward[39m[34m(*args, **kwargs)[39m
+[32m    822[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34mforward[39m(*args, **kwargs):
+[32m--> [39m[32m823[39m     [38;5;28;01mreturn[39;00m [43mmodel_forward[49m[43m([49m[43m*[49m[43margs[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mkwargs[49m[43m)[49m
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/accelerate/utils/operations.py:811[39m, in [36mConvertOutputsToFp32.__call__[39m[34m(self, *args, **kwargs)[39m
+[32m    810[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34m__call__[39m([38;5;28mself[39m, *args, **kwargs):
+[32m--> [39m[32m811[39m     [38;5;28;01mreturn[39;00m convert_to_fp32([38;5;28;43mself[39;49m[43m.[49m[43mmodel_forward[49m[43m([49m[43m*[49m[43margs[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mkwargs[49m[43m)[49m)
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/torch/amp/autocast_mode.py:44[39m, in [36mautocast_decorator.<locals>.decorate_autocast[39m[34m(*args, **kwargs)[39m
+[32m     41[39m [38;5;129m@functools[39m.wraps(func)
+[32m     42[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34mdecorate_autocast[39m(*args, **kwargs):
+[32m     43[39m     [38;5;28;01mwith[39;00m autocast_instance:
+[32m---> [39m[32m44[39m         [38;5;28;01mreturn[39;00m [43mfunc[49m[43m([49m[43m*[49m[43margs[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mkwargs[49m[43m)[49m
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/peft/peft_model.py:1923[39m, in [36mPeftModelForCausalLM.forward[39m[34m(self, input_ids, attention_mask, inputs_embeds, labels, output_attentions, output_hidden_states, return_dict, task_ids, **kwargs)[39m
+[32m   1921[39m     [38;5;28;01mwith[39;00m [38;5;28mself[39m._enable_peft_forward_hooks(**kwargs):
+[32m   1922[39m         kwargs = {k: v [38;5;28;01mfor[39;00m k, v [38;5;129;01min[39;00m kwargs.items() [38;5;28;01mif[39;00m k [38;5;129;01mnot[39;00m [38;5;129;01min[39;00m [38;5;28mself[39m.special_peft_forward_args}
+[32m-> [39m[32m1923[39m         [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[43m.[49m[43mbase_model[49m[43m([49m
+[32m   1924[39m [43m            [49m[43minput_ids[49m[43m=[49m[43minput_ids[49m[43m,[49m
+[32m   1925[39m [43m            [49m[43mattention_mask[49m[43m=[49m[43mattention_mask[49m[43m,[49m
+[32m   1926[39m [43m            [49m[43minputs_embeds[49m[43m=[49m[43minputs_embeds[49m[43m,[49m
+[32m   1927[39m [43m            [49m[43mlabels[49m[43m=[49m[43mlabels[49m[43m,[49m
+[32m   1928[39m [43m            [49m[43moutput_attentions[49m[43m=[49m[43moutput_attentions[49m[43m,[49m
+[32m   1929[39m [43m            [49m[43moutput_hidden_states[49m[43m=[49m[43moutput_hidden_states[49m[43m,[49m
+[32m   1930[39m [43m            [49m[43mreturn_dict[49m[43m=[49m[43mreturn_dict[49m[43m,[49m
+[32m   1931[39m [43m            [49m[43m*[49m[43m*[49m[43mkwargs[49m[43m,[49m
+[32m   1932[39m [43m        [49m[43m)[49m
+[32m   1934[39m batch_size = _get_batch_size(input_ids, inputs_embeds)
+[32m   1935[39m [38;5;28;01mif[39;00m attention_mask [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+[32m   1936[39m     [38;5;66;03m# concat prompt attention mask[39;00m
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/torch/nn/modules/module.py:1775[39m, in [36mModule._wrapped_call_impl[39m[34m(self, *args, **kwargs)[39m
+[32m   1773[39m     [38;5;28;01mreturn[39;00m [38;5;28mself[39m._compiled_call_impl(*args, **kwargs)  [38;5;66;03m# type: ignore[misc][39;00m
+[32m   1774[39m [38;5;28;01melse[39;00m:
+[32m-> [39m[32m1775[39m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[43m.[49m[43m_call_impl[49m[43m([49m[43m*[49m[43margs[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mkwargs[49m[43m)[49m
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/torch/nn/modules/module.py:1786[39m, in [36mModule._call_impl[39m[34m(self, *args, **kwargs)[39m
+[32m   1781[39m [38;5;66;03m# If we don't have any hooks, we want to skip the rest of the logic in[39;00m
+[32m   1782[39m [38;5;66;03m# this function, and just call forward.[39;00m
+[32m   1783[39m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m ([38;5;28mself[39m._backward_hooks [38;5;129;01mor[39;00m [38;5;28mself[39m._backward_pre_hooks [38;5;129;01mor[39;00m [38;5;28mself[39m._forward_hooks [38;5;129;01mor[39;00m [38;5;28mself[39m._forward_pre_hooks
+[32m   1784[39m         [38;5;129;01mor[39;00m _global_backward_pre_hooks [38;5;129;01mor[39;00m _global_backward_hooks
+[32m   1785[39m         [38;5;129;01mor[39;00m _global_forward_hooks [38;5;129;01mor[39;00m _global_forward_pre_hooks):
+[32m-> [39m[32m1786[39m     [38;5;28;01mreturn[39;00m [43mforward_call[49m[43m([49m[43m*[49m[43margs[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mkwargs[49m[43m)[49m
+[32m   1788[39m result = [38;5;28;01mNone[39;00m
+[32m   1789[39m called_always_called_hooks = [38;5;28mset[39m()
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/peft/tuners/tuners_utils.py:311[39m, in [36mBaseTuner.forward[39m[34m(self, *args, **kwargs)[39m
+[32m    310[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34mforward[39m([38;5;28mself[39m, *args: Any, **kwargs: Any):
+[32m--> [39m[32m311[39m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[43m.[49m[43mmodel[49m[43m.[49m[43mforward[49m[43m([49m[43m*[49m[43margs[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mkwargs[49m[43m)[49m
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/utils/generic.py:843[39m, in [36mcan_return_tuple.<locals>.wrapper[39m[34m(self, *args, **kwargs)[39m
+[32m    841[39m [38;5;28;01mif[39;00m return_dict_passed [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+[32m    842[39m     return_dict = return_dict_passed
+[32m--> [39m[32m843[39m output = [43mfunc[49m[43m([49m[38;5;28;43mself[39;49m[43m,[49m[43m [49m[43m*[49m[43margs[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mkwargs[49m[43m)[49m
+[32m    844[39m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m return_dict [38;5;129;01mand[39;00m [38;5;129;01mnot[39;00m [38;5;28misinstance[39m(output, [38;5;28mtuple[39m):
+[32m    845[39m     output = output.to_tuple()
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/models/llava/modeling_llava.py:370[39m, in [36mLlavaForConditionalGeneration.forward[39m[34m(self, input_ids, pixel_values, attention_mask, position_ids, past_key_values, inputs_embeds, vision_feature_layer, vision_feature_select_strategy, labels, cache_position, logits_to_keep, image_sizes, **kwargs)[39m
+[32m    323[39m [38;5;129m@can_return_tuple[39m
+[32m    324[39m [38;5;129m@auto_docstring[39m
+[32m    325[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34mforward[39m(
+[32m   (...)[39m[32m    339[39m     **kwargs: Unpack[TransformersKwargs],
+[32m    340[39m ) -> [38;5;28mtuple[39m | LlavaCausalLMOutputWithPast:
+[32m    341[39m [38;5;250m    [39m[33mr[39m[33;03m"""[39;00m
+[32m    342[39m [33;03m    labels (`torch.LongTensor` of shape `(batch_size, sequence_length)`, *optional*):[39;00m
+[32m    343[39m [33;03m        Labels for computing the masked language modeling loss. Indices should either be in `[0, ...,[39;00m
+[32m   (...)[39m[32m    368[39m [33;03m    "USER:  \nWhat's the content of the image? ASSISTANT: The image features a busy city street with a stop sign prominently displayed"[39;00m
+[32m    369[39m [33;03m    ```"""[39;00m
+[32m--> [39m[32m370[39m     outputs = [38;5;28;43mself[39;49m[43m.[49m[43mmodel[49m[43m([49m
+[32m    371[39m [43m        [49m[43minput_ids[49m[43m=[49m[43minput_ids[49m[43m,[49m
+[32m    372[39m [43m        [49m[43mpixel_values[49m[43m=[49m[43mpixel_values[49m[43m,[49m
+[32m    373[39m [43m        [49m[43mattention_mask[49m[43m=[49m[43mattention_mask[49m[43m,[49m
+[32m    374[39m [43m        [49m[43mposition_ids[49m[43m=[49m[43mposition_ids[49m[43m,[49m
+[32m    375[39m [43m        [49m[43mpast_key_values[49m[43m=[49m[43mpast_key_values[49m[43m,[49m
+[32m    376[39m [43m        [49m[43minputs_embeds[49m[43m=[49m[43minputs_embeds[49m[43m,[49m
+[32m    377[39m [43m        [49m[43mvision_feature_layer[49m[43m=[49m[43mvision_feature_layer[49m[43m,[49m
+[32m    378[39m [43m        [49m[43mvision_feature_select_strategy[49m[43m=[49m[43mvision_feature_select_strategy[49m[43m,[49m
+[32m    379[39m [43m        [49m[43mcache_position[49m[43m=[49m[43mcache_position[49m[43m,[49m
+[32m    380[39m [43m        [49m[43mimage_sizes[49m[43m=[49m[43mimage_sizes[49m[43m,[49m
+[32m    381[39m [43m        [49m[43m*[49m[43m*[49m[43mkwargs[49m[43m,[49m
+[32m    382[39m [43m    [49m[43m)[49m
+[32m    384[39m     hidden_states = outputs[[32m0[39m]
+[32m    385[39m     [38;5;66;03m# Only compute necessary logits, and do not upcast them to float if we are not computing the loss[39;00m
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/torch/nn/modules/module.py:1775[39m, in [36mModule._wrapped_call_impl[39m[34m(self, *args, **kwargs)[39m
+[32m   1773[39m     [38;5;28;01mreturn[39;00m [38;5;28mself[39m._compiled_call_impl(*args, **kwargs)  [38;5;66;03m# type: ignore[misc][39;00m
+[32m   1774[39m [38;5;28;01melse[39;00m:
+[32m-> [39m[32m1775[39m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[43m.[49m[43m_call_impl[49m[43m([49m[43m*[49m[43margs[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mkwargs[49m[43m)[49m
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/torch/nn/modules/module.py:1786[39m, in [36mModule._call_impl[39m[34m(self, *args, **kwargs)[39m
+[32m   1781[39m [38;5;66;03m# If we don't have any hooks, we want to skip the rest of the logic in[39;00m
+[32m   1782[39m [38;5;66;03m# this function, and just call forward.[39;00m
+[32m   1783[39m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m ([38;5;28mself[39m._backward_hooks [38;5;129;01mor[39;00m [38;5;28mself[39m._backward_pre_hooks [38;5;129;01mor[39;00m [38;5;28mself[39m._forward_hooks [38;5;129;01mor[39;00m [38;5;28mself[39m._forward_pre_hooks
+[32m   1784[39m         [38;5;129;01mor[39;00m _global_backward_pre_hooks [38;5;129;01mor[39;00m _global_backward_hooks
+[32m   1785[39m         [38;5;129;01mor[39;00m _global_forward_hooks [38;5;129;01mor[39;00m _global_forward_pre_hooks):
+[32m-> [39m[32m1786[39m     [38;5;28;01mreturn[39;00m [43mforward_call[49m[43m([49m[43m*[49m[43margs[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mkwargs[49m[43m)[49m
+[32m   1788[39m result = [38;5;28;01mNone[39;00m
+[32m   1789[39m called_always_called_hooks = [38;5;28mset[39m()
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/utils/generic.py:843[39m, in [36mcan_return_tuple.<locals>.wrapper[39m[34m(self, *args, **kwargs)[39m
+[32m    841[39m [38;5;28;01mif[39;00m return_dict_passed [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+[32m    842[39m     return_dict = return_dict_passed
+[32m--> [39m[32m843[39m output = [43mfunc[49m[43m([49m[38;5;28;43mself[39;49m[43m,[49m[43m [49m[43m*[49m[43margs[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mkwargs[49m[43m)[49m
+[32m    844[39m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m return_dict [38;5;129;01mand[39;00m [38;5;129;01mnot[39;00m [38;5;28misinstance[39m(output, [38;5;28mtuple[39m):
+[32m    845[39m     output = output.to_tuple()
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/models/llava/modeling_llava.py:256[39m, in [36mLlavaModel.forward[39m[34m(self, input_ids, pixel_values, attention_mask, position_ids, past_key_values, inputs_embeds, vision_feature_layer, vision_feature_select_strategy, cache_position, image_sizes, **kwargs)[39m
+[32m    248[39m     image_features = [38;5;28mself[39m.get_image_features(
+[32m    249[39m         pixel_values=pixel_values,
+[32m    250[39m         vision_feature_layer=vision_feature_layer,
+[32m   (...)[39m[32m    253[39m         return_dict=[38;5;28;01mTrue[39;00m,
+[32m    254[39m     ).pooler_output
+[32m    255[39m     image_features = torch.cat(image_features, dim=[32m0[39m).to(inputs_embeds.device, inputs_embeds.dtype)
+[32m--> [39m[32m256[39m     special_image_mask = [38;5;28;43mself[39;49m[43m.[49m[43mget_placeholder_mask[49m[43m([49m
+[32m    257[39m [43m        [49m[43minput_ids[49m[43m,[49m[43m [49m[43minputs_embeds[49m[43m=[49m[43minputs_embeds[49m[43m,[49m[43m [49m[43mimage_features[49m[43m=[49m[43mimage_features[49m
+[32m    258[39m [43m    [49m[43m)[49m
+[32m    259[39m     inputs_embeds = inputs_embeds.masked_scatter(special_image_mask, image_features)
+[32m    261[39m outputs = [38;5;28mself[39m.language_model(
+[32m    262[39m     attention_mask=attention_mask,
+[32m    263[39m     position_ids=position_ids,
+[32m   (...)[39m[32m    267[39m     **kwargs,
+[32m    268[39m )
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/models/llava/modeling_llava.py:219[39m, in [36mLlavaModel.get_placeholder_mask[39m[34m(self, input_ids, inputs_embeds, image_features)[39m
+[32m    217[39m n_image_features = image_features.shape[[32m0[39m] * image_features.shape[[32m1[39m]
+[32m    218[39m special_image_mask = special_image_mask.unsqueeze(-[32m1[39m).expand_as(inputs_embeds).to(inputs_embeds.device)
+[32m--> [39m[32m219[39m [43mtorch_compilable_check[49m[43m([49m
+[32m    220[39m [43m    [49m[43minputs_embeds[49m[43m[[49m[43mspecial_image_mask[49m[43m][49m[43m.[49m[43mnumel[49m[43m([49m[43m)[49m[43m [49m[43m==[49m[43m [49m[43mimage_features[49m[43m.[49m[43mnumel[49m[43m([49m[43m)[49m[43m,[49m
+[32m    221[39m [43m    [49m[33;43mf[39;49m[33;43m"[39;49m[33;43mImage features and image tokens do not match, tokens: [39;49m[38;5;132;43;01m{[39;49;00m[43mn_image_tokens[49m[38;5;132;43;01m}[39;49;00m[33;43m, features: [39;49m[38;5;132;43;01m{[39;49;00m[43mn_image_features[49m[38;5;132;43;01m}[39;49;00m[33;43m"[39;49m[43m,[49m
+[32m    222[39m [43m[49m[43m)[49m
+[32m    223[39m [38;5;28;01mreturn[39;00m special_image_mask
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/utils/import_utils.py:1449[39m, in [36mtorch_compilable_check[39m[34m(cond, msg, error_type)[39m
+[32m   1447[39m     torch._check_tensor_all_with(error_type, cond, msg_callable)
+[32m   1448[39m [38;5;28;01melse[39;00m:
+[32m-> [39m[32m1449[39m     [43mtorch[49m[43m.[49m[43m_check_with[49m[43m([49m[43merror_type[49m[43m,[49m[43m [49m[43mcond[49m[43m,[49m[43m [49m[43mmsg_callable[49m[43m)[49m
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/torch/__init__.py:1677[39m, in [36m_check_with[39m[34m(error_type, cond, message)[39m
+[32m   1673[39m         [38;5;28;01mraise[39;00m [38;5;167;01mTypeError[39;00m([33m"[39m[33mmessage must be a callable[39m[33m"[39m)
+[32m   1675[39m     message_evaluated = [38;5;28mstr[39m(message())
+[32m-> [39m[32m1677[39m [38;5;28;01mraise[39;00m error_type(message_evaluated)
+
+[31mValueError[39m: Image features and image tokens do not match, tokens: 0, features: 20321280
+
+Memory cleaned
+[W306 10:11:42.879792461 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+WARNING: 15_pixtral12bFT.ipynb execution failed, continuing with next notebook...
+
+==========================================
+All notebooks processed!
+==========================================
