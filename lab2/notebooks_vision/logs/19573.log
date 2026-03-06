@@ -1,0 +1,9 @@
+Using GPU(s): 3
+index, name, memory.total [MiB], memory.free [MiB]
+0, NVIDIA L40S, 46068 MiB, 20669 MiB
+1, NVIDIA L40S, 46068 MiB, 21841 MiB
+2, NVIDIA L40S, 46068 MiB, 29981 MiB
+3, NVIDIA L40S, 46068 MiB, 45469 MiB
+==========================================
+Starting execution of: 15_pixtral12bFT.ipynb
+==========================================
