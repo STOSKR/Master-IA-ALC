@@ -15,3 +15,11 @@ Memory cleaned
 ==========================================
 Starting execution of: 11_Qwen3.ipynb
 ==========================================
+Successfully saved to: entregables/11_Qwen3_out.ipynb
+Memory cleaned after successful execution
+Memory cleaned
+[W306 03:35:30.911553089 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+
+==========================================
+All notebooks processed!
+==========================================

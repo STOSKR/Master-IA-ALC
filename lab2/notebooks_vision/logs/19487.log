@@ -1,0 +1,170 @@
+Using GPU(s): 0
+index, name, memory.total [MiB], memory.free [MiB]
+0, NVIDIA L40S, 46068 MiB, 45469 MiB
+1, NVIDIA L40S, 46068 MiB, 21805 MiB
+2, NVIDIA L40S, 46068 MiB, 15361 MiB
+3, NVIDIA L40S, 46068 MiB, 28127 MiB
+==========================================
+Starting execution of: 15_pixtral12bFT.ipynb
+==========================================
+Error occurred. Notebook saved to: entregables/15_pixtral12bFT_error.ipynb
+Error: An error occurred while executing the following cell:
+------------------
+class SexismMemeDataset(TorchDataset):
+    """Dataset para clasificación de memes con imagen + texto para Pixtral."""
+    
+    def __init__(self, df, processor, base_dir, max_length=512):
+        self.df = df.reset_index(drop=True)
+        self.processor = processor
+        self.base_dir = Path(base_dir)
+        self.max_length = max_length
+        
+    def __len__(self):
+        return len(self.df)
+    
+    def __getitem__(self, idx):
+        row = self.df.iloc[idx]
+        
+        # Cargar imagen
+        img_path = self.base_dir / row['path_memes']
+        try:
+            image = Image.open(img_path).convert('RGB')
+        except Exception as e:
+            print(f"[WARN] Error cargando imagen {img_path}: {e}")
+            image = Image.new('RGB', (224, 224), color='gray')
+        
+        # Construir prompt para Pixtral
+        combined_text = row[TEXT_COLUMN]
+        label = row['label_int']
+        target_text = "YES" if label == 1 else "NO"
+        
+        # Formato de prompt para Pixtral (usa [IMG] como placeholder de imagen)
+        system_instruction = (
+            "You are an expert content moderator. Analyze the meme and determine "
+            "if it contains sexist content. Answer only YES or NO."
+        )
+        user_content = f"[IMG]Analyze this meme. {combined_text}\n\nIs this meme sexist? Answer YES or NO."
+        
+        # Construir prompt completo con respuesta para entrenamiento
+        prompt = f"[INST]{system_instruction}\n\n{user_content}[/INST]{target_text}"
+        
+        # Tokenizar
+        encoding = self.processor(
+            text=prompt,
+            images=image,
+            truncation=True,
+            max_length=self.max_length,
+            padding="max_length",
+            return_tensors="pt"
+        )
+        
+        # Squeeze para eliminar dimensión batch
+        item = {k: v.squeeze(0) for k, v in encoding.items()}
+        
+        # Los labels son los input_ids (para CLM)
+        item['labels'] = item['input_ids'].clone()
+        
+        return item
+
+
+class DataCollatorForVLM:
+    """Collator para Vision-Language Model."""
+    
+    def __init__(self, processor, pad_token_id=None):
+        self.processor = processor
+        self.pad_token_id = pad_token_id or processor.tokenizer.pad_token_id
+        
+    def __call__(self, features):
+        batch = {}
+        
+        # Handle input_ids
+        if 'input_ids' in features[0]:
+            batch['input_ids'] = torch.stack([f['input_ids'] for f in features])
+            
+        # Handle attention_mask
+        if 'attention_mask' in features[0]:
+            batch['attention_mask'] = torch.stack([f['attention_mask'] for f in features])
+            
+        # Handle pixel_values (imágenes)
+        if 'pixel_values' in features[0]:
+            batch['pixel_values'] = torch.stack([f['pixel_values'] for f in features])
+            
+        # Handle labels
+        if 'labels' in features[0]:
+            batch['labels'] = torch.stack([f['labels'] for f in features])
+            # Reemplazar pad tokens con -100 para ignorar en loss
+            batch['labels'][batch['labels'] == self.pad_token_id] = -100
+            
+        return batch
+
+
+# Crear datasets
+print("Creando datasets...")
+train_dataset = SexismMemeDataset(train_df, processor, DATA_BASE_DIR, MAX_LENGTH)
+eval_dataset = SexismMemeDataset(val_df, processor, DATA_BASE_DIR, MAX_LENGTH)
+
+print(f"✓ Train dataset: {len(train_dataset)} ejemplos")
+print(f"✓ Eval dataset: {len(eval_dataset)} ejemplos")
+
+# Verificar un ejemplo
+sample = train_dataset[0]
+print(f"\nEjemplo de entrada:")
+print(f"  input_ids shape: {sample['input_ids'].shape}")
+if 'pixel_values' in sample:
+    print(f"  pixel_values shape: {sample['pixel_values'].shape}")
+print(f"  labels shape: {sample['labels'].shape}")
+------------------
+
+----- stdout -----
+Creando datasets...
+✓ Train dataset: 2146 ejemplos
+✓ Eval dataset: 537 ejemplos
+------------------
+
+[31m---------------------------------------------------------------------------[39m
+[31mValueError[39m                                Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[5][39m[32m, line 98[39m
+[32m     95[39m [38;5;28mprint[39m([33mf[39m[33m"[39m[33m✓ Eval dataset: [39m[38;5;132;01m{[39;00m[38;5;28mlen[39m(eval_dataset)[38;5;132;01m}[39;00m[33m ejemplos[39m[33m"[39m)
+[32m     97[39m [38;5;66;03m# Verificar un ejemplo[39;00m
+[32m---> [39m[32m98[39m sample = [43mtrain_dataset[49m[43m[[49m[32;43m0[39;49m[43m][49m
+[32m     99[39m [38;5;28mprint[39m([33mf[39m[33m"[39m[38;5;130;01m\n[39;00m[33mEjemplo de entrada:[39m[33m"[39m)
+[32m    100[39m [38;5;28mprint[39m([33mf[39m[33m"[39m[33m  input_ids shape: [39m[38;5;132;01m{[39;00msample[[33m'[39m[33minput_ids[39m[33m'[39m].shape[38;5;132;01m}[39;00m[33m"[39m)
+
+[36mCell[39m[36m [39m[32mIn[5][39m[32m, line 40[39m, in [36mSexismMemeDataset.__getitem__[39m[34m(self, idx)[39m
+[32m     37[39m prompt = [33mf[39m[33m"[39m[33m[INST][39m[38;5;132;01m{[39;00msystem_instruction[38;5;132;01m}[39;00m[38;5;130;01m\n[39;00m[38;5;130;01m\n[39;00m[38;5;132;01m{[39;00muser_content[38;5;132;01m}[39;00m[33m[/INST][39m[38;5;132;01m{[39;00mtarget_text[38;5;132;01m}[39;00m[33m"[39m
+[32m     39[39m [38;5;66;03m# Tokenizar[39;00m
+[32m---> [39m[32m40[39m encoding = [38;5;28;43mself[39;49m[43m.[49m[43mprocessor[49m[43m([49m
+[32m     41[39m [43m    [49m[43mtext[49m[43m=[49m[43mprompt[49m[43m,[49m
+[32m     42[39m [43m    [49m[43mimages[49m[43m=[49m[43mimage[49m[43m,[49m
+[32m     43[39m [43m    [49m[43mtruncation[49m[43m=[49m[38;5;28;43;01mTrue[39;49;00m[43m,[49m
+[32m     44[39m [43m    [49m[43mmax_length[49m[43m=[49m[38;5;28;43mself[39;49m[43m.[49m[43mmax_length[49m[43m,[49m
+[32m     45[39m [43m    [49m[43mpadding[49m[43m=[49m[33;43m"[39;49m[33;43mmax_length[39;49m[33;43m"[39;49m[43m,[49m
+[32m     46[39m [43m    [49m[43mreturn_tensors[49m[43m=[49m[33;43m"[39;49m[33;43mpt[39;49m[33;43m"[39;49m
+[32m     47[39m [43m[49m[43m)[49m
+[32m     49[39m [38;5;66;03m# Squeeze para eliminar dimensión batch[39;00m
+[32m     50[39m item = {k: v.squeeze([32m0[39m) [38;5;28;01mfor[39;00m k, v [38;5;129;01min[39;00m encoding.items()}
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/models/pixtral/processing_pixtral.py:169[39m, in [36mPixtralProcessor.__call__[39m[34m(self, images, text, **kwargs)[39m
+[32m    167[39m output_kwargs[[33m"[39m[33mtext_kwargs[39m[33m"[39m].pop([33m"[39m[33mreturn_token_type_ids[39m[33m"[39m, [38;5;28;01mNone[39;00m)
+[32m    168[39m text_inputs = [38;5;28mself[39m.tokenizer(prompt_strings, **output_kwargs[[33m"[39m[33mtext_kwargs[39m[33m"[39m], return_tensors=[38;5;28;01mNone[39;00m)
+[32m--> [39m[32m169[39m [38;5;28;43mself[39;49m[43m.[49m[43m_check_special_mm_tokens[49m[43m([49m[43mprompt_strings[49m[43m,[49m[43m [49m[43mtext_inputs[49m[43m,[49m[43m [49m[43mmodalities[49m[43m=[49m[43m[[49m[33;43m"[39;49m[33;43mimage[39;49m[33;43m"[39;49m[43m][49m[43m)[49m
+[32m    171[39m [38;5;28;01mif[39;00m return_mm_token_type_ids:
+[32m    172[39m     array_ids = np.array(text_inputs[[33m"[39m[33minput_ids[39m[33m"[39m])
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/processing_utils.py:1929[39m, in [36mProcessorMixin._check_special_mm_tokens[39m[34m(self, text, text_inputs, modalities)[39m
+[32m   1926[39m text_count = [sample.count(token_str) [38;5;28;01mfor[39;00m sample [38;5;129;01min[39;00m text]
+[32m   1928[39m [38;5;28;01mif[39;00m ids_count != text_count:
+[32m-> [39m[32m1929[39m     [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m(
+[32m   1930[39m         [33mf[39m[33m"[39m[33mMismatch in `[39m[38;5;132;01m{[39;00mmodality[38;5;132;01m}[39;00m[33m` token count between text and `input_ids`. Got ids=[39m[38;5;132;01m{[39;00mids_count[38;5;132;01m}[39;00m[33m and text=[39m[38;5;132;01m{[39;00mtext_count[38;5;132;01m}[39;00m[33m. [39m[33m"[39m
+[32m   1931[39m         [33m"[39m[33mLikely due to `truncation=[39m[33m'[39m[33mmax_length[39m[33m'[39m[33m`. Please disable truncation or increase `max_length`.[39m[33m"[39m
+[32m   1932[39m     )
+
+[31mValueError[39m: Mismatch in `image` token count between text and `input_ids`. Got ids=[470] and text=[1620]. Likely due to `truncation='max_length'`. Please disable truncation or increase `max_length`.
+
+Memory cleaned
+[W306 00:39:55.664608449 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+WARNING: 15_pixtral12bFT.ipynb execution failed, continuing with next notebook...
+
+==========================================
+All notebooks processed!
+==========================================

@@ -1,0 +1,153 @@
+Using GPU(s): 3
+index, name, memory.total [MiB], memory.free [MiB]
+0, NVIDIA L40S, 46068 MiB, 31199 MiB
+1, NVIDIA L40S, 46068 MiB, 21841 MiB
+2, NVIDIA L40S, 46068 MiB, 32863 MiB
+3, NVIDIA L40S, 46068 MiB, 45469 MiB
+==========================================
+Starting execution of: 15_pixtral12bFT.ipynb
+==========================================
+Error occurred. Notebook saved to: entregables/15_pixtral12bFT_error_1.ipynb
+Error: An error occurred while executing the following cell:
+------------------
+# Ejecutar entrenamiento
+print("Iniciando entrenamiento...")
+trainer.train()
+
+# Guardar modelo final
+print("\nGuardando modelo...")
+model.save_pretrained(SAVE_PATH)
+processor.save_pretrained(SAVE_PATH)
+print(f"✓ Modelo guardado en: {SAVE_PATH}")
+------------------
+
+----- stdout -----
+Iniciando entrenamiento...
+------------------
+
+[31m---------------------------------------------------------------------------[39m
+[31mValueError[39m                                Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[7][39m[32m, line 3[39m
+[32m      1[39m [38;5;66;03m# Ejecutar entrenamiento[39;00m
+[32m      2[39m [38;5;28mprint[39m([33m"[39m[33mIniciando entrenamiento...[39m[33m"[39m)
+[32m----> [39m[32m3[39m [43mtrainer[49m[43m.[49m[43mtrain[49m[43m([49m[43m)[49m
+[32m      5[39m [38;5;66;03m# Guardar modelo final[39;00m
+[32m      6[39m [38;5;28mprint[39m([33m"[39m[38;5;130;01m\n[39;00m[33mGuardando modelo...[39m[33m"[39m)
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/trainer.py:1424[39m, in [36mTrainer.train[39m[34m(self, resume_from_checkpoint, trial, ignore_keys_for_eval)[39m
+[32m   1422[39m ctx = suppress_progress_bars() [38;5;28;01mif[39;00m args.push_to_hub [38;5;28;01melse[39;00m contextlib.nullcontext()
+[32m   1423[39m [38;5;28;01mwith[39;00m ctx:
+[32m-> [39m[32m1424[39m     [38;5;28;01mreturn[39;00m [43minner_training_loop[49m[43m([49m
+[32m   1425[39m [43m        [49m[43margs[49m[43m=[49m[43margs[49m[43m,[49m
+[32m   1426[39m [43m        [49m[43mresume_from_checkpoint[49m[43m=[49m[43mresume_from_checkpoint[49m[43m,[49m
+[32m   1427[39m [43m        [49m[43mtrial[49m[43m=[49m[43mtrial[49m[43m,[49m
+[32m   1428[39m [43m        [49m[43mignore_keys_for_eval[49m[43m=[49m[43mignore_keys_for_eval[49m[43m,[49m
+[32m   1429[39m [43m    [49m[43m)[49m
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/trainer.py:1506[39m, in [36mTrainer._inner_training_loop[39m[34m(self, batch_size, args, resume_from_checkpoint, trial, ignore_keys_for_eval)[39m
+[32m   1504[39m [38;5;28;01mfor[39;00m epoch [38;5;129;01min[39;00m [38;5;28mrange[39m(epochs_trained, num_train_epochs):
+[32m   1505[39m     [38;5;28mself[39m.control = [38;5;28mself[39m.callback_handler.on_epoch_begin([38;5;28mself[39m.args, [38;5;28mself[39m.state, [38;5;28mself[39m.control)
+[32m-> [39m[32m1506[39m     [38;5;28;43mself[39;49m[43m.[49m[43m_run_epoch[49m[43m([49m
+[32m   1507[39m [43m        [49m[43mmodel[49m[43m=[49m[43mmodel[49m[43m,[49m
+[32m   1508[39m [43m        [49m[43mepoch[49m[43m=[49m[43mepoch[49m[43m,[49m
+[32m   1509[39m [43m        [49m[43mtrain_dataloader[49m[43m=[49m[43mtrain_dataloader[49m[43m,[49m
+[32m   1510[39m [43m        [49m[43msteps_in_epoch[49m[43m=[49m[43msteps_in_epoch[49m[43m,[49m
+[32m   1511[39m [43m        [49m[43mnum_update_steps_per_epoch[49m[43m=[49m[43mnum_update_steps_per_epoch[49m[43m,[49m
+[32m   1512[39m [43m        [49m[43mtrial[49m[43m=[49m[43mtrial[49m[43m,[49m
+[32m   1513[39m [43m        [49m[43mignore_keys_for_eval[49m[43m=[49m[43mignore_keys_for_eval[49m[43m,[49m
+[32m   1514[39m [43m        [49m[43mstart_time[49m[43m=[49m[43mstart_time[49m[43m,[49m
+[32m   1515[39m [43m        [49m[43mresume_from_checkpoint[49m[43m=[49m[43mresume_from_checkpoint[49m[43m,[49m
+[32m   1516[39m [43m        [49m[43mepochs_trained[49m[43m=[49m[43mepochs_trained[49m[43m,[49m
+[32m   1517[39m [43m        [49m[43msteps_trained_in_current_epoch[49m[43m=[49m[43msteps_trained_in_current_epoch[49m[43m,[49m
+[32m   1518[39m [43m    [49m[43m)[49m
+[32m   1519[39m     [38;5;28;01mif[39;00m [38;5;28mself[39m.control.should_training_stop:
+[32m   1520[39m         [38;5;28;01mbreak[39;00m
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/trainer.py:1701[39m, in [36mTrainer._run_epoch[39m[34m(self, model, epoch, train_dataloader, steps_in_epoch, num_update_steps_per_epoch, trial, ignore_keys_for_eval, start_time, resume_from_checkpoint, epochs_trained, steps_trained_in_current_epoch)[39m
+[32m   1697[39m [38;5;28;01mfor[39;00m update_step [38;5;129;01min[39;00m [38;5;28mrange[39m(num_update_steps_trained, num_update_steps_per_epoch):
+[32m   1698[39m     num_batches = (
+[32m   1699[39m         [38;5;28mself[39m.args.gradient_accumulation_steps [38;5;28;01mif[39;00m update_step != (num_update_steps_per_epoch - [32m1[39m) [38;5;28;01melse[39;00m remainder
+[32m   1700[39m     )
+[32m-> [39m[32m1701[39m     batch_samples, num_items_in_batch = [38;5;28;43mself[39;49m[43m.[49m[43mget_batch_samples[49m[43m([49m[43mepoch_iterator[49m[43m,[49m[43m [49m[43mnum_batches[49m[43m,[49m[43m [49m[38;5;28;43mself[39;49m[43m.[49m[43margs[49m[43m.[49m[43mdevice[49m[43m)[49m
+[32m   1703[39m     [38;5;66;03m# This is used to correctly scale the loss when the last accumulation step has fewer batches.[39;00m
+[32m   1704[39m     [38;5;66;03m# Not used if `num_items_in_batch` is not None.[39;00m
+[32m   1705[39m     [38;5;28mself[39m.current_gradient_accumulation_steps = [38;5;28mlen[39m(batch_samples)
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/trainer.py:2102[39m, in [36mTrainer.get_batch_samples[39m[34m(self, epoch_iterator, num_batches, device)[39m
+[32m   2100[39m [38;5;28;01mfor[39;00m _ [38;5;129;01min[39;00m [38;5;28mrange[39m(num_batches):
+[32m   2101[39m     [38;5;28;01mtry[39;00m:
+[32m-> [39m[32m2102[39m         batch_samples.append([38;5;28;43mnext[39;49m[43m([49m[43mepoch_iterator[49m[43m)[49m)
+[32m   2103[39m     [38;5;28;01mexcept[39;00m [38;5;167;01mStopIteration[39;00m:
+[32m   2104[39m         [38;5;28;01mbreak[39;00m
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/accelerate/data_loader.py:577[39m, in [36mDataLoaderShard.__iter__[39m[34m(self)[39m
+[32m    575[39m [38;5;66;03m# We iterate one batch ahead to check when we are at the end[39;00m
+[32m    576[39m [38;5;28;01mtry[39;00m:
+[32m--> [39m[32m577[39m     current_batch = [38;5;28;43mnext[39;49m[43m([49m[43mdataloader_iter[49m[43m)[49m
+[32m    578[39m [38;5;28;01mexcept[39;00m [38;5;167;01mStopIteration[39;00m:
+[32m    579[39m     [38;5;28mself[39m.end()
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/torch/utils/data/dataloader.py:732[39m, in [36m_BaseDataLoaderIter.__next__[39m[34m(self)[39m
+[32m    729[39m [38;5;28;01mif[39;00m [38;5;28mself[39m._sampler_iter [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+[32m    730[39m     [38;5;66;03m# TODO(https://github.com/pytorch/pytorch/issues/76750)[39;00m
+[32m    731[39m     [38;5;28mself[39m._reset()  [38;5;66;03m# type: ignore[call-arg][39;00m
+[32m--> [39m[32m732[39m data = [38;5;28;43mself[39;49m[43m.[49m[43m_next_data[49m[43m([49m[43m)[49m
+[32m    733[39m [38;5;28mself[39m._num_yielded += [32m1[39m
+[32m    734[39m [38;5;28;01mif[39;00m (
+[32m    735[39m     [38;5;28mself[39m._dataset_kind == _DatasetKind.Iterable
+[32m    736[39m     [38;5;129;01mand[39;00m [38;5;28mself[39m._IterableDataset_len_called [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m
+[32m    737[39m     [38;5;129;01mand[39;00m [38;5;28mself[39m._num_yielded > [38;5;28mself[39m._IterableDataset_len_called
+[32m    738[39m ):
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/torch/utils/data/dataloader.py:788[39m, in [36m_SingleProcessDataLoaderIter._next_data[39m[34m(self)[39m
+[32m    786[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34m_next_data[39m([38;5;28mself[39m):
+[32m    787[39m     index = [38;5;28mself[39m._next_index()  [38;5;66;03m# may raise StopIteration[39;00m
+[32m--> [39m[32m788[39m     data = [38;5;28;43mself[39;49m[43m.[49m[43m_dataset_fetcher[49m[43m.[49m[43mfetch[49m[43m([49m[43mindex[49m[43m)[49m  [38;5;66;03m# may raise StopIteration[39;00m
+[32m    789[39m     [38;5;28;01mif[39;00m [38;5;28mself[39m._pin_memory:
+[32m    790[39m         data = _utils.pin_memory.pin_memory(data, [38;5;28mself[39m._pin_memory_device)
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/torch/utils/data/_utils/fetch.py:52[39m, in [36m_MapDatasetFetcher.fetch[39m[34m(self, possibly_batched_index)[39m
+[32m     50[39m         data = [38;5;28mself[39m.dataset.__getitems__(possibly_batched_index)
+[32m     51[39m     [38;5;28;01melse[39;00m:
+[32m---> [39m[32m52[39m         data = [[38;5;28;43mself[39;49m[43m.[49m[43mdataset[49m[43m[[49m[43midx[49m[43m][49m [38;5;28;01mfor[39;00m idx [38;5;129;01min[39;00m possibly_batched_index]
+[32m     53[39m [38;5;28;01melse[39;00m:
+[32m     54[39m     data = [38;5;28mself[39m.dataset[possibly_batched_index]
+
+[36mCell[39m[36m [39m[32mIn[5][39m[32m, line 40[39m, in [36mSexismMemeDataset.__getitem__[39m[34m(self, idx)[39m
+[32m     37[39m prompt = [33mf[39m[33m"[39m[33m[INST][39m[38;5;132;01m{[39;00msystem_instruction[38;5;132;01m}[39;00m[38;5;130;01m\n[39;00m[38;5;130;01m\n[39;00m[38;5;132;01m{[39;00muser_content[38;5;132;01m}[39;00m[33m[/INST][39m[38;5;132;01m{[39;00mtarget_text[38;5;132;01m}[39;00m[33m"[39m
+[32m     39[39m [38;5;66;03m# Tokenizar[39;00m
+[32m---> [39m[32m40[39m encoding = [38;5;28;43mself[39;49m[43m.[49m[43mprocessor[49m[43m([49m
+[32m     41[39m [43m    [49m[43mtext[49m[43m=[49m[43mprompt[49m[43m,[49m
+[32m     42[39m [43m    [49m[43mimages[49m[43m=[49m[43mimage[49m[43m,[49m
+[32m     43[39m [43m    [49m[43mtruncation[49m[43m=[49m[38;5;28;43;01mTrue[39;49;00m[43m,[49m
+[32m     44[39m [43m    [49m[43mmax_length[49m[43m=[49m[38;5;28;43mself[39;49m[43m.[49m[43mmax_length[49m[43m,[49m
+[32m     45[39m [43m    [49m[43mpadding[49m[43m=[49m[33;43m"[39;49m[33;43mmax_length[39;49m[33;43m"[39;49m[43m,[49m
+[32m     46[39m [43m    [49m[43mreturn_tensors[49m[43m=[49m[33;43m"[39;49m[33;43mpt[39;49m[33;43m"[39;49m
+[32m     47[39m [43m[49m[43m)[49m
+[32m     49[39m [38;5;66;03m# Squeeze para eliminar dimensión batch[39;00m
+[32m     50[39m item = {k: v.squeeze([32m0[39m) [38;5;28;01mfor[39;00m k, v [38;5;129;01min[39;00m encoding.items()}
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/models/pixtral/processing_pixtral.py:169[39m, in [36mPixtralProcessor.__call__[39m[34m(self, images, text, **kwargs)[39m
+[32m    167[39m output_kwargs[[33m"[39m[33mtext_kwargs[39m[33m"[39m].pop([33m"[39m[33mreturn_token_type_ids[39m[33m"[39m, [38;5;28;01mNone[39;00m)
+[32m    168[39m text_inputs = [38;5;28mself[39m.tokenizer(prompt_strings, **output_kwargs[[33m"[39m[33mtext_kwargs[39m[33m"[39m], return_tensors=[38;5;28;01mNone[39;00m)
+[32m--> [39m[32m169[39m [38;5;28;43mself[39;49m[43m.[49m[43m_check_special_mm_tokens[49m[43m([49m[43mprompt_strings[49m[43m,[49m[43m [49m[43mtext_inputs[49m[43m,[49m[43m [49m[43mmodalities[49m[43m=[49m[43m[[49m[33;43m"[39;49m[33;43mimage[39;49m[33;43m"[39;49m[43m][49m[43m)[49m
+[32m    171[39m [38;5;28;01mif[39;00m return_mm_token_type_ids:
+[32m    172[39m     array_ids = np.array(text_inputs[[33m"[39m[33minput_ids[39m[33m"[39m])
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/processing_utils.py:1929[39m, in [36mProcessorMixin._check_special_mm_tokens[39m[34m(self, text, text_inputs, modalities)[39m
+[32m   1926[39m text_count = [sample.count(token_str) [38;5;28;01mfor[39;00m sample [38;5;129;01min[39;00m text]
+[32m   1928[39m [38;5;28;01mif[39;00m ids_count != text_count:
+[32m-> [39m[32m1929[39m     [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m(
+[32m   1930[39m         [33mf[39m[33m"[39m[33mMismatch in `[39m[38;5;132;01m{[39;00mmodality[38;5;132;01m}[39;00m[33m` token count between text and `input_ids`. Got ids=[39m[38;5;132;01m{[39;00mids_count[38;5;132;01m}[39;00m[33m and text=[39m[38;5;132;01m{[39;00mtext_count[38;5;132;01m}[39;00m[33m. [39m[33m"[39m
+[32m   1931[39m         [33m"[39m[33mLikely due to `truncation=[39m[33m'[39m[33mmax_length[39m[33m'[39m[33m`. Please disable truncation or increase `max_length`.[39m[33m"[39m
+[32m   1932[39m     )
+
+[31mValueError[39m: Mismatch in `image` token count between text and `input_ids`. Got ids=[1988] and text=[3969]. Likely due to `truncation='max_length'`. Please disable truncation or increase `max_length`.
+
+Memory cleaned
+[W306 09:23:06.787684788 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+WARNING: 15_pixtral12bFT.ipynb execution failed, continuing with next notebook...
+
+==========================================
+All notebooks processed!
+==========================================

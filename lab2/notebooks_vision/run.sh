@@ -8,6 +8,7 @@
 
 # Lista de notebooks a ejecutar (separados por espacios)
 NOTEBOOKS="15_pixtral12bFT.ipynb"
+# NOTEBOOKS="14_internvl3_5FT.ipynb"
 
 source /opt/miniconda3/etc/profile.d/conda.sh
 conda activate RFA2526pt
