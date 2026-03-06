@@ -1,0 +1,97 @@
+Using GPU(s): 0
+index, name, memory.total [MiB], memory.free [MiB]
+0, NVIDIA L40S, 46068 MiB, 39245 MiB
+1, NVIDIA L40S, 46068 MiB, 15575 MiB
+2, NVIDIA L40S, 46068 MiB, 23942 MiB
+3, NVIDIA L40S, 46068 MiB, 2378 MiB
+==========================================
+Starting execution of: 15_pixtral12bFT_clean.ipynb
+==========================================
+Error occurred. Notebook saved to: entregables/15_pixtral12bFT_clean_error.ipynb
+Error: An error occurred while executing the following cell:
+------------------
+from transformers import LlavaForConditionalGeneration  # ← volver al original
+
+if torch.cuda.is_available():
+    torch.cuda.empty_cache()
+    gc.collect()
+
+bnb_config = BitsAndBytesConfig(
+    load_in_8bit=True,
+)
+
+print(f"Cargando modelo {MODEL_NAME}...")
+
+model = LlavaForConditionalGeneration.from_pretrained(
+    MODEL_NAME,
+    # quantization_config=bnb_config,
+    torch_dtype=DTYPE,
+    low_cpu_mem_usage=True,
+    device_map="auto",
+)
+
+processor = AutoProcessor.from_pretrained(MODEL_NAME)
+
+if processor.tokenizer.pad_token is None:
+    processor.tokenizer.pad_token = processor.tokenizer.eos_token
+    processor.tokenizer.pad_token_id = processor.tokenizer.eos_token_id
+
+model = prepare_model_for_kbit_training(model)
+
+lora_config = LoraConfig(
+    r=16,
+    lora_alpha=32,
+    target_modules=["q_proj", "k_proj", "v_proj", "o_proj"],
+    lora_dropout=0.1,
+    bias="none",
+    task_type="CAUSAL_LM"
+)
+
+model = get_peft_model(model, lora_config)
+model.print_trainable_parameters()
+------------------
+
+----- stdout -----
+Cargando modelo mistral-community/pixtral-12b...
+----- stdout -----
+
+----- stderr -----
+The image processor of type `PixtralImageProcessor` is now loaded as a fast processor by default, even if the model checkpoint was saved with a slow processor. This is a breaking change and may produce slightly different outputs. To continue using the slow processor, instantiate this class with `use_fast=False`.
+------------------
+
+[31m---------------------------------------------------------------------------[39m
+[31mOutOfMemoryError[39m                          Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[4][39m[32m, line 27[39m
+[32m     24[39m     processor.tokenizer.pad_token = processor.tokenizer.eos_token
+[32m     25[39m     processor.tokenizer.pad_token_id = processor.tokenizer.eos_token_id
+[32m---> [39m[32m27[39m model = [43mprepare_model_for_kbit_training[49m[43m([49m[43mmodel[49m[43m)[49m
+[32m     29[39m lora_config = LoraConfig(
+[32m     30[39m     r=[32m16[39m,
+[32m     31[39m     lora_alpha=[32m32[39m,
+[32m   (...)[39m[32m     35[39m     task_type=[33m"[39m[33mCAUSAL_LM[39m[33m"[39m
+[32m     36[39m )
+[32m     38[39m model = get_peft_model(model, lora_config)
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/peft/utils/other.py:175[39m, in [36mprepare_model_for_kbit_training[39m[34m(model, use_gradient_checkpointing, gradient_checkpointing_kwargs)[39m
+[32m    171[39m     [38;5;28;01mfor[39;00m param [38;5;129;01min[39;00m model.parameters():
+[32m    172[39m         [38;5;28;01mif[39;00m (
+[32m    173[39m             (param.dtype == torch.float16) [38;5;129;01mor[39;00m (param.dtype == torch.bfloat16)
+[32m    174[39m         ) [38;5;129;01mand[39;00m param.[34m__class__[39m.[34m__name__[39m != [33m"[39m[33mParams4bit[39m[33m"[39m:
+[32m--> [39m[32m175[39m             param.data = [43mparam[49m[43m.[49m[43mdata[49m[43m.[49m[43mto[49m[43m([49m[43mtorch[49m[43m.[49m[43mfloat32[49m[43m)[49m
+[32m    177[39m [38;5;28;01mif[39;00m (
+[32m    178[39m     loaded_in_kbit
+[32m    179[39m     [38;5;129;01mor[39;00m is_gptq_quantized
+[32m   (...)[39m[32m    184[39m ) [38;5;129;01mand[39;00m use_gradient_checkpointing:
+[32m    185[39m     [38;5;66;03m# When having `use_reentrant=False` + gradient_checkpointing, there is no need for this hack[39;00m
+[32m    186[39m     [38;5;28;01mif[39;00m [33m"[39m[33muse_reentrant[39m[33m"[39m [38;5;129;01mnot[39;00m [38;5;129;01min[39;00m gradient_checkpointing_kwargs [38;5;129;01mor[39;00m gradient_checkpointing_kwargs[[33m"[39m[33muse_reentrant[39m[33m"[39m]:
+[32m    187[39m         [38;5;66;03m# For backward compatibility[39;00m
+
+[31mOutOfMemoryError[39m: CUDA out of memory. Tried to allocate 280.00 MiB. GPU 0 has a total capacity of 44.40 GiB of which 63.00 MiB is free. Process 2497531 has 6.07 GiB memory in use. Including non-PyTorch memory, this process has 38.26 GiB memory in use. Of the allocated memory 37.46 GiB is allocated by PyTorch, and 321.53 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+
+Memory cleaned
+[W306 18:05:32.345623727 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+WARNING: 15_pixtral12bFT_clean.ipynb execution failed, continuing with next notebook...
+
+==========================================
+All notebooks processed!
+==========================================

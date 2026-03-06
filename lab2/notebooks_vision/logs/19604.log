@@ -1,0 +1,99 @@
+Using GPU(s): 0
+index, name, memory.total [MiB], memory.free [MiB]
+0, NVIDIA L40S, 46068 MiB, 39245 MiB
+1, NVIDIA L40S, 46068 MiB, 15575 MiB
+2, NVIDIA L40S, 46068 MiB, 27769 MiB
+3, NVIDIA L40S, 46068 MiB, 2378 MiB
+==========================================
+Starting execution of: 15_pixtral12bFT_clean.ipynb
+==========================================
+Error occurred. Notebook saved to: entregables/15_pixtral12bFT_clean_error.ipynb
+Error: An error occurred while executing the following cell:
+------------------
+if torch.cuda.is_available():
+    torch.cuda.empty_cache()
+    gc.collect()
+
+bnb_config = BitsAndBytesConfig(
+    load_in_8bit=True,
+)
+
+print(f"Cargando modelo {MODEL_NAME}...")
+
+model = AutoModelForCausalLM.from_pretrained(
+    MODEL_NAME,
+    quantization_config=bnb_config,
+    torch_dtype=DTYPE,
+    low_cpu_mem_usage=True,
+    device_map="auto",
+)
+
+processor = AutoProcessor.from_pretrained(MODEL_NAME)
+
+if processor.tokenizer.pad_token is None:
+    processor.tokenizer.pad_token = processor.tokenizer.eos_token
+    processor.tokenizer.pad_token_id = processor.tokenizer.eos_token_id
+
+model = prepare_model_for_kbit_training(model)
+
+lora_config = LoraConfig(
+    r=16,
+    lora_alpha=32,
+    target_modules=["q_proj", "k_proj", "v_proj", "o_proj"],
+    lora_dropout=0.1,
+    bias="none",
+    task_type="CAUSAL_LM"
+)
+
+model = get_peft_model(model, lora_config)
+model.print_trainable_parameters()
+
+print(f"\n✓ Modelo Pixtral 12B cargado con LoRA")
+if torch.cuda.is_available():
+    print(f"  Memoria GPU usada: {torch.cuda.memory_allocated() / 1e9:.2f} GB")
+
+------------------
+
+----- stdout -----
+Cargando modelo mistral-community/pixtral-12b...
+----- stderr -----
+`torch_dtype` is deprecated! Use `dtype` instead!
+------------------
+
+[31m---------------------------------------------------------------------------[39m
+[31mValueError[39m                                Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[4][39m[32m, line 11[39m
+[32m      5[39m bnb_config = BitsAndBytesConfig(
+[32m      6[39m     load_in_8bit=[38;5;28;01mTrue[39;00m,
+[32m      7[39m )
+[32m      9[39m [38;5;28mprint[39m([33mf[39m[33m"[39m[33mCargando modelo [39m[38;5;132;01m{[39;00mMODEL_NAME[38;5;132;01m}[39;00m[33m...[39m[33m"[39m)
+[32m---> [39m[32m11[39m model = [43mAutoModelForCausalLM[49m[43m.[49m[43mfrom_pretrained[49m[43m([49m
+[32m     12[39m [43m    [49m[43mMODEL_NAME[49m[43m,[49m
+[32m     13[39m [43m    [49m[43mquantization_config[49m[43m=[49m[43mbnb_config[49m[43m,[49m
+[32m     14[39m [43m    [49m[43mtorch_dtype[49m[43m=[49m[43mDTYPE[49m[43m,[49m
+[32m     15[39m [43m    [49m[43mlow_cpu_mem_usage[49m[43m=[49m[38;5;28;43;01mTrue[39;49;00m[43m,[49m
+[32m     16[39m [43m    [49m[43mdevice_map[49m[43m=[49m[33;43m"[39;49m[33;43mauto[39;49m[33;43m"[39;49m[43m,[49m
+[32m     17[39m [43m)[49m
+[32m     19[39m processor = AutoProcessor.from_pretrained(MODEL_NAME)
+[32m     21[39m [38;5;28;01mif[39;00m processor.tokenizer.pad_token [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+
+[36mFile [39m[32m~/.conda/envs/RFA2526pt/lib/python3.12/site-packages/transformers/models/auto/auto_factory.py:377[39m, in [36m_BaseAutoModelClass.from_pretrained[39m[34m(cls, pretrained_model_name_or_path, *model_args, **kwargs)[39m
+[32m    373[39m         config = config.get_text_config()
+[32m    374[39m     [38;5;28;01mreturn[39;00m model_class.from_pretrained(
+[32m    375[39m         pretrained_model_name_or_path, *model_args, config=config, **hub_kwargs, **kwargs
+[32m    376[39m     )
+[32m--> [39m[32m377[39m [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m(
+[32m    378[39m     [33mf[39m[33m"[39m[33mUnrecognized configuration class [39m[38;5;132;01m{[39;00mconfig.[34m__class__[39m[38;5;132;01m}[39;00m[33m for this kind of AutoModel: [39m[38;5;132;01m{[39;00m[38;5;28mcls[39m.[34m__name__[39m[38;5;132;01m}[39;00m[33m.[39m[38;5;130;01m\n[39;00m[33m"[39m
+[32m    379[39m     [33mf[39m[33m"[39m[33mModel type should be one of [39m[38;5;132;01m{[39;00m[33m'[39m[33m, [39m[33m'[39m.join(c.[34m__name__[39m[38;5;250m [39m[38;5;28;01mfor[39;00m[38;5;250m [39mc[38;5;250m [39m[38;5;129;01min[39;00m[38;5;250m [39m[38;5;28mcls[39m._model_mapping)[38;5;132;01m}[39;00m[33m.[39m[33m"[39m
+[32m    380[39m )
+
+[31mValueError[39m: Unrecognized configuration class <class 'transformers.models.llava.configuration_llava.LlavaConfig'> for this kind of AutoModel: AutoModelForCausalLM.
+Model type should be one of AfmoeConfig, ApertusConfig, ArceeConfig, AriaTextConfig, BambaConfig, BartConfig, BertConfig, BertGenerationConfig, BigBirdConfig, BigBirdPegasusConfig, BioGptConfig, BitNetConfig, BlenderbotConfig, BlenderbotSmallConfig, BloomConfig, BltConfig, CamembertConfig, LlamaConfig, CodeGenConfig, CohereConfig, Cohere2Config, CpmAntConfig, CTRLConfig, CwmConfig, Data2VecTextConfig, DbrxConfig, DeepseekV2Config, DeepseekV3Config, DiffLlamaConfig, DogeConfig, Dots1Config, ElectraConfig, Emu3Config, ErnieConfig, Ernie4_5Config, Ernie4_5_MoeConfig, Exaone4Config, ExaoneMoeConfig, FalconConfig, FalconH1Config, FalconMambaConfig, FlexOlmoConfig, FuyuConfig, GemmaConfig, Gemma2Config, Gemma3Config, Gemma3TextConfig, Gemma3nConfig, Gemma3nTextConfig, GitConfig, GlmConfig, Glm4Config, Glm4MoeConfig, Glm4MoeLiteConfig, GlmMoeDsaConfig, GotOcr2Config, GPT2Config, GPT2Config, GPTBigCodeConfig, GPTNeoConfig, GPTNeoXConfig, GPTNeoXJapaneseConfig, GptOssConfig, GPTJConfig, GraniteConfig, GraniteMoeConfig, GraniteMoeHybridConfig, GraniteMoeSharedConfig, HeliumConfig, HunYuanDenseV1Config, HunYuanMoEV1Config, Jais2Config, JambaConfig, JetMoeConfig, Lfm2Config, Lfm2MoeConfig, LlamaConfig, Llama4Config, Llama4TextConfig, LongcatFlashConfig, MambaConfig, Mamba2Config, MarianConfig, MBartConfig, MegatronBertConfig, MiniMaxConfig, MiniMaxM2Config, MinistralConfig, Ministral3Config, MistralConfig, MixtralConfig, MllamaConfig, ModernBertDecoderConfig, MoshiConfig, MptConfig, MusicgenConfig, MusicgenMelodyConfig, MvpConfig, NanoChatConfig, NemotronConfig, NemotronHConfig, OlmoConfig, Olmo2Config, Olmo3Config, OlmoHybridConfig, OlmoeConfig, OpenAIGPTConfig, OPTConfig, PegasusConfig, PersimmonConfig, PhiConfig, Phi3Config, Phi4MultimodalConfig, PhimoeConfig, PLBartConfig, ProphetNetConfig, Qwen2Config, Qwen2MoeConfig, Qwen3Config, Qwen3_5Config, Qwen3_5MoeConfig, Qwen3_5MoeTextConfig, Qwen3_5TextConfig, Qwen3MoeConfig, Qwen3NextConfig, RecurrentGemmaConfig, ReformerConfig, RemBertConfig, RobertaConfig, RobertaPreLayerNormConfig, RoCBertConfig, RoFormerConfig, RwkvConfig, SeedOssConfig, SmolLM3Config, SolarOpenConfig, StableLmConfig, Starcoder2Config, TrOCRConfig, VaultGemmaConfig, WhisperConfig, XGLMConfig, XLMConfig, XLMRobertaConfig, XLMRobertaXLConfig, XLNetConfig, xLSTMConfig, XmodConfig, YoutuConfig, ZambaConfig, Zamba2Config.
+
+Memory cleaned
+[W306 18:00:43.930353543 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+WARNING: 15_pixtral12bFT_clean.ipynb execution failed, continuing with next notebook...
+
+==========================================
+All notebooks processed!
+==========================================

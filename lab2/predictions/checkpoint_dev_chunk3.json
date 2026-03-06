@@ -175,7 +175,7 @@
   },
   {
     "id_EXIST": "210919",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "NO"
   },
@@ -217,7 +217,7 @@
   },
   {
     "id_EXIST": "211762",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "YES"
   },
@@ -475,7 +475,7 @@
   },
   {
     "id_EXIST": "110142",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "YES"
   },
@@ -1537,7 +1537,7 @@
   },
   {
     "id_EXIST": "211537",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "YES"
   },

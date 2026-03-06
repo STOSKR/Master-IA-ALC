@@ -847,7 +847,7 @@
   },
   {
     "id_EXIST": "110063",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "UNKNOWN"
   },
@@ -1417,7 +1417,7 @@
   },
   {
     "id_EXIST": "110756",
-    "classification": "YES",
+    "classification": "NO",
     "confidence": 0.9,
     "true_label": "UNKNOWN"
   },
@@ -3793,7 +3793,7 @@
   },
   {
     "id_EXIST": "210793",
-    "classification": "NO",
+    "classification": "YES",
     "confidence": 0.9,
     "true_label": "UNKNOWN"
   },
