@@ -1,0 +1,137 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{51}} % tick
+\newcommand{\xmark}{\ding{55}} % cruz
+
+\geometry{
+    a4paper,
+    left=2.5cm,
+    right=2.5cm,
+    top=3cm,
+    bottom=3cm,
+    headheight=14pt
+}
+
+\addto\captionsspanish{\renewcommand{\tablename}{Tabla}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Laboratorio 1 - EXIST 2025}
+\lhead{Detección de sexismo}
+\rfoot{\thepage}
+
+\definecolor{azuloscuro}{RGB}{0,51,102}
+\definecolor{azulclaro}{RGB}{51,102,153}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=azuloscuro,
+    citecolor=azuloscuro,
+    urlcolor=azulclaro
+}
+
+\title{%
+    \huge Clasificación de sexismo en memes\\[0.2cm]
+    \large{MIARFID - ALC - Laboratorio 2}
+}
+\author{Pablo Segovia Martínez - Shiyi Cheng}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introducción}
+
+Detección automática de contenido sexista en memes usando el dataset EXIST. Clasificación binaria (sexista/no sexista) mediante modelos de embeddings de texto, de vision y de lenguaje.
+
+\section{Metodología}
+
+\subsection{Preprocesamiento}
+
+    Se dispone de un dataset con imágenes, su texto extraído, su descripción y datos multimodales tales como EEG, ET y HR. En primer lugar, se realizó un análisis previo para determinar qué variables multimodales eran significativas para su posible uso posterior. Las variables seleccionadas fueron las siguientes:
+    \begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}\setlength{\topsep}{2pt}
+    	\item \texttt{ET\_reaction\_time}
+    	\item \texttt{ET\_fixations\_count}
+    	\item \texttt{ET\_fixations\_duration\_mean\_ns}
+    	\item \texttt{ET\_fixations\_duration\_std\_ns}
+    	\item \texttt{ET\_saccades\_count}
+    	\item \texttt{ET\_saccades\_duration\_mean\_ns}
+    	\item \texttt{ET\_blinks\_count}
+    	\item \texttt{ET\_blinks\_duration\_min\_ns}
+    	\item \texttt{ET\_blinks\_duration\_mean\_ns}
+    	\item \texttt{HR\_garmin\_hr\_std}
+    	\item \texttt{HR\_garmin\_hr\_mean}
+    	\item \texttt{HR\_garmin\_hr\_max}
+    	\item \texttt{HR\_garmin\_hr\_min}
+    \end{itemize}
+    
+    Por otra parte, para modelos de solo texto se utilizó en algún momento como entrada la descripción de la imagen junto con el texto extraído.
+
+\subsection{Modelos evaluados}
+\begin{itemize}
+	\item Lineales: MLP de caraterísticas sensoriales.
+    \item Modelos de embeddings FT: F2LLM-4B.
+    \item Modelos de visión FT: DinoV3-vitl16 y convnextv2-large-22k-224.
+    \item Ensamble de probabilidades de MLP, F2LLM y DinoV3.
+    \item Multimodal que concatena embeddings de DinoV3, F2LLM y del MLP sensorial para ser procesados por un MLP.
+    \item Vision LLM con y sin FT: InternVL3\_5-8B, Pixtral-12b y Qwen3-VL-8B-Instruct.
+\end{itemize}
+
+\section{Resultados}
+\begin{table}[h]
+	\centering
+	\small
+	\begin{tabular}{@{}lcccc@{}}
+		\toprule
+		\textbf{Modelo} & \textbf{Entrada} & \textbf{FT} & \textbf{Acc} & \textbf{F1-Macro} \\
+		\midrule
+		\multirow{1}{*}{MLP sensorial}
+		& sensorial          & \xmark       &    0.57          &     0.57         \\
+		\midrule
+		\multirow{2}{*}{F2LLM-4B}
+		& texto          & \cmark       &   0.72          &    0.69          \\
+		& descripción + texto          & \cmark       &   0.75           &     0.72        \\
+		\midrule
+		\multirow{1}{*}{DinoV3}
+		& imagen          & \cmark       &    0.60          &     0.39         \\
+		\midrule
+		\multirow{1}{*}{ConvNext}
+		& imagen             & \cmark       &     0.60         &    0.37        \\
+		\midrule
+		\multirow{1}{*}{Ensamble}
+		& probabilidades             & \xmark       &     0.74         &    0.69        \\
+		\midrule
+		\multirow{1}{*}{Multimodal MLP}
+		& embeddings             & \xmark       &     0.78         &    \textbf{0.77}        \\
+		\midrule
+		\multirow{2}{*}{InternVL 3.5 8B}
+		& imagen + descripción + texto    &  \xmark       &     0.77         &    0.75        \\
+		& imagen + descripción + texto    &  \cmark       &     0.73         &    0.70        \\
+		\midrule
+		\multirow{2}{*}{Pixtral 12B}
+		& imagen + descripción + texto    &  \xmark       &     0.77         &    0.75        \\
+		& imagen + descripción + texto    &  \cmark       &     0.60         &    0.37        \\
+		\midrule
+		\multirow{2}{*}{Qwen3VL 8B}
+		& imagen + descripción + texto    &  \xmark       &     0.76         &    0.72        \\
+		& imagen + descripción + texto    &  \cmark       &     \textbf{0.79}         &    \textbf{0.77}        \\
+		\bottomrule
+	\end{tabular}
+	\caption{Comparativa de todos los modelos utilizados.}
+\end{table}
+
+\section{Conclusiones}
+	Aquellos modelos que no son multimodales por si solos proporcionan resultados pobres, pero si se combinan se obtienen muy buenos resultados, como es el caso de \textbf{Multimodal MLP}. Por otra parte, modelos multimodales basados en Vision LLM con \textit{zero-shot} generan buenos resultados, pero si se ajustan a la tarea pueden igualar/mejorar a modelos más \textit{adhocs} como el Multimodal MLP, como es el caso de \textbf{Qwen3VL 8B}.
+
+\end{document}
