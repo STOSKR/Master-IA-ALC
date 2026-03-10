@@ -7,3 +7,11 @@ index, name, memory.total [MiB], memory.free [MiB]
 ==========================================
 Starting execution of: 15_pixtral12bFT_clean.ipynb
 ==========================================
+Successfully saved to: entregables/15_pixtral12bFT_clean_out.ipynb
+Memory cleaned after successful execution
+Memory cleaned
+[W306 20:07:53.192542893 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+
+==========================================
+All notebooks processed!
+==========================================
