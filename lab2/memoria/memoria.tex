@@ -26,7 +26,7 @@
 
 \pagestyle{fancy}
 \fancyhf{}
-\rhead{Laboratorio 1 - EXIST 2025}
+\rhead{Laboratorio 2 - EXIST 2026}
 \lhead{Detección de sexismo}
 \rfoot{\thepage}
 
@@ -76,7 +76,7 @@ Detección automática de contenido sexista en memes usando el dataset EXIST. Cl
     	\item \texttt{HR\_garmin\_hr\_min}
     \end{itemize}
     
-	La descripción de la imagen junto con el texto extraído se ha utilizado como entrada para los modelos de solo texto.
+	Además, la descripción de la imagen junto con el texto extraído se ha utilizado como entrada para los modelos de solo texto.
 	
 \subsection{Modelos evaluados}
 \begin{itemize}
@@ -113,25 +113,29 @@ Detección automática de contenido sexista en memes usando el dataset EXIST. Cl
 		& probabilidades             & \xmark       &     0.74         &    0.69        \\
 		\midrule
 		\multirow{1}{*}{Multimodal MLP}
-		& embeddings             & \xmark       &     0.78         &    \textbf{0.77}        \\
+		& embeddings             & \xmark       &     0.78         &    0.77        \\
+		\midrule
+		\multirow{1}{*}{InternVL 2.5 26B}
+		& imagen + descripción + texto    &  \xmark       &     0.77         &    0.76        \\
 		\midrule
 		\multirow{2}{*}{InternVL 3.5 8B}
 		& imagen + descripción + texto    &  \xmark       &     0.77         &    0.75        \\
 		& imagen + descripción + texto    &  \cmark       &     0.73         &    0.70        \\
-		\midrule
-		\multirow{2}{*}{Pixtral 12B}
-		& imagen + descripción + texto    &  \xmark       &     0.77         &    0.75        \\
-		& imagen + descripción + texto    &  \cmark       &     0.60         &    0.37        \\
+		
 		\midrule
 		\multirow{2}{*}{Qwen3VL 8B}
 		& imagen + descripción + texto    &  \xmark       &     0.76         &    0.72        \\
-		& imagen + descripción + texto    &  \cmark       &     \textbf{0.79}         &    \textbf{0.77}        \\
+		& imagen + descripción + texto    &  \cmark       &     0.79         &    0.77        \\
+		\midrule
+		\multirow{2}{*}{Pixtral 12B}
+		& imagen + descripción + texto    &  \xmark       &     0.77         &    0.75        \\
+		& imagen + descripción + texto    &  \cmark       &     \textbf{0.80}         &    \textbf{0.78}        \\
 		\bottomrule
 	\end{tabular}
 	\caption{Comparativa de todos los modelos utilizados.}
 \end{table}
 
 \section{Conclusiones}
-	Aquellos modelos que no son multimodales por si solos proporcionan resultados pobres, pero si se combinan se obtienen muy buenos resultados, como es el caso de \textbf{Multimodal MLP}. Por otra parte, modelos multimodales basados en Vision LLM con \textit{zero-shot} generan buenos resultados, pero si se ajustan a la tarea pueden igualar/mejorar a modelos más \textit{adhocs} como el Multimodal MLP, como es el caso de \textbf{Qwen3VL 8B}.
+	Aquellos modelos que no son multimodales por si solos proporcionan resultados pobres, pero si se combinan se obtienen muy buenos resultados, como es el caso de \textbf{Multimodal MLP}. Por otra parte, modelos multimodales basados en Vision LLM con zero-shot generan buenos resultados, pero si se ajustan a la tarea pueden igualar/mejorar a modelos más adhocs como el Multimodal MLP, como es el caso de \textbf{Qwen3VL 8B} y \textbf{Pixtral 12B}.
 
 \end{document}
