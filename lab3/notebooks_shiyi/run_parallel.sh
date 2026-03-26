@@ -4,10 +4,14 @@
 #SBATCH --job-name=vision
 #SBATCH --mem=32G
 #SBATCH --gres=shard:4
-#SBATCH --array=0-2
+#SBATCH --array=0-6
 #SBATCH -o logs/vision_%A_%a.log
 
 NOTEBOOKS=(
+    "01_build_multimodal_features.ipynb"
+    "02_train_classifier_es.ipynb"
+    "03_train_classifier_en.ipynb"
+    "04_train_classifier_es_en.ipynb"
     "05_exp_audio_vad.ipynb"
     "06_exp_video_clean.ipynb"
     "07_exp_sensorial_filter.ipynb"

@@ -8,7 +8,7 @@
 
 # Lista de notebooks a ejecutar (separados por espacios)
 # NOTEBOOKS="05_exp_audio_vad.ipynb"
-NOTEBOOKS="05_exp_audio_vad.ipynb 06_exp_video_clean.ipynb 07_exp_sensorial_filter.ipynb 08_exp_fusion_avanzada.ipynb"
+NOTEBOOKS="01_build_multimodal_features.ipynb 02_train_classifier_es.ipynb 03_train_classifier_en.ipynb 04_train_classifier_es_en.ipynb 05_exp_audio_vad.ipynb 06_exp_video_clean.ipynb 07_exp_sensorial_filter.ipynb 08_exp_fusion_avanzada.ipynb"
 
 source /opt/miniconda3/etc/profile.d/conda.sh
 conda activate RFA2526pt
