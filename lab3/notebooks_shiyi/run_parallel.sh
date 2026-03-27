@@ -8,7 +8,6 @@
 #SBATCH -o logs/vision_%A_%a.log
 
 NOTEBOOKS=(
-    "01_build_multimodal_features.ipynb"
     "02_train_classifier_es.ipynb"
     "03_train_classifier_en.ipynb"
     "04_train_classifier_es_en.ipynb"
