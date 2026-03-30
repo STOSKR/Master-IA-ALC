@@ -1,0 +1,5 @@
+config,model,best_cv_f1_macro,param_clf__C,param_clf__gamma,param_clf__kernel,param_max_depth,param_min_samples_leaf,param_min_samples_split,param_n_estimators,param_learning_rate,param_max_leaf_nodes
+ES_EN,svm_rbf,0.6697336199801486,1.0,0.001,rbf,,,,,,
+ES_EN,hist_gb,0.6663683825841862,,,,8.0,40.0,,,0.1,63.0
+ES_EN,extra_trees,0.6622827575682753,,,,20.0,1.0,8.0,300.0,,
+ES_EN,random_forest,0.6508348029479858,,,,20.0,3.0,2.0,600.0,,
