@@ -1,0 +1,698 @@
+✅ Se encontraron 12 archivos de predicciones para evaluar.
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_f2llm4BEmbed_en.json
+============================================================
+2026-03-30 11:55:22,039 - pyevall.evaluation - INFO -             evaluate() - Evaluating the following metrics ['Accuracy', 'FMeasure']
+2026-03-30 11:55:22,081 - pyevall.metrics.metrics - INFO -             evaluate() - Executing accuracy evaluation method
+2026-03-30 11:55:22,189 - pyevall.metrics.metrics - INFO -             evaluate() - Executing fmeasure evaluation method
+{
+  "metrics": {
+    "Accuracy": {
+      "name": "Accuracy",
+      "acronym": "Acc",
+      "description": "Coming soon!",
+      "status": "OK",
+      "results": {
+        "test_cases": [{
+          "name": "EXIST2026",
+          "average": 0.6533864541832669
+        }],
+        "average_per_test_case": 0.6533864541832669
+      }
+    },
+    "FMeasure": {
+      "name": "F-Measure",
+      "acronym": "F1",
+      "description": "Coming soon!",
+      "status": "OK",
+      "results": {
+        "test_cases": [{
+          "name": "EXIST2026",
+          "classes": {
+            "YES": 0.6666666666666666,
+            "NO": 0.6390041493775933
+          },
+          "average": 0.6528354080221299
+        }],
+        "average_per_test_case": 0.6528354080221299
+      }
+    }
+  },
+  "files": {
+    "BeingChillingWeWillWin_f2llm4BEmbed_en.json": {
+      "name": "BeingChillingWeWillWin_f2llm4BEmbed_en.json",
+      "status": "OK",
+      "gold": false,
+      "description": "Use parameter: report=\"embedded\"!",
+      "errors": {}
+    },
+    "test_gold_pyevall.json": {
+      "name": "test_gold_pyevall.json",
+      "status": "OK",
+      "gold": true,
+      "description": "Use parameter: report=\"embedded\"!",
+      "errors": {}
+    }
+  }
+}
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_f2llm4BEmbed_es.json
+============================================================
+2026-03-30 11:55:22,214 - pyevall.evaluation - INFO -             evaluate() - Evaluating the following metrics ['Accuracy', 'FMeasure']
+2026-03-30 11:55:22,254 - pyevall.metrics.metrics - INFO -             evaluate() - Executing accuracy evaluation method
+2026-03-30 11:55:22,358 - pyevall.metrics.metrics - INFO -             evaluate() - Executing fmeasure evaluation method
+{
+  "metrics": {
+    "Accuracy": {
+      "name": "Accuracy",
+      "acronym": "Acc",
+      "description": "Coming soon!",
+      "status": "OK",
+      "results": {
+        "test_cases": [{
+          "name": "EXIST2026",
+          "average": 0.6613545816733067
+        }],
+        "average_per_test_case": 0.6613545816733067
+      }
+    },
+    "FMeasure": {
+      "name": "F-Measure",
+      "acronym": "F1",
+      "description": "Coming soon!",
+      "status": "OK",
+      "results": {
+        "test_cases": [{
+          "name": "EXIST2026",
+          "classes": {
+            "YES": 0.5549738219895288,
+            "NO": 0.7266881028938906
+          },
+          "average": 0.6408309624417097
+        }],
+        "average_per_test_case": 0.6408309624417097
+      }
+    }
+  },
+  "files": {
+    "BeingChillingWeWillWin_f2llm4BEmbed_es.json": {
+      "name": "BeingChillingWeWillWin_f2llm4BEmbed_es.json",
+      "status": "OK",
+      "gold": false,
+      "description": "Use parameter: report=\"embedded\"!",
+      "errors": {}
+    },
+    "test_gold_pyevall.json": {
+      "name": "test_gold_pyevall.json",
+      "status": "OK",
+      "gold": true,
+      "description": "Use parameter: report=\"embedded\"!",
+      "errors": {}
+    }
+  }
+}
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_f2llm4BEmbed_es_en.json
+============================================================
+2026-03-30 11:55:22,362 - pyevall.evaluation - INFO -             evaluate() - Evaluating the following metrics ['Accuracy', 'FMeasure']
+2026-03-30 11:55:22,402 - pyevall.metrics.metrics - INFO -             evaluate() - Executing accuracy evaluation method
+2026-03-30 11:55:22,505 - pyevall.metrics.metrics - INFO -             evaluate() - Executing fmeasure evaluation method
+{
+  "metrics": {
+    "Accuracy": {
+      "name": "Accuracy",
+      "acronym": "Acc",
+      "description": "Coming soon!",
+      "status": "OK",
+      "results": {
+        "test_cases": [{
+          "name": "EXIST2026",
+          "average": 0.6952191235059761
+        }],
+        "average_per_test_case": 0.6952191235059761
+      }
+    },
+    "FMeasure": {
+      "name": "F-Measure",
+      "acronym": "F1",
+      "description": "Coming soon!",
+      "status": "OK",
+      "results": {
+        "test_cases": [{
+          "name": "EXIST2026",
+          "classes": {
+            "YES": 0.673773987206823,
+            "NO": 0.7140186915887851
+          },
+          "average": 0.693896339397804
+        }],
+        "average_per_test_case": 0.693896339397804
+      }
+    }
+  },
+  "files": {
+    "BeingChillingWeWillWin_f2llm4BEmbed_es_en.json": {
+      "name": "BeingChillingWeWillWin_f2llm4BEmbed_es_en.json",
+      "status": "OK",
+      "gold": false,
+      "description": "Use parameter: report=\"embedded\"!",
+      "errors": {}
+    },
+    "test_gold_pyevall.json": {
+      "name": "test_gold_pyevall.json",
+      "status": "OK",
+      "gold": true,
+      "description": "Use parameter: report=\"embedded\"!",
+      "errors": {}
+    }
+  }
+}
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_f2llm4BText_en.json
+============================================================
+2026-03-30 11:55:22,510 - pyevall.evaluation - INFO -             evaluate() - Evaluating the following metrics ['Accuracy', 'FMeasure']
+2026-03-30 11:55:22,549 - pyevall.metrics.metrics - INFO -             evaluate() - Executing accuracy evaluation method
+2026-03-30 11:55:22,653 - pyevall.metrics.metrics - INFO -             evaluate() - Executing fmeasure evaluation method
+{
+  "metrics": {
+    "Accuracy": {
+      "name": "Accuracy",
+      "acronym": "Acc",
+      "description": "Coming soon!",
+      "status": "OK",
+      "results": {
+        "test_cases": [{
+          "name": "EXIST2026",
+          "average": 0.6414342629482072
+        }],
+        "average_per_test_case": 0.6414342629482072
+      }
+    },
+    "FMeasure": {
+      "name": "F-Measure",
+      "acronym": "F1",
+      "description": "Coming soon!",
+      "status": "OK",
+      "results": {
+        "test_cases": [{
+          "name": "EXIST2026",
+          "classes": {
+            "YES": 0.5287958115183247,
+            "NO": 0.7106109324758842
+          },
+          "average": 0.6197033719971045
+        }],
+        "average_per_test_case": 0.6197033719971045
+      }
+    }
+  },
+  "files": {
+    "BeingChillingWeWillWin_f2llm4BText_en.json": {
+      "name": "BeingChillingWeWillWin_f2llm4BText_en.json",
+      "status": "OK",
+      "gold": false,
+      "description": "Use parameter: report=\"embedded\"!",
+      "errors": {}
+    },
+    "test_gold_pyevall.json": {
+      "name": "test_gold_pyevall.json",
+      "status": "OK",
+      "gold": true,
+      "description": "Use parameter: report=\"embedded\"!",
+      "errors": {}
+    }
+  }
+}
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_f2llm4BText_es.json
+============================================================
+2026-03-30 11:55:22,657 - pyevall.evaluation - INFO -             evaluate() - Evaluating the following metrics ['Accuracy', 'FMeasure']
+2026-03-30 11:55:22,699 - pyevall.metrics.metrics - INFO -             evaluate() - Executing accuracy evaluation method
+2026-03-30 11:55:22,803 - pyevall.metrics.metrics - INFO -             evaluate() - Executing fmeasure evaluation method
+{
+  "metrics": {
+    "Accuracy": {
+      "name": "Accuracy",
+      "acronym": "Acc",
+      "description": "Coming soon!",
+      "status": "OK",
+      "results": {
+        "test_cases": [{
+          "name": "EXIST2026",
+          "average": 0.649402390438247
+        }],
+        "average_per_test_case": 0.649402390438247
+      }
+    },
+    "FMeasure": {
+      "name": "F-Measure",
+      "acronym": "F1",
+      "description": "Coming soon!",
+      "status": "OK",
+      "results": {
+        "test_cases": [{
+          "name": "EXIST2026",
+          "classes": {
+            "YES": 0.6157205240174672,
+            "NO": 0.6776556776556777
+          },
+          "average": 0.6466881008365725
+        }],
+        "average_per_test_case": 0.6466881008365725
+      }
+    }
+  },
+  "files": {
+    "BeingChillingWeWillWin_f2llm4BText_es.json": {
+      "name": "BeingChillingWeWillWin_f2llm4BText_es.json",
+      "status": "OK",
+      "gold": false,
+      "description": "Use parameter: report=\"embedded\"!",
+      "errors": {}
+    },
+    "test_gold_pyevall.json": {
+      "name": "test_gold_pyevall.json",
+      "status": "OK",
+      "gold": true,
+      "description": "Use parameter: report=\"embedded\"!",
+      "errors": {}
+    }
+  }
+}
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_f2llm4BText_es_en.json
+============================================================
+2026-03-30 11:55:22,807 - pyevall.evaluation - INFO -             evaluate() - Evaluating the following metrics ['Accuracy', 'FMeasure']
+2026-03-30 11:55:22,848 - pyevall.metrics.metrics - INFO -             evaluate() - Executing accuracy evaluation method
+2026-03-30 11:55:22,952 - pyevall.metrics.metrics - INFO -             evaluate() - Executing fmeasure evaluation method
+{
+  "metrics": {
+    "Accuracy": {
+      "name": "Accuracy",
+      "acronym": "Acc",
+      "description": "Coming soon!",
+      "status": "OK",
+      "results": {
+        "test_cases": [{
+          "name": "EXIST2026",
+          "average": 0.6992031872509961
+        }],
+        "average_per_test_case": 0.6992031872509961
+      }
+    },
+    "FMeasure": {
+      "name": "F-Measure",
+      "acronym": "F1",
+      "description": "Coming soon!",
+      "status": "OK",
+      "results": {
+        "test_cases": [{
+          "name": "EXIST2026",
+          "classes": {
+            "YES": 0.628992628992629,
+            "NO": 0.7470686767169179
+          },
+          "average": 0.6880306528547735
+        }],
+        "average_per_test_case": 0.6880306528547735
+      }
+    }
+  },
+  "files": {
+    "BeingChillingWeWillWin_f2llm4BText_es_en.json": {
+      "name": "BeingChillingWeWillWin_f2llm4BText_es_en.json",
+      "status": "OK",
+      "gold": false,
+      "description": "Use parameter: report=\"embedded\"!",
+      "errors": {}
+    },
+    "test_gold_pyevall.json": {
+      "name": "test_gold_pyevall.json",
+      "status": "OK",
+      "gold": true,
+      "description": "Use parameter: report=\"embedded\"!",
+      "errors": {}
+    }
+  }
+}
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_fusion_add_en.json
+============================================================
+2026-03-30 11:55:22,957 - pyevall.evaluation - INFO -             evaluate() - Evaluating the following metrics ['Accuracy', 'FMeasure']
+2026-03-30 11:55:22,997 - pyevall.metrics.metrics - INFO -             evaluate() - Executing accuracy evaluation method
+2026-03-30 11:55:23,101 - pyevall.metrics.metrics - INFO -             evaluate() - Executing fmeasure evaluation method
+{
+  "metrics": {
+    "Accuracy": {
+      "name": "Accuracy",
+      "acronym": "Acc",
+      "description": "Coming soon!",
+      "status": "OK",
+      "results": {
+        "test_cases": [{
+          "name": "EXIST2026",
+          "average": 0.6533864541832669
+        }],
+        "average_per_test_case": 0.6533864541832669
+      }
+    },
+    "FMeasure": {
+      "name": "F-Measure",
+      "acronym": "F1",
+      "description": "Coming soon!",
+      "status": "OK",
+      "results": {
+        "test_cases": [{
+          "name": "EXIST2026",
+          "classes": {
+            "YES": 0.6266094420600857,
+            "NO": 0.6765799256505576
+          },
+          "average": 0.6515946838553217
+        }],
+        "average_per_test_case": 0.6515946838553217
+      }
+    }
+  },
+  "files": {
+    "BeingChillingWeWillWin_fusion_add_en.json": {
+      "name": "BeingChillingWeWillWin_fusion_add_en.json",
+      "status": "OK",
+      "gold": false,
+      "description": "Use parameter: report=\"embedded\"!",
+      "errors": {}
+    },
+    "test_gold_pyevall.json": {
+      "name": "test_gold_pyevall.json",
+      "status": "OK",
+      "gold": true,
+      "description": "Use parameter: report=\"embedded\"!",
+      "errors": {}
+    }
+  }
+}
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_fusion_add_es.json
+============================================================
+2026-03-30 11:55:23,106 - pyevall.evaluation - INFO -             evaluate() - Evaluating the following metrics ['Accuracy', 'FMeasure']
+2026-03-30 11:55:23,146 - pyevall.metrics.metrics - INFO -             evaluate() - Executing accuracy evaluation method
+2026-03-30 11:55:23,249 - pyevall.metrics.metrics - INFO -             evaluate() - Executing fmeasure evaluation method
+{
+  "metrics": {
+    "Accuracy": {
+      "name": "Accuracy",
+      "acronym": "Acc",
+      "description": "Coming soon!",
+      "status": "OK",
+      "results": {
+        "test_cases": [{
+          "name": "EXIST2026",
+          "average": 0.6075697211155379
+        }],
+        "average_per_test_case": 0.6075697211155379
+      }
+    },
+    "FMeasure": {
+      "name": "F-Measure",
+      "acronym": "F1",
+      "description": "Coming soon!",
+      "status": "OK",
+      "results": {
+        "test_cases": [{
+          "name": "EXIST2026",
+          "classes": {
+            "YES": 0.5726681127982647,
+            "NO": 0.6372007366482505
+          },
+          "average": 0.6049344247232575
+        }],
+        "average_per_test_case": 0.6049344247232575
+      }
+    }
+  },
+  "files": {
+    "BeingChillingWeWillWin_fusion_add_es.json": {
+      "name": "BeingChillingWeWillWin_fusion_add_es.json",
+      "status": "OK",
+      "gold": false,
+      "description": "Use parameter: report=\"embedded\"!",
+      "errors": {}
+    },
+    "test_gold_pyevall.json": {
+      "name": "test_gold_pyevall.json",
+      "status": "OK",
+      "gold": true,
+      "description": "Use parameter: report=\"embedded\"!",
+      "errors": {}
+    }
+  }
+}
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_fusion_add_es_en.json
+============================================================
+2026-03-30 11:55:23,253 - pyevall.evaluation - INFO -             evaluate() - Evaluating the following metrics ['Accuracy', 'FMeasure']
+2026-03-30 11:55:23,293 - pyevall.metrics.metrics - INFO -             evaluate() - Executing accuracy evaluation method
+2026-03-30 11:55:23,396 - pyevall.metrics.metrics - INFO -             evaluate() - Executing fmeasure evaluation method
+{
+  "metrics": {
+    "Accuracy": {
+      "name": "Accuracy",
+      "acronym": "Acc",
+      "description": "Coming soon!",
+      "status": "OK",
+      "results": {
+        "test_cases": [{
+          "name": "EXIST2026",
+          "average": 0.6733067729083665
+        }],
+        "average_per_test_case": 0.6733067729083665
+      }
+    },
+    "FMeasure": {
+      "name": "F-Measure",
+      "acronym": "F1",
+      "description": "Coming soon!",
+      "status": "OK",
+      "results": {
+        "test_cases": [{
+          "name": "EXIST2026",
+          "classes": {
+            "YES": 0.651063829787234,
+            "NO": 0.6928838951310862
+          },
+          "average": 0.67197386245916
+        }],
+        "average_per_test_case": 0.67197386245916
+      }
+    }
+  },
+  "files": {
+    "BeingChillingWeWillWin_fusion_add_es_en.json": {
+      "name": "BeingChillingWeWillWin_fusion_add_es_en.json",
+      "status": "OK",
+      "gold": false,
+      "description": "Use parameter: report=\"embedded\"!",
+      "errors": {}
+    },
+    "test_gold_pyevall.json": {
+      "name": "test_gold_pyevall.json",
+      "status": "OK",
+      "gold": true,
+      "description": "Use parameter: report=\"embedded\"!",
+      "errors": {}
+    }
+  }
+}
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_videoTrans_en.json
+============================================================
+2026-03-30 11:55:23,400 - pyevall.evaluation - INFO -             evaluate() - Evaluating the following metrics ['Accuracy', 'FMeasure']
+2026-03-30 11:55:23,441 - pyevall.metrics.metrics - INFO -             evaluate() - Executing accuracy evaluation method
+2026-03-30 11:55:23,544 - pyevall.metrics.metrics - INFO -             evaluate() - Executing fmeasure evaluation method
+{
+  "metrics": {
+    "Accuracy": {
+      "name": "Accuracy",
+      "acronym": "Acc",
+      "description": "Coming soon!",
+      "status": "OK",
+      "results": {
+        "test_cases": [{
+          "name": "EXIST2026",
+          "average": 0.5537848605577689
+        }],
+        "average_per_test_case": 0.5537848605577689
+      }
+    },
+    "FMeasure": {
+      "name": "F-Measure",
+      "acronym": "F1",
+      "description": "Coming soon!",
+      "status": "OK",
+      "results": {
+        "test_cases": [{
+          "name": "EXIST2026",
+          "classes": {
+            "YES": 0.5130434782608695,
+            "NO": 0.588235294117647
+          },
+          "average": 0.5506393861892582
+        }],
+        "average_per_test_case": 0.5506393861892582
+      }
+    }
+  },
+  "files": {
+    "BeingChillingWeWillWin_videoTrans_en.json": {
+      "name": "BeingChillingWeWillWin_videoTrans_en.json",
+      "status": "OK",
+      "gold": false,
+      "description": "Use parameter: report=\"embedded\"!",
+      "errors": {}
+    },
+    "test_gold_pyevall.json": {
+      "name": "test_gold_pyevall.json",
+      "status": "OK",
+      "gold": true,
+      "description": "Use parameter: report=\"embedded\"!",
+      "errors": {}
+    }
+  }
+}
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_videoTrans_es.json
+============================================================
+2026-03-30 11:55:23,548 - pyevall.evaluation - INFO -             evaluate() - Evaluating the following metrics ['Accuracy', 'FMeasure']
+2026-03-30 11:55:23,589 - pyevall.metrics.metrics - INFO -             evaluate() - Executing accuracy evaluation method
+2026-03-30 11:55:23,693 - pyevall.metrics.metrics - INFO -             evaluate() - Executing fmeasure evaluation method
+{
+  "metrics": {
+    "Accuracy": {
+      "name": "Accuracy",
+      "acronym": "Acc",
+      "description": "Coming soon!",
+      "status": "OK",
+      "results": {
+        "test_cases": [{
+          "name": "EXIST2026",
+          "average": 0.5916334661354582
+        }],
+        "average_per_test_case": 0.5916334661354582
+      }
+    },
+    "FMeasure": {
+      "name": "F-Measure",
+      "acronym": "F1",
+      "description": "Coming soon!",
+      "status": "OK",
+      "results": {
+        "test_cases": [{
+          "name": "EXIST2026",
+          "classes": {
+            "YES": 0.551422319474836,
+            "NO": 0.6252285191956124
+          },
+          "average": 0.5883254193352242
+        }],
+        "average_per_test_case": 0.5883254193352242
+      }
+    }
+  },
+  "files": {
+    "BeingChillingWeWillWin_videoTrans_es.json": {
+      "name": "BeingChillingWeWillWin_videoTrans_es.json",
+      "status": "OK",
+      "gold": false,
+      "description": "Use parameter: report=\"embedded\"!",
+      "errors": {}
+    },
+    "test_gold_pyevall.json": {
+      "name": "test_gold_pyevall.json",
+      "status": "OK",
+      "gold": true,
+      "description": "Use parameter: report=\"embedded\"!",
+      "errors": {}
+    }
+  }
+}
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_videoTrans_es_en.json
+============================================================
+2026-03-30 11:55:23,697 - pyevall.evaluation - INFO -             evaluate() - Evaluating the following metrics ['Accuracy', 'FMeasure']
+2026-03-30 11:55:23,737 - pyevall.metrics.metrics - INFO -             evaluate() - Executing accuracy evaluation method
+2026-03-30 11:55:23,841 - pyevall.metrics.metrics - INFO -             evaluate() - Executing fmeasure evaluation method
+{
+  "metrics": {
+    "Accuracy": {
+      "name": "Accuracy",
+      "acronym": "Acc",
+      "description": "Coming soon!",
+      "status": "OK",
+      "results": {
+        "test_cases": [{
+          "name": "EXIST2026",
+          "average": 0.6155378486055777
+        }],
+        "average_per_test_case": 0.6155378486055777
+      }
+    },
+    "FMeasure": {
+      "name": "F-Measure",
+      "acronym": "F1",
+      "description": "Coming soon!",
+      "status": "OK",
+      "results": {
+        "test_cases": [{
+          "name": "EXIST2026",
+          "classes": {
+            "YES": 0.5987525987525988,
+            "NO": 0.6309751434034416
+          },
+          "average": 0.6148638710780202
+        }],
+        "average_per_test_case": 0.6148638710780202
+      }
+    }
+  },
+  "files": {
+    "BeingChillingWeWillWin_videoTrans_es_en.json": {
+      "name": "BeingChillingWeWillWin_videoTrans_es_en.json",
+      "status": "OK",
+      "gold": false,
+      "description": "Use parameter: report=\"embedded\"!",
+      "errors": {}
+    },
+    "test_gold_pyevall.json": {
+      "name": "test_gold_pyevall.json",
+      "status": "OK",
+      "gold": true,
+      "description": "Use parameter: report=\"embedded\"!",
+      "errors": {}
+    }
+  }
+}
+
+
