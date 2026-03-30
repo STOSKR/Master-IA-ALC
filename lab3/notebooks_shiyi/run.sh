@@ -3,19 +3,29 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --job-name=run
 #SBATCH --mem=32G
-#SBATCH --gres=shard:6
+#SBATCH --gres=shard:4
 #SBATCH -o logs/%j.log
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-# Modo recomendado: ejecutar todos los notebooks de carpetas de idioma.
+# Perfil de ejecucion:
+# - proposals (por defecto): ejecuta solo notebooks nuevos de propuestas.
+# - discovery: escanea carpetas (comportamiento legacy).
+RUN_PROFILE=${RUN_PROFILE:-"proposals"}
+
+# Lista explicita para perfil proposals.
 # Puedes sobreescribir al lanzar:
-#   LANG_FOLDERS="ES EN ES_EN" sbatch run.sh
+#   PROPOSAL_NOTEBOOKS="ES_EN/17_strict_split_lr_fusion.ipynb ES_EN/18_calibrated_late_fusion.ipynb" sbatch run.sh
+PROPOSAL_NOTEBOOKS=${PROPOSAL_NOTEBOOKS:-"ES_EN/17_strict_split_lr_fusion.ipynb ES_EN/18_calibrated_late_fusion.ipynb"}
+
+# Opciones usadas solo en perfil discovery.
+# Puedes sobreescribir al lanzar:
+#   RUN_PROFILE=discovery LANG_FOLDERS="ES EN ES_EN" sbatch run.sh
 LANG_FOLDERS=${LANG_FOLDERS:-"ES EN ES_EN"}
 
-# Si quieres incluir tambien notebooks de raiz, activa esto en 1.
-# Ejemplo: INCLUDE_ROOT_NOTEBOOKS=1 sbatch run.sh
+# Si quieres incluir tambien notebooks de raiz en discovery, activa esto en 1.
+# Ejemplo: RUN_PROFILE=discovery INCLUDE_ROOT_NOTEBOOKS=1 sbatch run.sh
 INCLUDE_ROOT_NOTEBOOKS=${INCLUDE_ROOT_NOTEBOOKS:-0}
 
 ENTREGABLES_DIR="entregables"
@@ -25,21 +35,27 @@ mkdir -p "$ENTREGABLES_DIR" "$PREDICTION_DIR"
 
 declare -a NOTEBOOK_QUEUE=()
 
-if [ "$INCLUDE_ROOT_NOTEBOOKS" = "1" ]; then
-    while IFS= read -r nb_file; do
+if [ "$RUN_PROFILE" = "proposals" ]; then
+    for nb_file in $PROPOSAL_NOTEBOOKS; do
         NOTEBOOK_QUEUE+=("$nb_file")
-    done < <(find . -maxdepth 1 -type f -name "*.ipynb" -printf "%f\n" | sort)
-fi
-
-for LANG_DIR in $LANG_FOLDERS; do
-    if [ -d "$LANG_DIR" ]; then
+    done
+else
+    if [ "$INCLUDE_ROOT_NOTEBOOKS" = "1" ]; then
         while IFS= read -r nb_file; do
             NOTEBOOK_QUEUE+=("$nb_file")
-        done < <(find "$LANG_DIR" -maxdepth 1 -type f -name "*.ipynb" | sort)
-    else
-        echo "WARNING: carpeta de idioma no encontrada, se omite: $LANG_DIR"
+        done < <(find . -maxdepth 1 -type f -name "*.ipynb" -printf "%f\n" | sort)
     fi
-done
+
+    for LANG_DIR in $LANG_FOLDERS; do
+        if [ -d "$LANG_DIR" ]; then
+            while IFS= read -r nb_file; do
+                NOTEBOOK_QUEUE+=("$nb_file")
+            done < <(find "$LANG_DIR" -maxdepth 1 -type f -name "*.ipynb" | sort)
+        else
+            echo "WARNING: carpeta de idioma no encontrada, se omite: $LANG_DIR"
+        fi
+    done
+fi
 
 if [ ${#NOTEBOOK_QUEUE[@]} -eq 0 ]; then
     echo "ERROR: no hay notebooks para ejecutar (cola vacia)."

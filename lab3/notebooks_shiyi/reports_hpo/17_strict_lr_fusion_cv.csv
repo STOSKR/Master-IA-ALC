@@ -1,0 +1,4 @@
+scope,rows_train,rows_infer,cv_f1_macro_mean,cv_f1_macro_std,train_f1_macro,json_path
+ES,1212,1212,0.6338258667295291,0.013637308160229976,0.8712447053375645,/home/alumno.upv.es/scheng1/Master-IA-ALC/lab3/notebooks_shiyi/entregables/BeingChillingWeWillWin_17StrictLRFusion_ES.json
+ES_EN,2006,2006,0.621569530255895,0.014778273913025363,0.8706092339293822,/home/alumno.upv.es/scheng1/Master-IA-ALC/lab3/notebooks_shiyi/entregables/BeingChillingWeWillWin_17StrictLRFusion_ES_EN.json
+EN,794,794,0.6192126673200843,0.027564468330850595,0.884664315917678,/home/alumno.upv.es/scheng1/Master-IA-ALC/lab3/notebooks_shiyi/entregables/BeingChillingWeWillWin_17StrictLRFusion_EN.json

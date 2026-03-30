@@ -1,0 +1,4 @@
+scope,rows_train,rows_infer,cv_f1_macro,w_text,w_video,w_sensor,threshold,json_path
+ES,1212,1212,0.6600650809427207,0.6,0.3,0.10000000000000003,0.5,/home/alumno.upv.es/scheng1/Master-IA-ALC/lab3/notebooks_shiyi/entregables/BeingChillingWeWillWin_18CalibratedLateFusion_ES.json
+ES_EN,2006,2006,0.659586602636436,0.6,0.3,0.10000000000000003,0.51,/home/alumno.upv.es/scheng1/Master-IA-ALC/lab3/notebooks_shiyi/entregables/BeingChillingWeWillWin_18CalibratedLateFusion_ES_EN.json
+EN,794,794,0.65137267721734,0.6,0.2,0.2,0.51,/home/alumno.upv.es/scheng1/Master-IA-ALC/lab3/notebooks_shiyi/entregables/BeingChillingWeWillWin_18CalibratedLateFusion_EN.json
