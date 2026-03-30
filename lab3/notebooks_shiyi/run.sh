@@ -6,6 +6,9 @@
 #SBATCH --gres=shard:6
 #SBATCH -o logs/%j.log
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
+
 # Modo recomendado: ejecutar todos los notebooks de carpetas de idioma.
 # Puedes sobreescribir al lanzar:
 #   LANG_FOLDERS="ES EN ES_EN" sbatch run.sh
@@ -15,9 +18,6 @@ LANG_FOLDERS=${LANG_FOLDERS:-"ES EN ES_EN"}
 # Ejemplo: INCLUDE_ROOT_NOTEBOOKS=1 sbatch run.sh
 INCLUDE_ROOT_NOTEBOOKS=${INCLUDE_ROOT_NOTEBOOKS:-0}
 
-# Lista de notebooks de raiz (solo se usa si INCLUDE_ROOT_NOTEBOOKS=1).
-ROOT_NOTEBOOKS=${ROOT_NOTEBOOKS:-"01_build_multimodal_features.ipynb 02_train_classifier_es.ipynb 03_train_classifier_en.ipynb 04_train_classifier_es_en.ipynb 05_exp_audio_vad.ipynb 06_exp_video_clean.ipynb 07_exp_sensorial_filter.ipynb 08_exp_fusion_avanzada.ipynb 09_robust_hpo_models.ipynb 10_stacking_ensemble_hpo.ipynb 11_boosting_multimodal_hpo.ipynb 12_deep_gated_multimodal_hpo.ipynb 13_meta_ensemble_weight_search.ipynb 14_video_only_siglip_xgb.ipynb 15_qwen_text_video_xgb.ipynb 16_qwen_text_video_sensor_xgb.ipynb"}
-
 ENTREGABLES_DIR="entregables"
 PREDICTION_DIR="prediction"
 
@@ -26,9 +26,9 @@ mkdir -p "$ENTREGABLES_DIR" "$PREDICTION_DIR"
 declare -a NOTEBOOK_QUEUE=()
 
 if [ "$INCLUDE_ROOT_NOTEBOOKS" = "1" ]; then
-    for NOTEBOOK in $ROOT_NOTEBOOKS; do
-        NOTEBOOK_QUEUE+=("$NOTEBOOK")
-    done
+    while IFS= read -r nb_file; do
+        NOTEBOOK_QUEUE+=("$nb_file")
+    done < <(find . -maxdepth 1 -type f -name "*.ipynb" -printf "%f\n" | sort)
 fi
 
 for LANG_DIR in $LANG_FOLDERS; do
@@ -56,7 +56,7 @@ conda activate RFA2526pt
 export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 
 # Ensure we use only the GPU assigned by SLURM
-if [ ! -z "$CUDA_VISIBLE_DEVICES" ]; then
+if [ -n "$CUDA_VISIBLE_DEVICES" ]; then
     echo "Using GPU(s): $CUDA_VISIBLE_DEVICES"
 fi
 
