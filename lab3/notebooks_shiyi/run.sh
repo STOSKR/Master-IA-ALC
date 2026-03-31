@@ -10,10 +10,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
 # Perfil de ejecucion:
-# - proposals (por defecto): ejecuta solo notebooks nuevos de propuestas.
-# - discovery: escanea carpetas (comportamiento legacy).
-# Para generar predicciones por idioma (ES/EN/ES_EN) se recomienda proposals.
-RUN_PROFILE=${RUN_PROFILE:-"proposals"}
+# - proposals: ejecuta solo notebooks concretos indicados en PROPOSAL_NOTEBOOKS.
+# - discovery (por defecto): escanea carpetas y ejecuta todos los notebooks.
+RUN_PROFILE=${RUN_PROFILE:-"discovery"}
 
 # Lista explicita para perfil proposals.
 # Puedes sobreescribir al lanzar:
@@ -22,8 +21,8 @@ PROPOSAL_NOTEBOOKS=${PROPOSAL_NOTEBOOKS:-"EN/03_train_classifier_en.ipynb ES/02_
 
 # Opciones usadas solo en perfil discovery.
 # Puedes sobreescribir al lanzar:
-#   RUN_PROFILE=discovery LANG_FOLDERS="ES EN ES_EN" sbatch run.sh
-LANG_FOLDERS=${LANG_FOLDERS:-"ES EN ES_EN"}
+#   RUN_PROFILE=discovery LANG_FOLDERS="ES_EN EN ES" sbatch run.sh
+LANG_FOLDERS=${LANG_FOLDERS:-"ES_EN EN ES"}
 
 # Si quieres incluir tambien notebooks de raiz en discovery, activa esto en 1.
 # Ejemplo: RUN_PROFILE=discovery INCLUDE_ROOT_NOTEBOOKS=1 sbatch run.sh
