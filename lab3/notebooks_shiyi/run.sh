@@ -12,12 +12,13 @@ cd "$SCRIPT_DIR"
 # Perfil de ejecucion:
 # - proposals (por defecto): ejecuta solo notebooks nuevos de propuestas.
 # - discovery: escanea carpetas (comportamiento legacy).
+# Para generar predicciones por idioma (ES/EN/ES_EN) se recomienda proposals.
 RUN_PROFILE=${RUN_PROFILE:-"proposals"}
 
 # Lista explicita para perfil proposals.
 # Puedes sobreescribir al lanzar:
-#   PROPOSAL_NOTEBOOKS="ES_EN/17_strict_split_lr_fusion.ipynb ES_EN/18_calibrated_late_fusion.ipynb" sbatch run.sh
-PROPOSAL_NOTEBOOKS=${PROPOSAL_NOTEBOOKS:-"ES_EN/17_strict_split_lr_fusion.ipynb ES_EN/18_calibrated_late_fusion.ipynb"}
+#   PROPOSAL_NOTEBOOKS="EN/03_train_classifier_en.ipynb ES/02_train_classifier_es.ipynb ES_EN/04_train_classifier_es_en.ipynb" sbatch run.sh
+PROPOSAL_NOTEBOOKS=${PROPOSAL_NOTEBOOKS:-"EN/03_train_classifier_en.ipynb ES/02_train_classifier_es.ipynb ES_EN/04_train_classifier_es_en.ipynb"}
 
 # Opciones usadas solo en perfil discovery.
 # Puedes sobreescribir al lanzar:
@@ -30,8 +31,12 @@ INCLUDE_ROOT_NOTEBOOKS=${INCLUDE_ROOT_NOTEBOOKS:-0}
 
 ENTREGABLES_DIR="entregables"
 PREDICTION_DIR="prediction"
+FINAL_PREDICTION_DIR=${FINAL_PREDICTION_DIR:-"prediccion_final"}
+EXPORT_TEST_FINAL=${EXPORT_TEST_FINAL:-1}
+FINAL_REQUIRE_COMPLETE=${FINAL_REQUIRE_COMPLETE:-0}
+SOURCE_JSON_DIRS=("$ENTREGABLES_DIR" "predicciones" "$FINAL_PREDICTION_DIR")
 
-mkdir -p "$ENTREGABLES_DIR" "$PREDICTION_DIR"
+mkdir -p "$ENTREGABLES_DIR" "$PREDICTION_DIR" "$FINAL_PREDICTION_DIR"
 
 declare -a NOTEBOOK_QUEUE=()
 
@@ -170,18 +175,23 @@ EOF
 
     # Copiar predicciones JSON acumuladas a prediction tras cada notebook.
     copied_any=0
-    for json_file in "$ENTREGABLES_DIR"/*.json; do
-        if [ -e "$json_file" ]; then
-            cp -f "$json_file" "$PREDICTION_DIR"/
-            copied_any=1
+    for src_dir in "${SOURCE_JSON_DIRS[@]}"; do
+        if [ ! -d "$src_dir" ]; then
+            continue
         fi
+        for json_file in "$src_dir"/*.json; do
+            if [ -e "$json_file" ]; then
+                cp -f "$json_file" "$PREDICTION_DIR"/
+                copied_any=1
+            fi
+        done
     done
 
     if [ "$copied_any" -eq 1 ]; then
         total_json=$(ls -1 "$PREDICTION_DIR"/*.json 2>/dev/null | wc -l)
         echo "JSON sincronizados en $PREDICTION_DIR (total: $total_json)"
     else
-        echo "No hay JSON nuevos en $ENTREGABLES_DIR para sincronizar"
+        echo "No hay JSON nuevos para sincronizar a $PREDICTION_DIR"
     fi
     
     echo ""
@@ -190,4 +200,31 @@ done
 echo "=========================================="
 echo "All notebooks processed!"
 echo "Prediction dir: $PREDICTION_DIR"
+
+if [ "$EXPORT_TEST_FINAL" = "1" ]; then
+    echo "=========================================="
+    echo "Exporting test-set final predictions"
+    echo "Output dir: $FINAL_PREDICTION_DIR"
+    echo "=========================================="
+
+    REQUIRE_FLAG=""
+    if [ "$FINAL_REQUIRE_COMPLETE" = "1" ]; then
+        REQUIRE_FLAG="--require-complete"
+    fi
+
+    # Construye JSON finales sobre IDs del test oficial (mismo universo para comparar modelos).
+    python export_test_predictions_final.py \
+        --source-dirs "$ENTREGABLES_DIR" "$PREDICTION_DIR" predicciones "$FINAL_PREDICTION_DIR" \
+        --output-dir "$FINAL_PREDICTION_DIR" \
+        --training-json "../materials/dataset_task3_exist2026/EXIST2026_training.json" \
+        --test-json "../materials/dataset_task3_exist2026/test.json" \
+        $REQUIRE_FLAG
+
+    if [ $? -ne 0 ]; then
+        echo "WARNING: final test prediction export failed"
+    else
+        echo "Final test predictions exported to: $FINAL_PREDICTION_DIR"
+    fi
+fi
+
 echo "=========================================="
