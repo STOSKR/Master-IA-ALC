@@ -1,0 +1,272 @@
+📁 Carpeta de predicciones: /mnt/a/Master-IA-ALC/lab3/common/predicciones
+📁 Gold usado: /mnt/a/Master-IA-ALC/lab3/common/predicciones/test_gold_pyevall.json
+✅ Se encontraron 36 archivos de predicciones para evaluar.
+
+⚠️ pyevall no está instalado. Se usará evaluación local (Accuracy + F1-macro).
+   Para usar PyEvALL: pip install pyevall==0.1.78
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_07SensorialFilter_IQRWin_ES_EN.json
+============================================================
+Registros evaluados (solape ID): 502
+Accuracy: 0.669323
+F1-macro: 0.667799
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_08FusionLate_EN.json
+============================================================
+Registros evaluados (solape ID): 0
+❌ No hay IDs en común entre predicción y gold.
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_08FusionLate_ES.json
+============================================================
+Registros evaluados (solape ID): 0
+❌ No hay IDs en común entre predicción y gold.
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_08FusionLate_ES_EN.json
+============================================================
+Registros evaluados (solape ID): 0
+❌ No hay IDs en común entre predicción y gold.
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_17StrictLRFusion_EN.json
+============================================================
+Registros evaluados (solape ID): 0
+❌ No hay IDs en común entre predicción y gold.
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_17StrictLRFusion_ES.json
+============================================================
+Registros evaluados (solape ID): 0
+❌ No hay IDs en común entre predicción y gold.
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_17StrictLRFusion_ES_EN.json
+============================================================
+Registros evaluados (solape ID): 0
+❌ No hay IDs en común entre predicción y gold.
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_18CalibratedLateFusion_EN.json
+============================================================
+Registros evaluados (solape ID): 0
+❌ No hay IDs en común entre predicción y gold.
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_18CalibratedLateFusion_ES.json
+============================================================
+Registros evaluados (solape ID): 0
+❌ No hay IDs en común entre predicción y gold.
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_18CalibratedLateFusion_ES_EN.json
+============================================================
+Registros evaluados (solape ID): 0
+❌ No hay IDs en común entre predicción y gold.
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_HPO_EN.json
+============================================================
+Registros evaluados (solape ID): 0
+❌ No hay IDs en común entre predicción y gold.
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_HPO_ES.json
+============================================================
+Registros evaluados (solape ID): 0
+❌ No hay IDs en común entre predicción y gold.
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_HPO_ES_EN.json
+============================================================
+Registros evaluados (solape ID): 0
+❌ No hay IDs en común entre predicción y gold.
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_QwenText_SigLIPVideo_Sensor_XGB_EN.json
+============================================================
+Registros evaluados (solape ID): 0
+❌ No hay IDs en común entre predicción y gold.
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_QwenText_SigLIPVideo_Sensor_XGB_ES.json
+============================================================
+Registros evaluados (solape ID): 0
+❌ No hay IDs en común entre predicción y gold.
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_QwenText_SigLIPVideo_XGB_EN.json
+============================================================
+Registros evaluados (solape ID): 0
+❌ No hay IDs en común entre predicción y gold.
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_QwenText_SigLIPVideo_XGB_ES.json
+============================================================
+Registros evaluados (solape ID): 0
+❌ No hay IDs en común entre predicción y gold.
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_STACK_EN.json
+============================================================
+Registros evaluados (solape ID): 0
+❌ No hay IDs en común entre predicción y gold.
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_STACK_ES_EN.json
+============================================================
+Registros evaluados (solape ID): 0
+❌ No hay IDs en común entre predicción y gold.
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_SigLIPVideo_XGB_EN.json
+============================================================
+Registros evaluados (solape ID): 0
+❌ No hay IDs en común entre predicción y gold.
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_SigLIPVideo_XGB_ES.json
+============================================================
+Registros evaluados (solape ID): 0
+❌ No hay IDs en común entre predicción y gold.
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_XLMRSceneSensor_LR_EN.json
+============================================================
+Registros evaluados (solape ID): 0
+❌ No hay IDs en común entre predicción y gold.
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_XLMRSceneSensor_LR_ES.json
+============================================================
+Registros evaluados (solape ID): 0
+❌ No hay IDs en común entre predicción y gold.
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_XLMRSceneSensor_LR_ES_EN.json
+============================================================
+Registros evaluados (solape ID): 0
+❌ No hay IDs en común entre predicción y gold.
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_f2llm4BEmbed_en.json
+============================================================
+Registros evaluados (solape ID): 502
+Accuracy: 0.653386
+F1-macro: 0.652835
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_f2llm4BEmbed_es.json
+============================================================
+Registros evaluados (solape ID): 502
+Accuracy: 0.661355
+F1-macro: 0.640831
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_f2llm4BEmbed_es_en.json
+============================================================
+Registros evaluados (solape ID): 502
+Accuracy: 0.695219
+F1-macro: 0.693896
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_f2llm4BText_en.json
+============================================================
+Registros evaluados (solape ID): 502
+Accuracy: 0.641434
+F1-macro: 0.619703
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_f2llm4BText_es.json
+============================================================
+Registros evaluados (solape ID): 502
+Accuracy: 0.649402
+F1-macro: 0.646688
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_f2llm4BText_es_en.json
+============================================================
+Registros evaluados (solape ID): 502
+Accuracy: 0.699203
+F1-macro: 0.688031
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_fusion_add_en.json
+============================================================
+Registros evaluados (solape ID): 502
+Accuracy: 0.653386
+F1-macro: 0.651595
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_fusion_add_es.json
+============================================================
+Registros evaluados (solape ID): 502
+Accuracy: 0.607570
+F1-macro: 0.604934
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_fusion_add_es_en.json
+============================================================
+Registros evaluados (solape ID): 502
+Accuracy: 0.673307
+F1-macro: 0.671974
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_videoTrans_en.json
+============================================================
+Registros evaluados (solape ID): 502
+Accuracy: 0.553785
+F1-macro: 0.550639
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_videoTrans_es.json
+============================================================
+Registros evaluados (solape ID): 502
+Accuracy: 0.591633
+F1-macro: 0.588325
+
+
+============================================================
+📊 Evaluando: BeingChillingWeWillWin_videoTrans_es_en.json
+============================================================
+Registros evaluados (solape ID): 502
+Accuracy: 0.615538
+F1-macro: 0.614864
+
+
