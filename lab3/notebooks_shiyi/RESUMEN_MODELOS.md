@@ -1,7 +1,7 @@
 # Resumen de modelos Lab3 (EXIST 2026 Videos)
 
 ## Ruta de datos obligatoria
-- Entrada principal: /home/alumno.upv.es/scheng1/EXIST 2026 Videos Dataset/training/EXIST2026_training.json
+- Entrada principal: /home/alumno.upv.es/scheng1/EXIST 2026 Videos Dataset/training/training.json
 
 ## Configuracion de cluster usada en todos los notebooks
 - Particion: long

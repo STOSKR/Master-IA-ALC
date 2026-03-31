@@ -216,7 +216,7 @@ if [ "$EXPORT_TEST_FINAL" = "1" ]; then
     python export_test_predictions_final.py \
         --source-dirs "$ENTREGABLES_DIR" "$PREDICTION_DIR" predicciones "$FINAL_PREDICTION_DIR" \
         --output-dir "$FINAL_PREDICTION_DIR" \
-        --training-json "../materials/dataset_task3_exist2026/EXIST2026_training.json" \
+        --training-json "../materials/dataset_task3_exist2026/training.json" \
         --test-json "../materials/dataset_task3_exist2026/test.json" \
         $REQUIRE_FLAG
 
