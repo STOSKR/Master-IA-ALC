@@ -1,0 +1,46 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{authblk}
+
+\title{\vspace{-2cm}\textbf{Laboratorio 3: \\ Clasificación de sexismo en videos de TikTok}}
+\author{Pablo Segovia Martínez - Shiyi Cheng}
+\date{\vspace{-5ex}}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\section*{Introducción}
+Este documento explica los enfoques seguidos para clasificar videos de TikTok según su contenido de sexismo. Como se indicó en el enunciado del laboratorio, se hicieron tres configuraciones y divisiones según el idioma del vídeo: un sistema entrenado \textbf{solo en español}, uno \textbf{solo en inglés}, y uno \textbf{con todo}.
+
+\section*{Aproximaciones seguidas}
+En base a los conjuntos previamente filtrados y procesados, se siguieron tres aproximaciones para la clasificación de los datos:
+
+\begin{enumerate}
+    \item \textbf{Modelo de embeddings de texto (F2LLM):} Se utilizó el modelo \texttt{codefuse-ai/F2LLM-4B}. Sus capacidades fueron ajustadas con LoRA utilizando como datos de entrenamiento los valores \texttt{text} de cada muestra.
+    
+    \item \textbf{Modelo basado en video:} En primer lugar se hicieron embeddings de las escenas de los videos con DINOv3. Después, se creó un Encoder Transformer que recibía estos embeddings y un token adicional \texttt{[CLS]} para realizar la categorización binaria. Para aquellos clips compuestos estructuralmente de un único frame, el modelo procesa la entrada a través de un MLP.
+    
+    \item \textbf{Fusión multimodal (Fusion MLP):} Comprendiendo las limitaciones aisladas de ambos modos, se creó un tercer modelos que utiliza los embeddings de F2LLM base y el Video Transformer anterior. Durante los experimentos iterativos de validación de arquitecturas combinatorias --- \emph{Concatenation}, \emph{Gated Function} y Suma directa (\texttt{ADD}) --- se elegió la basada en suma.
+    
+\end{enumerate}
+
+\section*{Resultados}
+Se calculó la métrica \textbf{F1-macro} sobre el conjunto de validación (también dividido por idioma) ajustando el umbral de decisión (\emph{threshold}) que maximiza el valor de esta métrica. Los resultados logrados se sintetizan en la siguiente tabla:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Enfoque} & \textbf{Solo español} & \textbf{Solo inglés} & \textbf{Todo} \\ \midrule
+F2LLM                & 0.6661               & 0.7193              & 0.7168                   \\
+Video (Video Transformer custom)& 0.6209               & 0.6275              & 0.6277                   \\
+\textbf{Fusión Multimodal (ADD)} & \textbf{0.9052} & \textbf{0.7415} & \textbf{0.8084} \\ \bottomrule
+\end{tabular}
+\end{table}
+\end{document}
